@@ -25,14 +25,11 @@ declare namespace NodeJS {
     }
 }
 
-const {MONGO_URI} = process.env;
-
-const HOSTNAME = "192.168.43.197";
-const PORT = 3000;
+let {MONGO_URI, PORT, HOSTNAME} = process.env;
 
 mongoConnect(MONGO_URI!).then(() => {
     console.log("connect to database");
-    app.listen(PORT, HOSTNAME, () => {
+    app.listen((typeof PORT === 'number') ? PORT : 3000, HOSTNAME!, () => {
         console.log(`Server listening at http://${HOSTNAME}:${PORT}`);
     });
 }).catch((error) => {

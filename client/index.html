@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href='https://fonts.googleapis.com/css?family=Lexend' rel='stylesheet'>
     <title>Zentangle</title>
+    <script>
+      // const element = document.documentElement;
+      // if (element.requestFullscreen) {
+      //   element.requestFullscreen();
+      // } else if (element.mozRequestFullScreen) { // Firefox
+      //     element.mozRequestFullScreen();
+      // } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+      //     element.webkitRequestFullscreen();
+      // } else if (element.msRequestFullscreen) { // IE/Edge
+      //     element.msRequestFullscreen();
+      // }
+      window.addEventListener('touchmove', function(event) {
+        event.preventDefault();
+      }, { passive: false });
+    </script>
   </head>
   <body>
     <div id="root"></div>

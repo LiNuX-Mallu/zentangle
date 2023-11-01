@@ -8,11 +8,18 @@ interface UserData {
     phone: number;
     dob: Date;
     password: string;
+    countryCode: number;
+    gender: string;
 }
 
 export default async (data: UserData) => {
     try {
+        const email = {email: data.email, verified: false};
+        const phone = {phone: data.phone, verified: false, countryCode: data.countryCode};
         const newUser = new User(data);
+        newUser.email = email;
+        newUser.phone = phone;
+        newUser.gender = data.gender;
         const saved = await newUser.save();
         return saved;
     } catch(error) {

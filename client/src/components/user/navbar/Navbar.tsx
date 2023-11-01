@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import menuIcon from '../../../assets/images/menu-icon.png';
 
-export default function Navbar() {
+interface Props {
+    login: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Navbar({login}: Props) {
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
@@ -22,7 +26,7 @@ export default function Navbar() {
                     </li>
                     {menuOpen &&
                     <li>
-                        <button className='login'>
+                        <button onClick={() => login(true)} className='login'>
                             Login
                         </button>
                     </li>
@@ -33,7 +37,7 @@ export default function Navbar() {
                     <img src={menuIcon} alt="menu" />
             </button>
             <div className='lg-login'>
-                <button type='button'>Login</button>
+                <button onClick={() => login(true)} type='button'>Login</button>
             </div>
         </nav>
     )

@@ -1,16 +1,18 @@
 import './Signup.css';
 import closeIcon from '../../../assets/images/close-icon.png';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ApiUrl } from '../../../instances/urls';
 
 interface Props {
     cancel: React.Dispatch<React.SetStateAction<boolean>>;
+    login: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Signup({cancel}: Props) {
+export default function Signup({cancel, login}: Props) {
     const [showPass, setShowPass] = useState(false);
     const [tooltip, setTooltip] = useState(false);
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -19,7 +21,8 @@ export default function Signup({cancel}: Props) {
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
     const [dob, setDob] = useState("");
-    const [countryCode, setCountryCode] = useState("");
+    const [countryCode, setCountryCode] = useState("91");
+    const [gender, setGender] = useState("male");
 
     const [usernameError, setUsernameError] = useState<undefined | string>(undefined);
     const [emailError, setEmailError] = useState<undefined | string>(undefined);
@@ -31,6 +34,7 @@ export default function Signup({cancel}: Props) {
 
     function containerCLick() {
         setTooltip(false);
+        setLoginSuccess(false);
     }
 
     useEffect(() => {
@@ -53,6 +57,7 @@ export default function Signup({cancel}: Props) {
             password,
             countryCode,
             dob,
+            gender,
         }
 
         axios.post(ApiUrl+'/user/register', formData, {
@@ -61,7 +66,7 @@ export default function Signup({cancel}: Props) {
             }
         }).then((response) => {
             if (response.status === 200) {
-                alert("success");
+                setLoginSuccess(true);
             }
         }).catch((error) => {
             if (error.response.status === 400) {
@@ -74,12 +79,15 @@ export default function Signup({cancel}: Props) {
                 setDobError(errors?.dob);
                 setPasswordError(errors?.password);
                 setTooltip(true);
+            } else {
+                alert("Internal server error");
             }
         });
     }
 
     return (
-        <div className="overlay container-fluid">
+        <div id="overlay" className="overlay container-fluid">
+            {loginSuccess && <div className="logged">Registration Successful</div>}
             <form onSubmit={handleSubmit}>
                 <div className='close-btn'>
                     <img src={closeIcon} alt="close" onClick={() => cancel(false)} />
@@ -87,7 +95,7 @@ export default function Signup({cancel}: Props) {
                 <span className='heading'>Register here</span>
                 <div>
                     <label htmlFor="username">Username</label>
-                    <input value={username} onChange={(e) => setUsername(e.target.value)} id="username"/>
+                    <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username"/>
                     {usernameError && tooltip && <div className="tooltip-error">{usernameError}</div>}
                 </div>
                 <div className='names'>
@@ -99,31 +107,42 @@ export default function Signup({cancel}: Props) {
                         <label htmlFor='lastname'>Lastname</label>
                         <input value={lastname} onChange={(e) => setLastname(e.target.value)} id='lastname'/>
                     </div>
-                    {(tooltip && (firstnameError || lastnameError)) ? <div className='tooltip-error'>{firstnameError}</div>: ""}
+                    {(tooltip && (firstnameError || lastnameError)) ? <div className='tooltip-error'>{firstnameError ? firstnameError : lastnameError}</div>: ""}
                 </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} id="email"/>
-                </div>
-                <div className='names gap-2'>
-                    <div className='row'>
-                        <label htmlFor='phone'>Phone</label>
-                        <div className='d-flex flex-row gap-1'>
-                            <select onChange={(e) => setCountryCode(e.target.value)} className='col-3'>
-                                <option value='+91'>+91</option>
-                            </select>
-                            <input className='col-9' value={phone} onChange={(e) => setPhone(e.target.value)} id='phone'/>
-                        </div>
-
+                <div className='dob-gender'>
+                    <div>
+                        <label htmlFor='dob'>Gender</label>
+                        <select onChange={(e) => setGender(e.target.value)} id='dob'>
+                            <option selected value='male'>Male</option>
+                            <option value='female'>Female</option>
+                        </select>
                     </div>
                     <div>
                         <label htmlFor='dob'>Date for birth</label>
-                        <input style={{width: '100%',height: '100%'}} value={dob} type='date' onChange={(e) => setDob(e.target.value)} id='dob'/>
+                        <input value={dob} type='date' onChange={(e) => setDob(e.target.value)} id='dob'/>
+                    </div>
+                    {tooltip && dobError && <div style={{width: 'auto'}} className="tooltip-error">{dobError}</div>}
+                </div>
+                <div>
+                    <label htmlFor="email">Email</label>
+                    <input style={{textTransform: 'lowercase'}} value={email} onChange={(e) => setEmail(e.target.value)} id="email"/>
+                    {tooltip && emailError && <div className='tooltip-error'>{emailError}</div>}
+                </div>
+                <div className='row'>
+                    <label htmlFor='phone'>Phone</label>
+                    <div className='d-flex flex-row gap-1'>
+                        <select onChange={(e) => setCountryCode(e.target.value)} className='col-3 col-lg-2'>
+                            <option value='91'>+91</option>
+                        </select>
+                        <input className='col-9 col-lg-10' value={phone} onChange={(e) => setPhone(e.target.value)} id='phone'/>
+                        {tooltip && phoneError && <div className="tooltip-error">{phoneError}</div> }
                     </div>
                 </div>
+                
                 <div>
                     <label htmlFor="password">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password"/>
+                    {tooltip && passwordError && <div className="tooltip-error">{passwordError}</div> }
                 </div>
                 <div className='show-pass'>
                     <label htmlFor='showPass'>
@@ -134,7 +153,7 @@ export default function Signup({cancel}: Props) {
                 <div className='submit'>
                     <button type='submit'>Signup</button>
                 </div>
-                <span className='login'>
+                <span style={{cursor: 'pointer'}} onClick={() => {cancel(false); login(true)}} className='login'>
                     Already have an account?
                 </span>
             </form>

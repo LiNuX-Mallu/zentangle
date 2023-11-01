@@ -27,16 +27,31 @@ form {
     z-index: 99;
     background-color: rgba(39, 206, 39, 0.822);
     font-weight: 400;
+    font-family: 'Lexend';
     padding: 0.6rem;
     border-radius: 1.4rem;
     color: white;
-    font-family: 'Lexend';
+}
+
+form .tooltip-error {
+    border-radius: 1rem;
+    padding: 0.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+
+    background-color: rgba(197, 20, 20, 0.719);
+    color: rgb(235, 235, 235);
+    font-size: 0.8rem;
 }
 
 form span {
     text-align: center;
     color: white;
     font-size: large;
+}
+
+form .heading {
+    margin-bottom: 1rem;
 }
 
 form div {
@@ -54,44 +69,19 @@ form input {
     border-radius: 0.2rem;
     border: 1px solid white;
     background-color: rgba(255, 255, 255, 0.966);
-    height: 100%;
-    width: 100%;
 }
 
 form select {
-    width: 100%;
     border-radius: 0.2rem;
     border: 1px solid white;
     background-color: white;
     background-color: rgba(255, 255, 255, 0.966);
-    height: 100%;
 }
 
 form .names {
     display: flex;
     flex-direction: row;
     gap: 0.4rem;
-}
-
-form .dob-gender {
-    display: flex;
-    flex-direction: row;
-    gap: 0.4rem;
-}
-
-form .dob-gender div {
-    width: 100%;
-}
-
-form .tooltip-error {
-    position: absolute;
-    border-radius: 1rem;
-    margin-top: 1rem;
-    margin-top: 3.1rem;
-    padding: 0.3rem;
-    background-color: rgba(177, 22, 22, 0.774);
-    color: rgb(235, 235, 235);
-    font-size: 0.8rem;
 }
 
 .close-btn {
@@ -129,13 +119,13 @@ form .show-pass label {
     gap: 0.3rem;
 }
 
-form input:focus, form select:focus {
+
+form input:focus {
     outline: 3px solid purple;
 }
 
 form input[type="checkbox"] {
     outline: none;
-    width: auto;
 }
 
 @media (max-width: 768px) {
@@ -145,8 +135,9 @@ form input[type="checkbox"] {
         overflow: scroll;
     }
 
-    .heading {
-        display: none;
+    form .heading {
+        display: block;
+        margin-bottom: 1rem;
     }
 
     form div {
@@ -166,4 +157,5 @@ form input[type="checkbox"] {
     form .login {
      font-size: small;
     }
+
 }

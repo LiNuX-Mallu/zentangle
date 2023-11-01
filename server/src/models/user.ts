@@ -15,6 +15,9 @@ var userSchema = new Schema({
     }
   },
   phone: {
+    countryCode: {
+      type: Number
+    },
     phone: {
       type: Number
     },
@@ -30,6 +33,9 @@ var userSchema = new Schema({
   dob: {
     type: Date,
     required: true,
+  },
+  gender: {
+    type: String
   },
   accountVerified: {
     type: Boolean,
@@ -61,9 +67,6 @@ var userSchema = new Schema({
       type: String
     }],
     bio: {
-      type: String
-    },
-    gender: {
       type: String
     },
     languages: [{

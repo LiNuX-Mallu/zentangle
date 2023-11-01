@@ -9,6 +9,8 @@ interface Body {
     phone: string;
     dob: Date;
     password: string;
+    countryCode: string;
+    gender: string;
 }
 
 type Errors = {
@@ -23,6 +25,10 @@ type Errors = {
 
 export default async (req: Request, res: Response, next: NextFunction) => {
     const body = req.body as Body;
+    body.username = body.username.toLowerCase();
+    body.email = body.email.toLowerCase();
+    body.gender = body.gender.toLocaleLowerCase();
+
     const {
         username,
         firstname,
@@ -30,8 +36,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         email,
         phone,
         password,
+        countryCode,
+        gender,
     } = body;
-    
+
     const dob = new Date(body.dob);
 
     const errors = <Errors>{};
@@ -41,6 +49,11 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
     const phoneRegex = /^\d+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const countryCodeRegex = /^\d{1,4}$/;
+
+    if (!countryCodeRegex.test(countryCode) || (gender !=='male' && gender !== 'female')) {
+        return res.status(500).json({message: "Internal server error"});
+    }
 
     if (await User.findOne({username})) {
         errors.username = "Username taken";
@@ -56,13 +69,13 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         errors.lastname = "Name should not contain special characters or white spaces";
     }
 
-    if (await User.findOne({email})) {
+    if (await User.findOne({"email.email": email})) {
         errors.email = "Email already exists";
     } else if (!emailRegex.test(email)) {
         errors.email = "Please provide a valid email";
     }
 
-    if (await User.findOne({phone})) {
+    if (await User.findOne({"phone.phone": phone})) {
         errors.phone = "Phone number already exists";
     } else if (!phoneRegex.test(phone)) {
         errors.phone = "Please provide a valid phone number";
@@ -73,7 +86,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (isNaN(dob.getTime())) {
-        errors.dob = "Invalid date";
+        errors.dob = "Please enter your date of birth";
     } else {
         const dateOfBirth: Date = new Date(dob);
         const dateNow: Date = new Date();
