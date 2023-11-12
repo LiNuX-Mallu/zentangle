@@ -1,8 +1,8 @@
 import './Login.css';
 import closeIcon from '../../../assets/images/close-icon.png';
 import { FormEvent, useEffect, useState } from 'react';
-import axios from 'axios';
-import { ApiUrl } from '../../../instances/urls';
+import axios from '../../../instances/axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     cancel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default function Login({cancel, signup}: Props) {
+    const navigate = useNavigate();
     const [showPass, setShowPass] = useState(false);
     const [tooltip, setTooltip] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
@@ -41,13 +42,16 @@ export default function Login({cancel, signup}: Props) {
             password,
         }
 
-        axios.post(ApiUrl+'/user/login', formData, {
+        axios.post('/user/login', formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
             if (response.status === 200) {
                 setLoginSuccess(true);
+                setTimeout(() => {
+                    navigate('/app');
+                }, 1000);
             }
         }).catch((error) => {
             if (error.response.status === 400) {

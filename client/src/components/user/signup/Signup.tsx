@@ -1,8 +1,7 @@
 import './Signup.css';
 import closeIcon from '../../../assets/images/close-icon.png';
 import { FormEvent, useEffect, useState } from 'react';
-import axios from 'axios';
-import { ApiUrl } from '../../../instances/urls';
+import axios from '../../../instances/axios';
 
 interface Props {
     cancel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -60,13 +59,17 @@ export default function Signup({cancel, login}: Props) {
             gender,
         }
 
-        axios.post(ApiUrl+'/user/register', formData, {
+        axios.post('/user/register', formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
             if (response.status === 200) {
                 setLoginSuccess(true);
+                setTimeout(() => {
+                    cancel(false);
+                    login(true);
+                }, 1000)
             }
         }).catch((error) => {
             if (error.response.status === 400) {

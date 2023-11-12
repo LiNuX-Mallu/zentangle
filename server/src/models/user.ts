@@ -1,6 +1,14 @@
 import { Schema, model } from 'mongoose';
 
 var userSchema = new Schema({
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     required: true,
@@ -63,7 +71,8 @@ var userSchema = new Schema({
     }
   },
   profile: {
-    pictures: [{
+    name: String,
+    medias: [{
       type: String
     }],
     bio: {
@@ -86,7 +95,7 @@ var userSchema = new Schema({
         type: String,
       },
       vaccinated: {
-        type: Boolean,
+        type: String,
       },
       personality: {
         type: String,
@@ -97,17 +106,17 @@ var userSchema = new Schema({
       loveStyle: {
         type: String,
       },
-      height: {
-        type: String,
-      }
+    },
+    height: {
+      type: Number,
     },
     relationship: {
       lookingFor: {
         type: String,
       },
-      interestedIn: {
+      openTo: [{
         type: String,
-      }
+      }],
     },
     lifestyle: {
       pets: {

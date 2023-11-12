@@ -1,0 +1,205 @@
+:root {
+    --secondayColor: rgb(58, 58, 58);
+    --lineColor: rgb(127, 134, 145);
+}
+
+
+.edit {
+    position: relative;
+    width: 35%;
+    height: 85%;
+    border-radius: 1rem;
+    background-color: rgb(41, 41, 41);
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-bottom: 0;
+    border: 1px solid rgba(104, 104, 104, 0.452);
+}
+
+.edit .heading {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(31, 31, 31);
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+    margin: 0;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: rgb(255, 255, 255);
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.edit .medias {
+    padding: 1rem;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1%;
+    row-gap: 0.2rem;
+    justify-content: center;
+}
+
+.edit .media-item {
+    border-radius: 0.5rem;
+    width: 32.5%;
+    max-height: 150px;
+    overflow: hidden;
+}
+
+.edit .media-item img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.edit .media-description {
+    color: rgba(255, 255, 255, 0.884);
+    text-align: center;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-size: small;
+}
+
+.edit .detail {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.edit .detail h6 {
+    color: white;
+    padding-left: 0.3rem;
+    padding-bottom: 0;
+    margin-top: 2rem;
+}
+
+.edit .detail p {
+    font-size: small;
+    color: rgb(201, 201, 201);
+    margin-left: 0.3rem;
+    margin-right: 1rem;
+    padding-bottom: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.detail textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: var(--secondayColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    border-top: 1px solid var(--lineColor);
+    border-bottom: 1px solid var(--lineColor);
+    resize: none;
+    color: rgba(255, 255, 255, 0.863);
+    padding: 0.5rem;
+}
+
+.detail input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: var(--secondayColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    border-top: 1px solid var(--lineColor);
+    border-bottom: 1px solid var(--lineColor);
+    color: rgba(255, 255, 255, 0.863);
+    padding: 0.5rem;
+}
+
+.detail div {
+    width: 100%;
+    border-top: 1px solid var(--lineColor);
+    border-bottom: 1px solid var(--lineColor);
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--secondayColor);
+    padding: 0.8rem;
+    padding-left: 0.9rem;
+    color: rgba(255, 255, 255, 0.781);
+    display: flex;
+    justify-content: space-between;
+}
+
+.detail span {
+    font-size: medium;
+    text-transform: capitalize;
+}
+
+.detail button {
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.detail button span {
+    color: rgb(167, 167, 167);
+}
+
+.detail button img {
+    width: 1rem;
+    padding-left: 0.1rem;
+}
+
+
+.edit-option {
+    background-color: rgb(43, 43, 43);
+    color: white;
+    position: -webkit-sticky;
+    position: sticky;
+    height: 70%;
+    width: 100%;
+    bottom: 0;
+    /* transform: translateY(100%);
+    transition: transform 1s ease-in-out; */
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: 3px solid rgba(167, 167, 167, 0.2);
+    z-index: 999;
+}
+
+/* .edit-option-active {
+    transform: translateY(0);
+} */
+
+.edit-option button {
+    align-self: flex-end;
+    background-color: transparent;
+    color: rgb(224, 224, 224);
+    border: none;
+    padding: 3%;
+    padding-right: 4%;
+}
+
+@media (max-width: 768px) {
+    .edit {
+        margin-top: 15%;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 0.5rem rgba(75, 75, 75, 0.582);
+    }
+    .edit .media-item {
+        max-height: 180px;
+    }
+    .edit .media-description {
+        color: rgba(240, 248, 255, 0.904);
+        font-size: small;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .edit .detail h6 {
+        font-size: large;
+    }
+}
+

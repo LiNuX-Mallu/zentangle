@@ -1,0 +1,87 @@
+.account {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(32, 32, 32);
+    border-radius: 1rem;
+}
+
+.account .profile {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    position: relative;
+}
+  
+.account .profile div {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(-180deg);
+}
+
+.account .profile img {
+  transform: rotate(-180deg);
+  width: 9rem;
+  border-radius: 50%;
+  background-color: rgb(0, 0, 0);
+  padding: 5%;
+}
+
+.account .completed {
+  text-align: center;
+  background-color: purple;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 2rem;
+  color: white;
+  font-size: large;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.account .name-age {
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.account .name-age .age {
+  color: rgb(241, 241, 241);
+}
+
+.account .options {
+  padding: 4rem;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 3rem;
+}
+
+.account .options .icon {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.account .options .icon img {
+  width: 4rem;
+  border-radius: 5px;
+}
+
+.account .options .icon span {
+  font-size: x-small;
+  color: white;
+  text-align: center;
+}

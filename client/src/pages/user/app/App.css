@@ -1,0 +1,127 @@
+.app {
+    min-height: 100vh;
+}
+
+/* .app .brand {
+    margin-top: 0.5rem;
+    font-family: 'Lexend';
+    font-size: 2.3rem;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    gap: 0.5rem;
+    position: fixed;
+}
+
+.app .brand img {
+    width: 4.0rem;
+} */
+
+.app .brand-app {display: none;}
+
+.space {
+    background-color: transparent;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app .sidebar {
+    background-color: rgb(31, 31, 31);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.app .sidebar .topbar {
+    background-color: purple;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    color: white;
+    font-weight: 500;
+}
+
+.app .sidebar .topbar .explore img {
+    width: 1.7rem;
+    cursor: pointer;
+}
+
+.app .sidebar .topbar .account {
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+}
+
+.app .sidebar .topbar .account img {
+    margin-left: 0.3rem;
+    width: 1.7rem;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+
+
+.app .sidebar .match-message {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+}
+
+.app .sidebar .match-message span {
+    cursor: pointer;
+}
+
+.belowbar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .app .brand-app {
+        display: flex;
+        padding-top: 0.7rem;
+        font-size: 1.7rem;
+        font-family: 'Lexend';
+        position: relative;
+        color: white;
+    }
+
+    .app .brand-app img {
+        width: 2.7rem;
+        padding: 0%;
+        height: 2.7rem;
+    }
+
+    .space {
+        padding: 1rem;
+        padding-bottom: 2.2rem;
+        height: 80vh;
+        background-color: transparent;
+    }
+
+    .sidebar {
+        display: none;
+    }
+    .belowbar {
+        display: flex;
+        justify-content: space-evenly;
+        height: 3.2rem;
+        background-color: purple;
+        position: fixed;
+        bottom: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.185);
+        padding: 0.7rem;
+        gap: 1.5rem;
+    }
+
+    .belowbar img {
+        opacity: 0.9;
+    }
+}

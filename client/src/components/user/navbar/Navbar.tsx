@@ -2,6 +2,7 @@ import './Navbar.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import menuIcon from '../../../assets/images/menu-icon.png';
+import logo from '../../../assets/images/logo.png';
 
 interface Props {
     login: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +14,7 @@ export default function Navbar({login}: Props) {
     return (
         <nav>
             <div className='container'>
-                <div className='brand'>Zentangle</div>
+                <div className='brand'> <img src={logo} alt="" /> Zentangle</div>
                 <ul className={`nav-list ${menuOpen ? 'open' : ''}`}>
                     <li>
                         <Link to='/learn'>Learn</Link>

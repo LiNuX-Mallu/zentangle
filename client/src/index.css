@@ -1,7 +1,18 @@
+html {
+  overflow: hidden;
+  overscroll-behavior-y: none;
+  touch-action: none;
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   background-color: #111111;
   font-family: 'Lexend';
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

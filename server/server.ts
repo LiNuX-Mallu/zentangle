@@ -6,14 +6,24 @@ import dotenv from 'dotenv';
 import {connect as mongoConnect} from 'mongoose';
 import router from './router';
 
+dotenv.config();
+let {MONGO_URI, PORT, HOSTNAME} = process.env;
+
 const app = express();
 
-dotenv.config();
-app.use(cors());
 app.use(nocache());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'http://192.168.43.197:5173',
+    ],
+    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+    credentials: true,
+  }));
 
 app.use('/api', router);
 
@@ -25,10 +35,8 @@ declare namespace NodeJS {
     }
 }
 
-let {MONGO_URI, PORT, HOSTNAME} = process.env;
-
 mongoConnect(MONGO_URI!).then(() => {
-    console.log("connect to database");
+    console.log("connected to database");
     app.listen((typeof PORT === 'number') ? PORT : 3000, HOSTNAME!, () => {
         console.log(`Server listening at http://${HOSTNAME}:${PORT}`);
     });

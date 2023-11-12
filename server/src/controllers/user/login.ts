@@ -16,11 +16,12 @@ export default async (req: Request, res: Response) => {
     try {
         const userExist = await checkUser({username: username.toLowerCase(), password});
         if (userExist) {
-            const token = jwt.sign({userId: userExist}, JWT_SECRET!, {expiresIn: '3d'});
+            const token = jwt.sign({userId: userExist}, JWT_SECRET!, {expiresIn: '7d'});
             res.cookie('jwt', token, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 sameSite: "strict",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
             });
             res.status(200).json({message: "Login successfull"});
         } else {
