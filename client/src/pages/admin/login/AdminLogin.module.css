@@ -1,0 +1,79 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: white;
+}
+
+.form {
+    width: 30%;
+    height: 80%;
+    background-color: rgb(248, 248, 248);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 2px solid rgba(0, 0, 0, 0.281);
+}
+
+.form div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.1rem;
+    font-weight: 600;
+    width: 80%;
+}
+
+.form div input {
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.63);
+}
+
+.form .showpass {
+    display: inline-flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: normal;
+}
+
+.form .submit {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.submit button {
+    width: 25%;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(26, 26, 26);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .container {
+        display: block;
+        height: 95vh;
+    }
+    .form {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        border-radius: none;
+        border: none;
+        gap: 1.5rem;
+    }
+    .form div {
+        width: 70%;
+    }
+}

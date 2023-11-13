@@ -28,10 +28,10 @@ export default function App() {
 
     return(
         <div className="app container-fluid">
-            {space !== "settings" && <div className='brand-app'><img src={logo} alt="" />Zentangle</div>}
+            {space !== "settings" && space !== 'edit' && <div className='brand-app'><img src={logo} alt="" />Zentangle</div>}
 
             <div className="row">
-                <div className="space col-12 col-md-9">
+                <div className={`space col-12 col-md-9 ${space === 'edit' ? 'edit-active' : ''}`}>
                     {space === 'home' && <Profile />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}

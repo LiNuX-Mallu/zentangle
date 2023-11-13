@@ -20,11 +20,12 @@ export default function AccountBig({setSpace}: Props) {
         axios.get('/user/get-details').then(response => {
             if (response.status === 200) {
                 setProfileDetails(response.data);
-                setLoading(false);
             }
         }).catch(() => {
             alert("Internal server error");
             navigate('/home');
+        }).finally(() => {
+            setLoading(false);
         })
     }, [navigate]);
 
@@ -112,7 +113,6 @@ export default function AccountBig({setSpace}: Props) {
                     {profileDetails?.profile?.basics?.personality && <span>{profileDetails.profile.basics.personality}</span>}
                     {profileDetails?.profile?.basics?.communication && <span>{profileDetails.profile.basics.communication}</span>}
                     {profileDetails?.profile?.basics?.loveStyle && <span>{profileDetails.profile.basics.loveStyle}</span>}
-                    {profileDetails?.profile?.basics?.height && <span>{profileDetails.profile.basics.height}</span>}
                     </>
                     : <span>None added</span>
                     }

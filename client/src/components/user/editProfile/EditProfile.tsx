@@ -26,7 +26,6 @@ export default function EditProfile({setSpace}: Props) {
     const [editOption, setEditOption] = useState<null | string>(null);
     const [editBasics, setEditBasics] = useState<null | string>(null);
     const [editLifestyle, setEditLifestyle] = useState<null | string>(null);
-    const [images, setImages] = useState([pic, pic2]);
 
     const [profileDetails, setProfileDetails] = useState<ProfileInterface | undefined>(undefined);
 
@@ -37,6 +36,8 @@ export default function EditProfile({setSpace}: Props) {
     const [school, setSchool] = useState<string | undefined>();
     const [livingIn, setLivingIn] = useState<string | undefined>();
     const [height, setHeight] = useState<string | undefined>();
+    const [gender, setGender] = useState<string | undefined>();
+    const [images, setImages] = useState([pic, pic2]);
 
     const navigate = useNavigate();
     const mediaInput = useRef<HTMLInputElement>(null);
@@ -60,12 +61,14 @@ export default function EditProfile({setSpace}: Props) {
                 setSchool(response?.data?.profile?.school ? response.data.profile.school : undefined);
                 setHeight(response?.data?.profile?.height ? response.data.profile.height : undefined);
                 setLivingIn(response?.data?.profile?.livingIn ? response.data.profile.livingIn : undefined);
-                setLoading(false);
+                setGender(response?.data?.gender ? response.data.gender : undefined);
             }
         }).catch(() => {
             alert("Internal server error");
             navigate('/home');
-        })
+        }).finally(() => {
+            setLoading(false);
+        });
     }, [navigate, editOption, editBasics, editLifestyle]);
 
     const handleOnDragEnd = (result: DropResult) => {
@@ -88,7 +91,8 @@ export default function EditProfile({setSpace}: Props) {
                 school,
                 height,
                 livingIn: livingIn,
-            }
+            },
+            gender,
         };
         axios.put('/user/update-details', {data: formData}, {
             headers: {
@@ -110,7 +114,7 @@ export default function EditProfile({setSpace}: Props) {
         <div className={`${styles.edit}`}>
             <div className={styles.heading}>
                 <span>Edit Info</span>
-                <span style={{cursor: 'pointer', color: 'orangered'}} onClick={handleDone}>Done</span>
+                <span className={styles['done-button']} onClick={handleDone}>Done</span>
             </div>
             
             <div className="row">
@@ -335,14 +339,12 @@ export default function EditProfile({setSpace}: Props) {
                 <input value={livingIn ? livingIn : ''} onChange={(e) => setLivingIn(e.target.value)} placeholder='Where you live?' />
             </div>
             
-            <div onClick={() => setEditOption('gender')} className={styles.detail}>
+            <div className={styles.detail}>
                 <h6>Gender</h6>
-                <div className='border-bottom-0'>
-                    <span>{profileDetails && profileDetails?.gender}</span>
-                    <button>
-                        <img src={arrowRightIcon}></img>
-                    </button>
-                </div>
+                <select onChange={(e) => setGender(e.target.value)}>
+                    <option selected={(gender && gender === 'male') ? true : false} value="male">Male</option>
+                    <option selected={(gender && gender === 'female')  ? true : false} value="female">Female</option>
+                </select>
             </div>
 
             {(editOption || editBasics ||editLifestyle) &&

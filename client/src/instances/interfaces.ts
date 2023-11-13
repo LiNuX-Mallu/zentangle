@@ -1,8 +1,15 @@
 export interface ProfileInterface {
+    _id: string;
+    username: string;
     firstname: string;
     lastname: string;
     dob: string;
     gender: string;
+    email: {
+        email: string;
+        verified: boolean
+    };
+    banned: boolean;
     profile: {
         name: string;
         livingIn: string;

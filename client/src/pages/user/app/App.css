@@ -84,6 +84,9 @@
 }
 
 @media (max-width: 768px) {
+    .app {
+        background: linear-gradient(to top, black, rgb(58, 2, 58));
+    }
     .app .brand-app {
         display: flex;
         padding-top: 0.7rem;
@@ -106,6 +109,10 @@
         background-color: transparent;
     }
 
+    .edit-active {
+        height: 94vh;
+    }
+
     .sidebar {
         display: none;
     }
@@ -113,7 +120,7 @@
         display: flex;
         justify-content: space-evenly;
         height: 3.2rem;
-        background-color: purple;
+        background-color: rgba(37, 37, 37, 0.575);
         position: fixed;
         bottom: 0;
         border-top: 1px solid rgba(255, 255, 255, 0.185);
