@@ -11,12 +11,12 @@ interface Data {
             company: string | undefined;
         };
         height: string | undefined;
-    }
+    },
+    gender: string;
 }
 
 export default async (data: Data, userId: string) => {
     const profile = data.profile;
-    console.log(profile);
     try {
         const updated = await User.findByIdAndUpdate(userId, {$set: {
             "profile.name": profile.name,
@@ -26,6 +26,7 @@ export default async (data: Data, userId: string) => {
             "profile.school": profile.school,
             "profile.height": profile.height,
             "profile.livingIn": profile.livingIn,
+            gender: data.gender,
         }});
         if (updated) {
             return true;

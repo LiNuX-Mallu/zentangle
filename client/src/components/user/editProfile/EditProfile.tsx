@@ -4,8 +4,6 @@ import styles from './EditProfile.module.css';
 import { ProfileInterface } from '../../../instances/interfaces';
 import {DragDropContext, Draggable, Droppable, DropResult} from '@hello-pangea/dnd';
 import axios from '../../../instances/axios';
-import pic from '../../../assets/images/hero.jpg';
-import pic2 from '../../../assets/images/man.jpg'
 import addImageIcon from '../../../assets/images/add-image-icon.png';
 import arrowRightIcon from '../../../assets/images/arrow-right-icon.png';
 import Loading from '../loading/Loading';
@@ -15,6 +13,7 @@ import Basics from './childComponents/basics/Basics';
 import Lifestyle from './childComponents/lifestyle/Lifestyle';
 import LookingFor from './childComponents/lookingFor/LookingFor';
 import OpenTo from './childComponents/openTo/OpenTo';
+import { ApiUrl } from '../../../instances/urls';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -37,7 +36,7 @@ export default function EditProfile({setSpace}: Props) {
     const [livingIn, setLivingIn] = useState<string | undefined>();
     const [height, setHeight] = useState<string | undefined>();
     const [gender, setGender] = useState<string | undefined>();
-    const [images, setImages] = useState([pic, pic2]);
+    const [medias, setMedias] = useState([]);
 
     const navigate = useNavigate();
     const mediaInput = useRef<HTMLInputElement>(null);
@@ -62,6 +61,7 @@ export default function EditProfile({setSpace}: Props) {
                 setHeight(response?.data?.profile?.height ? response.data.profile.height : undefined);
                 setLivingIn(response?.data?.profile?.livingIn ? response.data.profile.livingIn : undefined);
                 setGender(response?.data?.gender ? response.data.gender : undefined);
+                setMedias(response?.data?.profile?.medias ? response?.data?.profile?.medias : []);
             }
         }).catch(() => {
             alert("Internal server error");
@@ -70,16 +70,22 @@ export default function EditProfile({setSpace}: Props) {
             setLoading(false);
         });
     }, [navigate, editOption, editBasics, editLifestyle]);
+    
 
     const handleOnDragEnd = (result: DropResult) => {
         if (!result.destination) {
             return;
         }
-        const updatedImages = [...images];
+        const updatedImages = [...medias];
         const [movedImage] = updatedImages.splice(result.source.index, 1);
         updatedImages.splice(result.destination.index, 0, movedImage);
 
-        setImages(updatedImages);
+        setMedias(updatedImages);
+        axios.put('/user/reorder-media', {medias: updatedImages}, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
     }
 
     const handleDone = () => {
@@ -107,6 +113,18 @@ export default function EditProfile({setSpace}: Props) {
         })
     };
 
+    const handleUpload = (selectedImage: File | undefined) => {
+        if (!selectedImage) return;
+        axios.post('/user/upload-media', {file: selectedImage}, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then((response) => {
+            setMedias(response.data);
+        }).catch(() => alert("Internal server error"));
+
+    };
+
     if (!enabled || loading) {
         return <Loading />;
     }
@@ -117,27 +135,27 @@ export default function EditProfile({setSpace}: Props) {
                 <span className={styles['done-button']} onClick={handleDone}>Done</span>
             </div>
             
-            <div className="row">
+            <div>
                 <DragDropContext onDragEnd={handleOnDragEnd}>
                     <Droppable droppableId='image-grid' direction='horizontal'>
                         {(provided) => (
                             <div className={`container-fluid ${styles.medias}`} {...provided.droppableProps} ref={provided.innerRef}>
-                                {profileDetails && profileDetails?.profile?.medias?.map((media, index) => (
+                                {medias?.map((media, index) => (
                                     <Draggable key={media} draggableId={media} index={index}>
                                         {(provided) => (
                                             <div className={`col-4 ${styles['media-item']}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                <img src={media} alt="media" />
+                                                <img src={`${ApiUrl}/media/${media}`} alt="media" loading="lazy" />
                                             </div>
                                         )}
                                     </Draggable>
                                 ))}
                                 {provided.placeholder}
-                                {profileDetails && Array(9 - profileDetails?.profile?.medias?.length).fill(null).map((_, index) => (
+                                {medias && Array(9 - medias?.length).fill(null).map((_, index) => (
                                     <div onClick={() => mediaInput.current?.click()} key={`add-${index}`} className={`col-4 ${styles['media-item']}`}>
-                                        <img src={addImageIcon} alt="AddImage" />
+                                        <img src={addImageIcon} alt="AddImage" loading="lazy" />
                                     </div>
                                 ))}
-                                <input ref={mediaInput} type="file" accept='image/*' hidden />
+                                <input onChange={(e) => handleUpload(e?.target?.files ? e.target.files[0] : undefined)} ref={mediaInput} type="file" accept='image/*' hidden />
                             </div>
                         )}
                     </Droppable>

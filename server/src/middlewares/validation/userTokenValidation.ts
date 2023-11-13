@@ -25,6 +25,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         }
     } catch(error) {
         res.status(401).json({message: "Invalid or expired token"});
-        console.error("Error at middlewares/validation/tokenValidation\n"+error);
+        //console.error("Error at middlewares/validation/userTokenValidation\n"+error);
     }
 };

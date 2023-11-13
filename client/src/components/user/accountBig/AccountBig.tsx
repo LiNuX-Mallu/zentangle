@@ -6,6 +6,7 @@ import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../loading/Loading';
+import { ApiUrl } from '../../../instances/urls';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -52,7 +53,7 @@ export default function AccountBig({setSpace}: Props) {
                     {profileDetails?.profile?.medias.map((link: string) => {
                         return (
                             <div className="carousel-item active">
-                                <img src={link} className="d-block w-100" key={link} alt="media" />
+                                <img src={`${ApiUrl}/media/${link}`} className="d-block w-100" key={link} alt="media" />
                             </div>
                         )
                     })}

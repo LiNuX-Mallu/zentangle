@@ -205,7 +205,11 @@ var userSchema = new Schema({
     contacts: [{
       type: Number
     }]
-  }
+  },
+  banned: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default model('User', userSchema);
