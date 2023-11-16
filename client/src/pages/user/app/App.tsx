@@ -1,5 +1,4 @@
 import './App.css';
-import logo from '../../../assets/images/logo.png';
 import exploreIcon from '../../../assets/images/explore-icon.png';
 import accountIcon from '../../../assets/images/account-icon.png';
 import chatIcon from '../../../assets/images/chat-icon.png';
@@ -28,7 +27,7 @@ export default function App() {
 
     return(
         <div className="app container-fluid">
-            {space !== "settings" && space !== 'edit' && <div className='brand-app'><img src={logo} alt="" />Zentangle</div>}
+            {space !== "settings" && space !== 'edit' && <div className='brand-app'>Zentangle</div>}
 
             <div className="row">
                 <div className={`space col-12 col-md-9 ${space === 'edit' ? 'edit-active' : ''}`}>

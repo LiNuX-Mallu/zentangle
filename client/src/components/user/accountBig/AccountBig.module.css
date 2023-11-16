@@ -1,6 +1,6 @@
 .account-big {
     background: linear-gradient(to bottom, rgba(128, 0, 128, 0.178), black);
-    width: 35%;
+    width: 50%;
     height: 85%;
     display: flex;
     flex-direction: column;

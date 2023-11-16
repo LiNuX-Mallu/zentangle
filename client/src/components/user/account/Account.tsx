@@ -8,6 +8,7 @@ import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
 import { ProfileInterface } from '../../../instances/interfaces';
 import Loading from '../loading/Loading';
+import { ApiUrl } from '../../../instances/urls';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -54,7 +55,7 @@ export default function Account({setSpace}: Props) {
         <div className={styles.account}>
             <div className={styles.profile}>
                 <div style={conicStyle}>
-                    <img src={accountIcon}/>
+                    <img src={(profileDetails && profileDetails?.profile.medias[0]) ? `${ApiUrl}/media/${profileDetails?.profile.medias[0]}` : accountIcon}/>
                 </div>
             </div>
             <span className={styles.completed}>{percentage}% completed</span>
