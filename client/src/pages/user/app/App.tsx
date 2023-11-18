@@ -18,7 +18,8 @@ export default function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setLoading(false);
+        const timeout = setTimeout(() => setLoading(false), 2000);
+        return () => clearTimeout(timeout);
     }, [])
 
     if (loading) {
@@ -27,10 +28,14 @@ export default function App() {
 
     return(
         <div className="app container-fluid">
-            {space !== "settings" && space !== 'edit' && <div className='brand-app'>Zentangle</div>}
+            {space !== "settings" && space !== 'edit' && 
+            <div className='brand-app'>
+                <i className="fa-solid fa-cat text-white pe-1"></i>
+                Zentangle
+            </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${space === 'edit' ? 'edit-active' : ''}`}>
+                <div className={`space col-12 col-md-9 ${(space === 'edit' || space === 'settings')? 'edit-active' : ''}`}>
                     {space === 'home' && <Profile />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
@@ -55,7 +60,7 @@ export default function App() {
                 </div>
                 }
                 {(space === 'account' || space === 'edit') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings setSpace={setSpace} /></div>}
-                {space !== 'edit' &&
+                {space !== 'edit' && space !== 'settings' &&
                 <div className='belowbar'>
                     <img onClick={() => setSpace('home')} src={homeIcon} alt="home" />
                     <img onClick={() => setSpace('explore')} src={exploreIcon} alt="explore" />

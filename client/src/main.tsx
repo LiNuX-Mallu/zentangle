@@ -4,9 +4,13 @@ import AppRouter from './Router.tsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap'
 import './index.css'
+import { Provider } from 'react-redux'
+import store from './redux/store/configStore.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AppRouter />
+    <Provider store={store}>
+      <AppRouter />
+    </Provider>
   </React.StrictMode>,
 )

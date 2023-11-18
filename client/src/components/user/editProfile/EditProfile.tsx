@@ -89,6 +89,7 @@ export default function EditProfile({setSpace}: Props) {
     }
 
     const handleDone = () => {
+        setLoading(true);
         const formData = {
             profile: {
                 name,
@@ -110,19 +111,20 @@ export default function EditProfile({setSpace}: Props) {
             }
         }).catch(() => {
             alert('Internal server error');
-        })
+        }).finally(() => setLoading(false));
     };
 
     const handleUpload = (selectedImage: File | undefined) => {
         if (!selectedImage) return;
+        setLoading(true);
         axios.post('/user/upload-media', {file: selectedImage}, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
             setMedias(response.data);
-        }).catch(() => alert("Internal server error"));
-
+        }).catch(() => alert("Internal server error"))
+        .finally(() => setLoading(false));
     };
 
     if (!enabled || loading) {

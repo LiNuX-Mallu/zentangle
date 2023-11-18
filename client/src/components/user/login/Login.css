@@ -10,6 +10,8 @@
     width: 100%;
     height: 100%;
     z-index: 99;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 form {
@@ -105,6 +107,7 @@ form .submit button {
     border: none;
     border-radius: 0.2rem;
     font-weight: 600;
+    background-color: white;
 }
 
 form .login {
@@ -130,9 +133,14 @@ form input[type="checkbox"] {
 
 @media (max-width: 768px) {
     form {
-        padding: 2rem;
+        padding: 50px;
         margin: 0%;
         overflow: scroll;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     form .heading {
@@ -156,6 +164,11 @@ form input[type="checkbox"] {
 
     form .login {
      font-size: small;
+    }
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
     }
 
 }

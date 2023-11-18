@@ -2,6 +2,8 @@
     background-image: linear-gradient(to bottom, black, rgb(36, 0, 36));
     min-height: 100vh;
     overflow-y: scroll;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .main {
@@ -15,12 +17,15 @@
 }
 
 .head {
+    text-align: center;
+    font-size: 2rem;
     color: white;
     letter-spacing: 0.4rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .join-now {
+    font-size: medium;
     border: none;
     border-radius: 1.5rem;
     padding: 0.5rem;
@@ -29,6 +34,7 @@
     font-weight: 600;
     background-color: rgb(255, 255, 255);
     color: black;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -36,8 +42,12 @@
         background-image: linear-gradient(to bottom, black, rgb(56, 0, 56));
     }
     .head {
-        font-size: large;
+        font-size: 15px;
         text-align: center;
-        letter-spacing: 0.3rem;
+        letter-spacing: 5px;
+        word-spacing: 6px;
+    }
+    .join-now {
+        font-size: 14px;
     }
 }

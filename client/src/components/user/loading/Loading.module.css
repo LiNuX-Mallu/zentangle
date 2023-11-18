@@ -2,8 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.13);
-    backdrop-filter: blur(5px);
+    background-color: rgb(29, 6, 29);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
     color: white;
     font-size: larger;
     text-align: center;
@@ -12,5 +13,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 1000;
+    font-size: 3rem;
 }

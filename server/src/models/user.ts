@@ -49,14 +49,14 @@ var userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  location: {
-    latitude: {
-      type: String
-    },
-    longitude: {
-      type: String
-    }
-  },
+  // location: {
+  //   latitude: {
+  //     type: String
+  //   },
+  //   longitude: {
+  //     type: String
+  //   }
+  // },
   preferences: {
     ageRange: {
       min: {

@@ -6,11 +6,17 @@ html {
 }
 
 body {
-  min-width: 320px;
+  /* min-width: 320px; */
   background-color: #111111;
   font-family: 'Lexend';
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
 }

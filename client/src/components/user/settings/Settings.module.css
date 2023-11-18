@@ -1,16 +1,28 @@
 .settings {
-    min-height: 100%;
+    height: 100vh;
     width: 100%;
+    margin: 0 !important;
+    background-color: rgb(37, 37, 37);
+    padding-right: 2%;
+    overflow-y: scroll;
+    padding-top: 2.5rem;
 }
 
 .settings .topbar {
     padding: 0.9rem;
     color: rgb(0, 0, 0);
-    background-color: purple;
-    width: 100%;
+    background-color: rgb(100, 31, 100);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+.settings .topbar span {
+    display: none;
 }
 
 .settings .topbar img {
@@ -23,10 +35,205 @@
     background-color: transparent;
     border: none;
     color: white;
+    margin-right: 2%;
 }
 
 .settings .topbar button:hover {
     background-color: white;
     color: black;
     border-radius: 4px;
+}
+
+.division {
+    margin-top: 20px;
+}
+
+.division h5 {
+    color: rgb(196, 196, 196);
+    padding: 10px;
+    padding-bottom: 2px;
+}
+
+.division p {
+    color: white;
+    padding: 10px;
+    font-size: small;
+}
+
+.division .option {
+    font-size: 15px;
+    background-color: rgb(53, 53, 53);
+    border-top: 1px solid rgba(255, 255, 255, 0.281);
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.932);
+    display: flex;
+    justify-content: space-between;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.division .option > :nth-child(2) {
+    color: rgba(255, 255, 255, 0.568);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: none;
+}
+
+.division .option:hover > :nth-child(2) {
+    color: rgb(187, 20, 187);
+}
+
+.division .range {
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 15px;
+    background-color: rgb(43, 43, 43);
+    border-top: 1px solid rgba(255, 255, 255, 0.281);
+    padding: 10px;
+    padding-bottom: 30px;
+    cursor: pointer;
+}
+
+.division .range span {
+    display: flex;
+    justify-content: space-between;
+}
+
+.division .range span span {
+    color: rgba(255, 255, 255, 0.74);
+}
+
+.division .range .age-slider {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.division .range .age-slider input {
+    width: 100%;
+}
+
+input[type="range"] {
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.575);
+    height: 5px;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider {
+    -webkit-appearance: none;
+    background-color: rgba(255, 255, 255, 0.575);
+    height: 5px;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.575);
+    height: 5px;
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: all;
+    width: 15px;
+    height: 15px;
+    background-color: purple;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C6C6C6;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+    appearance: none;
+    pointer-events: all;
+    width: 24px;
+    height: 24px;
+    background-color: purple;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C6C6C6;
+    cursor: pointer;  
+  }
+
+.footer {
+    color: white;
+}
+
+.footer .option {
+    padding: 0.7rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.356);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.356);
+    background-color: rgb(53, 53, 53);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+}
+
+.footer .logout {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .settings {
+        background-color: rgb(27, 27, 27);
+        padding-bottom: 60px;
+        padding-top: 1.7rem;
+    }
+    .settings .topbar {
+        padding: 8px;
+        color: rgb(0, 0, 0);
+        background-color: rgb(37, 37, 37);
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .settings .topbar img {
+        display: none;
+    }
+    .settings .topbar button {
+        display: none;
+    }
+    .settings .topbar span {
+        display: block;
+        color: white;
+    }
+
+    .division {
+        margin-top: 17px;
+    }
+    
+    .division h5 {
+        color: rgb(224, 224, 224);
+        padding: 10px;
+        padding-bottom: 2px;
+        font-size: 16px;
+    }
+    .division p {
+        font-size: 11px;
+    }
+    .division .option {
+        background-color: rgb(41, 41, 41);
+    }
+    .division .range, .division .option {
+        font-size: 13px;
+    }
+    .footer .logout {
+        display: flex;
+    }
+    .footer .option {
+        padding: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.356);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.356);
+        background-color: rgb(41, 41, 41);
+        width: 100%;
+    }
 }

@@ -1,6 +1,8 @@
 .app {
     min-height: 100vh;
     overflow-x: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* .app .brand {
@@ -25,14 +27,14 @@
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    
+    align-items: center; 
 }
 
 .app .sidebar {
     background-color: rgb(31, 31, 31);
     min-height: 100vh;
     padding: 0;
+    position: relative;
 }
 
 .app .sidebar .topbar {
@@ -88,16 +90,15 @@
 @media (max-width: 768px) {
     .app {
         background: linear-gradient(to top, black, rgb(58, 2, 58));
-        overflow-y: hidden;
+        overflow-y: auto;
     }
     .app .brand-app {
-        display: flex;
-        padding-top: 15px;
-        padding-left: 5px;
+        display: block;
+        padding: 10px;
+        margin-left: 1%;
         font-size: 27px;
         font-family: 'Lexend';
-        position: relative;
-        color: rgba(255, 255, 255, 0.801);
+        color: rgba(255, 255, 255, 0.897);
     }
 
     /* .app .brand-app img {
@@ -107,14 +108,18 @@
     } */
 
     .space {
-        padding: 15px;
-        padding-bottom: 11vh;
-        height: 89vh;
+        width: 100%;
+        padding: 0;
+        padding-bottom: 10vh;
+        height: 90vh;
         background-color: transparent;
+        position: relative;
+        display: flex;
+        align-items: normal;
     }
 
     .edit-active {
-        height: 100vh;
+        padding-bottom: 0;
     }
 
     .sidebar {
@@ -126,10 +131,14 @@
         height: 6vh;
         background-color: rgb(19, 19, 19);
         position: fixed;
+        left: 0;
+        right: 0;
         bottom: 0;
+        z-index: 999;
         border-top: 1px solid rgba(255, 255, 255, 0.185);
         padding: 11px;
         gap: 40px;
+        width: 100%;
     }
 
     .belowbar img {

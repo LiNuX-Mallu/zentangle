@@ -12,6 +12,7 @@ export default function AppRouter() {
         <Route path='/home' element={<Home />} />
         <Route path='/app' element={<App />} />
 
+        {/* Admin routes */}
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/panel' element={<Panel />} />
       </Routes>

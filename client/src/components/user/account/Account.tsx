@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
 import accountIcon from '../../../assets/images/account-icon.png';
-import settingIcon from '../../../assets/images/settings-icon.png';
-import pencilIcon from '../../../assets/images/pencil-icon.png';
-import addMediaIcon from '../../../assets/images/add-media-icon.png';
 import styles from './Account.module.css';
 import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +18,7 @@ export default function Account({setSpace}: Props) {
     const [loading, setLoading] = useState(true);
 
     const conicStyle = {
-        background: `conic-gradient(purple 0% ${percentage}%, white ${percentage}% 100%)`,
+        background: `conic-gradient(rgb(179, 30, 179) 0% ${percentage}%, white ${percentage}% 100%)`,
     }
     useEffect(() => {
         const timeout = setTimeout(() => setPercentage(75), 1000)
@@ -65,16 +62,16 @@ export default function Account({setSpace}: Props) {
             </div>
             <div className={styles.options}>
                 <div onClick={() => setSpace('settings')} className={styles.icon}>
-                    <img src={settingIcon} alt="settings" />
+                    <i className="fa-solid fa-gear"></i>
                     <span>Settings</span>
                 </div>
-                <div onClick={() => setSpace('edit')} className={styles.icon}>
-                    <img src={pencilIcon} alt="edit" />
-                    <span>Edit profile</span>
+                <div onClick={() => setSpace('edit')} className={`${styles.icon}`}>
+                    <i className="fa-solid fa-user-pen"></i>
+                    <span>Edit details</span>
                 </div>
                 <div className={styles.icon}>
-                    <img src={addMediaIcon} alt="add-media" />
-                    <span>Add media</span>
+                    <i className="fa-solid fa-mobile"></i>
+                    <span>Preview</span>
                 </div>
             </div>
         </div>

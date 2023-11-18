@@ -5,10 +5,16 @@ export interface ProfileInterface {
     lastname: string;
     dob: string;
     gender: string;
+    password: string;
     email: {
         email: string;
         verified: boolean
     };
+    phone: {
+        phone: number;
+        verified: string;
+        countryCode: number;
+    }
     banned: boolean;
     profile: {
         name: string;
