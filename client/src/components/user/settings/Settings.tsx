@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ProfileInterface } from '../../../instances/interfaces';
 import Loading from '../loading/Loading';
+import { useSelector } from 'react-redux';
+import { getLocation } from '../../../redux/actions/locationActions';
+import Axios from 'axios';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -18,7 +21,12 @@ export default function Settings({setSpace}: Props) {
     const rightIcon = <i className="fa-solid fa-angle-right"></i>;
 
     const [distance, setDistance] = useState("");
+    const [onlyFromAgeRange, setOnlyAgeRange] = useState<boolean>();
     const [age, setAge] = useState({min: 18, max: 30});
+    const [global, setGlobal] = useState(true);
+
+    const location = useSelector(getLocation);
+    const [locality, setLocality] = useState("Fetching...");
 
     const handleLogout = () => {
         axios.post('/user/logout')
@@ -28,13 +36,64 @@ export default function Settings({setSpace}: Props) {
     }
 
     useEffect(() => {
+        //Locality
+        Axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${location?.latitude}&longitude=${location?.longitude}&localityLanguage=en`)
+        .then(response => {
+            if (response.status === 200) {
+                setLocality(response?.data?.locality+', '+response?.data?.city);
+            }
+        }).catch((error) => console.log(error));
+
+        // Profile details
         axios.get('/user/get-details')
         .then((response) => {
-            if (response.status === 200) setUser(response.data);
+            if (response.status === 200) {
+                setUser(response.data);
+                setDistance(response?.data?.preferences?.distance);
+                setOnlyAgeRange(response?.data?.preferences?.onlyFromAgeRange);
+                setAge({min: response?.data?.preferences?.ageRange?.min, max: response?.data?.preferences?.ageRange.max});
+                setGlobal(response?.data?.preferences?.global);
+            }
         })
         .catch(() => alert("Internal server error"))
         .finally(() => setLoading(false));
-    }, []);
+    }, [location, locality]);
+
+    //update distance preference
+    const updateDistancePreference = (data: string) => {
+        const temp = distance;
+        setDistance(data);
+        axios.put("/user/update-settings", {where: 'distance', what: +data}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).catch(() => {
+            alert('Internal server error');
+            setDistance(temp);
+        });
+    }
+
+    //update age preference
+    const updateAgePreference = () => {
+        axios.put("/user/update-settings", {where: 'ageRange', what: {min: +age?.min, max: +age?.max}}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).catch(() => {
+            alert('Internal server error');
+        });
+    }
+
+    //update toggles
+    const updateToggle = (resource: string, data: boolean) => {
+        axios.put('/user/update-settings', {where: resource, what: data}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).catch(() => {
+            alert('Internal server error');
+        })
+    }
 
     if (loading) return <Loading />
     return(
@@ -76,34 +135,34 @@ export default function Settings({setSpace}: Props) {
                 <h5>Disovery settings</h5>
                 <div className={styles.option}>
                     <span>Location</span>
-                    <span>Loading {rightIcon}</span>
+                    <span>{locality}</span>
                 </div>
                 <div className={`${styles.range}`}>
                     <span>Distance preference
-                        <span>{distance}km</span>
+                        <span>{distance ? distance : 20}km</span>
                     </span>
-                    <input type="range" onChange={(e) => setDistance(e.target.value)} value={distance} min={10} max={100} />
+                    <input type="range" onChange={(e) => updateDistancePreference(e.target.value)} value={distance ? distance : 20} min={10} max={100} />
                 </div>
                 <div className={`${styles.range}`}>
                     <span>Age preference
                         <span>{age.min} - {age.max}</span>
                     </span>
                     <div className={styles['age-slider']}>
-                        <input type="range" onChange={(e) => setAge({min: Number(e.target.value), max: age.max})} value={age.min} min={18} max={age.max - 1} /> 
-                        <input type="range" onChange={(e) => setAge({max: Number(e.target.value), min: age.min})} value={age.max} min={age.min + 1} max={100} />
+                        <input type="range" onChange={(e) => {setAge({min: +e.target.value, max: age.max}); updateAgePreference()}} value={age.min} min={18} max={age.max} /> 
+                        <input type="range" onChange={(e) => {setAge({max: +e.target.value, min: age.min}); updateAgePreference()}} value={age.max} min={age.min} max={100} />
                     </div>
                 </div>
                 <div style={{borderTop: 'none'}} className={styles.option}>
                     <span>Only show people from this range</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={onlyFromAgeRange} onChange={(e) => {setOnlyAgeRange(e.target.checked); updateToggle('onlyFromAgeRange', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
                 <div className={styles.option}>
                     <span>Global</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={global} onChange={(e) => {setGlobal(e.target.checked); updateToggle('global', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
@@ -142,6 +201,20 @@ export default function Settings({setSpace}: Props) {
                 </div>
                 <div className={styles.option}>
                     <span>Recently active status</span>
+                    <label className={toggle.switch}>
+                        <input type="checkbox" />
+                        <span className={toggle.slider}></span>
+                    </label>
+                </div>
+                <div className={styles.option}>
+                    <span>Show my Age in profile</span>
+                    <label className={toggle.switch}>
+                        <input type="checkbox" />
+                        <span className={toggle.slider}></span>
+                    </label>
+                </div>
+                <div className={styles.option}>
+                    <span>Show my Distance in profile</span>
                     <label className={toggle.switch}>
                         <input type="checkbox" />
                         <span className={toggle.slider}></span>

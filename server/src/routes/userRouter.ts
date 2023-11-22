@@ -15,6 +15,7 @@ import checkBanned from "../middlewares/checkBanned";
 import upload from "../middlewares/upload";
 import uploadMedia from "../controllers/user/uploadMedia";
 import reorderMedia from "../controllers/user/reorderMedia";
+import updateSettings from "../controllers/user/updateSettings";
 
 const router = Router();
 
@@ -32,5 +33,6 @@ router.put('/update-lookingfor', tokenValidation, checkBanned, updateLookingFor)
 router.put('/update-opento', tokenValidation, checkBanned, updateOpenTo);
 router.post('/upload-media', upload.single('file'), tokenValidation, uploadMedia);
 router.put('/reorder-media', tokenValidation, reorderMedia);
+router.put('/update-settings', tokenValidation, updateSettings);
 
 export default router;

@@ -13,3 +13,6 @@ export const setLocation = (location: LocationInterface): SetLocationAction => (
     type: SET_LOCATION,
     payload: location,
 });
+
+
+export const getLocation = (state: {location: LocationInterface | null}) => state.location;

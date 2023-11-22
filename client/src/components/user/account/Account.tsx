@@ -38,7 +38,6 @@ export default function Account({setSpace}: Props) {
     }, [navigate]);
 
     const getAge = (dob: string) => {
-        console.log(dob)
         const current = new Date();
         const dateOfBirth = new Date(dob);
         return current.getFullYear() - dateOfBirth.getFullYear();

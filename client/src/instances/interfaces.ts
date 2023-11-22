@@ -16,6 +16,16 @@ export interface ProfileInterface {
         countryCode: number;
     }
     banned: boolean;
+    blocked: {
+        users: string[];
+        contacts: string[];
+    };
+    preferences: {
+        distance: number;
+        ageRange: {min: number, max: number};
+        onlyFromAgeRange: boolean;
+        global: boolean;
+    };
     profile: {
         name: string;
         livingIn: string;

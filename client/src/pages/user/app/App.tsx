@@ -11,16 +11,24 @@ import Settings from '../../../components/user/settings/Settings';
 import Edit from '../../../components/user/editProfile/EditProfile';
 import { useEffect, useState } from 'react';
 import Loading from '../../../components/user/loading/Loading';
+import useGeoLocation from '../../../hooks/useGeoLocation';
+import { useDispatch } from 'react-redux';
+import { setLocation } from '../../../redux/actions/locationActions';
 
 export default function App() {
     const [inMessage, setInMessage] = useState(false);
     const [space, setSpace] = useState('home');
     const [loading, setLoading] = useState(true);
+    const {latitude, longitude, error} = useGeoLocation();
+    const dispactch = useDispatch();
 
     useEffect(() => {
+        if (latitude !== null && longitude !== null && !error) {
+            dispactch(setLocation({latitude, longitude}));
+        }
         const timeout = setTimeout(() => setLoading(false), 2000);
         return () => clearTimeout(timeout);
-    }, [])
+    }, [latitude, longitude, error, dispactch]);
 
     if (loading) {
         return <Loading />

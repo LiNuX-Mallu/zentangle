@@ -7,7 +7,7 @@ import {connect as mongoConnect} from 'mongoose';
 import router from './router';
 
 dotenv.config();
-let {MONGO_URI, PORT, HOSTNAME} = process.env;
+let {MONGO_URI, PORT, HOST, CLIENT_HOST, CLIENT_PORT} = process.env;
 
 const app = express();
 
@@ -18,12 +18,11 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: [
-        'http://localhost:5173',
-        'http://192.168.43.197:5173',
+        `http://${CLIENT_HOST}:${CLIENT_PORT}`,
     ],
     methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
     credentials: true,
-  }));
+}));
 
 app.use('/api', router);
 
@@ -37,8 +36,8 @@ declare namespace NodeJS {
 
 mongoConnect(MONGO_URI!).then(() => {
     console.log("connected to database");
-    app.listen((typeof PORT === 'number') ? PORT : 3000, HOSTNAME!, () => {
-        console.log(`Server listening at http://${HOSTNAME}:${PORT}`);
+    app.listen((typeof PORT === 'number') ? PORT : 3000, HOST!, () => {
+        console.log(`Server listening at http://${HOST}:${PORT}`);
     });
 }).catch((error) => {
     console.log("failed connecting to database\n", error);

@@ -49,26 +49,29 @@ var userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  // location: {
-  //   latitude: {
-  //     type: String
-  //   },
-  //   longitude: {
-  //     type: String
-  //   }
-  // },
   preferences: {
     ageRange: {
       min: {
-        type: Number
+        type: Number,
+        default: 18,
       },
       max: {
-        type: Number
+        type: Number,
+        default: 25,
       }
     },
+    onlyFromAgeRange: {
+      type: Boolean,
+      default: false,
+    },
     distance: {
-      type: Number
-    }
+      type: Number,
+      default: 15,
+    },
+    global: {
+      type: Boolean,
+      default: true,
+    },
   },
   profile: {
     name: String,
@@ -174,7 +177,11 @@ var userSchema = new Schema({
     },
     recentActiveStatus: {
       type: Boolean
-    }
+    },
+    incognitoMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   match: {
     matched: [{
