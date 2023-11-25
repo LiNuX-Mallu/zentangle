@@ -62,6 +62,7 @@
   text-align: center;
   justify-content: center;
   gap: 8px;
+  align-items: center;
 }
 
 .account .name-age .age {

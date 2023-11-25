@@ -1,6 +1,5 @@
 import styles from './AccountBig.module.css';
 import pic from '../../../assets/images/man.jpg'
-import verifiedIcon from '../../../assets/images/non-verified-icon.png';
 import { useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
@@ -43,39 +42,42 @@ export default function AccountBig({setSpace}: Props) {
 
     return (
         <div className={styles['account-big']}>
-            <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
-                {/* <div className="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div> */}
-                <div className="carousel-inner">
-                    {profileDetails?.profile?.medias.map((link: string) => {
-                        return (
+            <div className={styles.medias}>
+                <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
+                    {/* <div className="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div> */}
+                    <div className="carousel-inner">
+                        {profileDetails?.profile?.medias.map((link: string) => {
+                            return (
+                                <div className="carousel-item active">
+                                    <img src={`${ApiUrl}/media/${link}`} className="d-block w-100" key={link} alt="media" />
+                                </div>
+                            )
+                        })}
+                        {!profileDetails?.profile?.medias.length &&
                             <div className="carousel-item active">
-                                <img src={`${ApiUrl}/media/${link}`} className="d-block w-100" key={link} alt="media" />
+                                <img src={pic} className="d-block w-100" alt="NoMedia" />
                             </div>
-                        )
-                    })}
-                    {!profileDetails?.profile?.medias.length &&
-                        <div className="carousel-item active">
-                            <img src={pic} className="d-block w-100" alt="NoMedia" />
-                        </div>
-                    }
+                        }
+                    </div>
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Previous</span>
-                </button>
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Next</span>
-                </button>
             </div>
+
             <div className={styles['name-age']}>
                 <span className={styles.name}>{profileDetails && profileDetails.lastname}</span>
                 <span className={styles.age}>{profileDetails && getAge(profileDetails.dob)}</span>
-                <img src={verifiedIcon}/>
+                <i style={{color: profileDetails?.accountVerified ? 'purple' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles['small-details']}>
                 {profileDetails?.profile?.job?.title && <span>{profileDetails.profile.job.title}</span> }

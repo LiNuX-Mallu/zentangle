@@ -6,6 +6,7 @@ export interface ProfileInterface {
     dob: string;
     gender: string;
     password: string;
+    accountVerified: boolean;
     email: {
         email: string;
         verified: boolean
@@ -25,6 +26,15 @@ export interface ProfileInterface {
         ageRange: {min: number, max: number};
         onlyFromAgeRange: boolean;
         global: boolean;
+    };
+    privacy: {
+        showAge: boolean;
+        showDistance: boolean;
+        discoverbale: boolean;
+        incognitoMode: boolean;
+        verifiedMessagesOnly: boolean;
+        recentActiveStatus: boolean;
+        readReceipt: boolean;
     };
     profile: {
         name: string;

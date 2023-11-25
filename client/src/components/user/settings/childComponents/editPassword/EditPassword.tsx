@@ -1,0 +1,70 @@
+import { useState } from 'react';
+import styles from './EditPassword.module.css';
+import axios from '../../../../../instances/axios';
+
+interface Props {
+    //setEditSpace: React.Dispatch<React.SetStateAction<string | null>>;
+    password: string;
+}
+
+export default function EditPassword({password}: Props) {
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [success, setSuccess] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleSubmit = () => {
+        setError(null);
+        setSuccess(null);
+        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (currentPassword !== password) {
+            setError("Invalid current password");
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            setError("Confirm password doesn't match");
+            return;
+        }
+        
+        if (!passRegex.test(newPassword)) {
+            setError("Password must be atleast 8 characters long with one lowercase, uppercase, special character and number");
+            return;
+        }
+
+        axios.put('/user/update-settings', {where: 'password', what: newPassword}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                setSuccess("Password changed successfully")
+            }
+        })
+        .catch(() => {
+            alert("Internal server error");
+        });
+    }
+    return (
+        <div className={styles.container}>
+            <h5>Change Password</h5>
+            <div className={styles.form}>
+                <label>Current password</label>
+                <input value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
+            </div>
+            <div className={styles.form}>
+                <label>New password</label>
+                <input value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+            </div>
+            <div className={styles.form}>
+                <label>Confirm new password</label>
+                <input value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            </div>
+            <button onClick={handleSubmit}>Change</button>
+            {success && <span className={styles.success}>{success}</span>}
+            {error && <span className={styles.error}>{error}</span>}
+        </div>
+    )
+}

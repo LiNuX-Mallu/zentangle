@@ -58,6 +58,7 @@ export default function Account({setSpace}: Props) {
             <div className={styles['name-age']}>
                 <span className={styles.name}>{profileDetails && (profileDetails?.profile?.name && profileDetails?.profile?.name.trim() !== "") ? profileDetails.profile.name : profileDetails?.firstname},</span>
                 <span className={styles.age}>{profileDetails && getAge(profileDetails.dob)}</span>
+                <i style={{color: profileDetails?.accountVerified ? '#007BFF' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles.options}>
                 <div onClick={() => setSpace('settings')} className={styles.icon}>

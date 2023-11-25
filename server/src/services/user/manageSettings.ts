@@ -16,6 +16,36 @@ export default async (where: string, what: string | boolean | object, userId: st
             case 'global':
                 field = "preferences.global";
                 break;
+            case 'discovery':
+                field = "privacy.discoverable";
+                break;
+            case 'showAge':
+                field = "privacy.showAge";
+                break;
+            case 'showDistance':
+                field = "privacy.showDistance";
+                break;
+            case 'recentActiveStatus':
+                field = "privacy.recentActiveStatus";
+                break;
+            case 'incognitoMode':
+                field = "privacy.incognitoMode";
+                break;
+            case 'verifiedMessagesOnly':
+                field = "privacy.verifiedMessagesOnly";
+                break;
+            case 'readReceipt':
+                field = "privacy.readReceipt";
+                break;
+            case 'email':
+                field = "email.email";
+                break;
+            case 'phone':
+                field = "phone.phone";
+                break;
+            case 'location':
+                field = "location";
+                break;
             default:
                 field = null;
         }

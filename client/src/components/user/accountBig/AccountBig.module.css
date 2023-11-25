@@ -21,6 +21,7 @@
     width: 100%;
     display: flex;
     justify-content: start;
+    align-items: center;
     gap: 0.5rem;
     font-size: 2rem;
     padding-left: 1rem;
@@ -32,12 +33,6 @@
 .account-big .name-age .age {
     color: rgb(247, 247, 247);
     font-weight: 500;
-}
-
-.account-big .name-age img {
-    width: auto;
-    height: 2.5rem;
-    opacity: 0.6;
 }
 
 .account-big .small-details {
@@ -113,4 +108,16 @@
     width: 10%;
     padding: 0.4rem;
     border-radius: 2rem;
+}
+
+.account-big .medias {
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.account-big .medias img {
+    padding-top: 10px;
+    width: 300px !important;
+    height: 500px !important;
+    object-fit: cover;
 }

@@ -3,7 +3,6 @@
     width: 100%;
     margin: 0 !important;
     background-color: rgb(37, 37, 37);
-    padding-right: 2%;
     overflow-y: scroll;
     padding-top: 2.5rem;
 }
@@ -81,7 +80,7 @@
 }
 
 .division .option:hover > :nth-child(2) {
-    color: rgb(187, 20, 187);
+    color: rgb(255, 255, 255);
 }
 
 .division .range {
@@ -180,11 +179,33 @@ input[type=range]::-moz-range-thumb {
     display: none;
 }
 
+.edit-space {
+    border-top: 5px solid rgb(161, 161, 161);
+    background: rgb(31, 30, 30);
+    color: white;
+    position: -webkit-sticky;
+    position: sticky;
+    height: 80%;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+}
+
+.edit-space .edit-done {
+    align-self: flex-end;
+    margin-right: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .settings {
         background-color: rgb(27, 27, 27);
-        padding-bottom: 60px;
         padding-top: 1.7rem;
+        padding-right: 0;
     }
     .settings .topbar {
         padding: 8px;
@@ -198,6 +219,7 @@ input[type=range]::-moz-range-thumb {
     
     .settings .topbar img {
         display: none;
+        cursor: pointer;
     }
     .settings .topbar button {
         display: none;
@@ -205,6 +227,7 @@ input[type=range]::-moz-range-thumb {
     .settings .topbar span {
         display: block;
         color: white;
+        cursor: pointer;
     }
 
     .division {

@@ -127,6 +127,14 @@ export default function EditProfile({setSpace}: Props) {
         .finally(() => setLoading(false));
     };
 
+    const handleRemoveMedia = (media: string) => {
+        setLoading(true);
+        axios.delete(`/user/media/${media}`)
+        .then(response => setMedias(response.data))
+        .catch(() => alert("Internal server errror"))
+        .finally(() => setLoading(false));
+    }
+
     if (!enabled || loading) {
         return <Loading />;
     }
@@ -137,16 +145,17 @@ export default function EditProfile({setSpace}: Props) {
                 <span className={styles['done-button']} onClick={handleDone}>Done</span>
             </div>
             
-            <div>
+            <div style={{overflow: 'auto'}}>
                 <DragDropContext onDragEnd={handleOnDragEnd}>
                     <Droppable droppableId='image-grid' direction='horizontal'>
                         {(provided) => (
-                            <div className={`container-fluid ${styles.medias}`} {...provided.droppableProps} ref={provided.innerRef}>
-                                {medias?.map((media, index) => (
+                            <div className={`${styles.medias}`} {...provided.droppableProps} ref={provided.innerRef}>
+                                {medias?.map((media: string, index) => (
                                     <Draggable key={media} draggableId={media} index={index}>
                                         {(provided) => (
                                             <div className={`col-4 ${styles['media-item']}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                 <img src={`${ApiUrl}/media/${media}`} alt="media" loading="lazy" />
+                                                <i onClick={() => handleRemoveMedia(media)} className="fa-solid fa-circle-minus"></i>
                                             </div>
                                         )}
                                     </Draggable>
@@ -172,7 +181,7 @@ export default function EditProfile({setSpace}: Props) {
             </div>
             <div className={styles['detail']}>
                 <h6>About You</h6>
-                <textarea rows={3} onChange={(e) => setBio(e.target.value)} placeholder='Bio here...'>{bio ? bio : ''}</textarea>
+                <textarea rows={3} defaultValue={bio ? bio : ''} onChange={(e) => setBio(e.target.value)} placeholder='Bio here...'></textarea>
                 <p>Do not include social media handles or other contact information in your bio.</p>
             </div>
             <div onClick={() => setEditOption('passions')} className={styles['detail']}>

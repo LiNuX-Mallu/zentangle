@@ -8,6 +8,7 @@ export default function AppRouter() {
   return(
     <Router>
       <Routes>
+        {/* User routes */}
         <Route path='/' element={<Home />} />
         <Route path='/home' element={<Home />} />
         <Route path='/app' element={<App />} />
@@ -15,6 +16,14 @@ export default function AppRouter() {
         {/* Admin routes */}
         <Route path='/admin/login' element={<AdminLogin />} />
         <Route path='/admin/panel' element={<Panel />} />
+
+        {/* 404 */}
+        <Route path='*' element={
+          <div style={{height: '100vh'}} className='d-flex flex-column text-white bg-black justify-content-center align-items-center'>
+            <h1><i className="fa-solid fa-cat fa-beat text-white"> 404</i></h1>
+            <h3>Page not found!</h3>
+          </div>
+        }/>
       </Routes>
     </Router>
   )

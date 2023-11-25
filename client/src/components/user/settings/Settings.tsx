@@ -9,6 +9,11 @@ import Loading from '../loading/Loading';
 import { useSelector } from 'react-redux';
 import { getLocation } from '../../../redux/actions/locationActions';
 import Axios from 'axios';
+import EditEmail from './childComponents/editEmail/EditEmail';
+import EditPhone from './childComponents/editPhone/EditPhone';
+import MultiRangeSlider, { ChangeResult } from 'multi-range-slider-react';
+import './extra/multiSlider.css';
+import EditPassword from './childComponents/editPassword/EditPassword';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -16,14 +21,23 @@ interface Props {
 
 export default function Settings({setSpace}: Props) {
     const navigate = useNavigate();
+    const [editSpace, setEditSpace] = useState<string | null>(null);
     const [user, setUser] = useState<ProfileInterface | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const rightIcon = <i className="fa-solid fa-angle-right"></i>;
 
     const [distance, setDistance] = useState("");
     const [onlyFromAgeRange, setOnlyAgeRange] = useState<boolean>();
-    const [age, setAge] = useState({min: 18, max: 30});
+    const [minAge, setMinAge] = useState(18);
+    const [maxAge, setMaxAge] = useState(27);
     const [global, setGlobal] = useState(true);
+    const [discovery, setDiscovery] = useState(true);
+    const [incognitoMode, setIncognitoMode] = useState(false);
+    const [recentActiveStatus, setRecentActiveStatus] = useState(true);
+    const [showAge, setShowAge] = useState(true);
+    const [showDistance, setShowDistance] = useState(true);
+    const [verfiedMessagesOnly, setVerifiedMessagesOnly] = useState(false);
+    const [readReceipt, setReadReceipt] = useState(true); 
 
     const location = useSelector(getLocation);
     const [locality, setLocality] = useState("Fetching...");
@@ -51,13 +65,21 @@ export default function Settings({setSpace}: Props) {
                 setUser(response.data);
                 setDistance(response?.data?.preferences?.distance);
                 setOnlyAgeRange(response?.data?.preferences?.onlyFromAgeRange);
-                setAge({min: response?.data?.preferences?.ageRange?.min, max: response?.data?.preferences?.ageRange.max});
+                setMinAge(response?.data?.preferences?.ageRange?.min);
+                setMaxAge(response?.data?.preferences?.ageRange?.max);
                 setGlobal(response?.data?.preferences?.global);
+                setDiscovery(response?.data?.privacy?.discoverable);
+                setIncognitoMode(response?.data?.privacy?.incognitoMode);
+                setShowAge(response?.data?.privacy?.showAge);
+                setShowDistance(response?.data?.privacy?.showDistance);
+                setVerifiedMessagesOnly(response?.data?.privacy?.verifiedMessagesOnly);
+                setReadReceipt(response?.data?.privacy?.readReceipt);
+                setRecentActiveStatus(response?.data?.privacy?.recentActiveStatus);
             }
         })
         .catch(() => alert("Internal server error"))
         .finally(() => setLoading(false));
-    }, [location, locality]);
+    }, [location, locality, editSpace]);
 
     //update distance preference
     const updateDistancePreference = (data: string) => {
@@ -74,19 +96,19 @@ export default function Settings({setSpace}: Props) {
     }
 
     //update age preference
-    const updateAgePreference = () => {
-        axios.put("/user/update-settings", {where: 'ageRange', what: {min: +age?.min, max: +age?.max}}, {
+    const updateAgePreference = (min: number, max: number) => {
+        axios.put("/user/update-settings", {where: 'ageRange', what: {min, max}}, {
             headers: {
                 'Content-Type': 'application/json',
             }
         }).catch(() => {
             alert('Internal server error');
         });
-    }
+    };
 
     //update toggles
     const updateToggle = (resource: string, data: boolean) => {
-        axios.put('/user/update-settings', {where: resource, what: data}, {
+        axios.put(`/user/update-settings/${resource}`, {what: data}, {
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -107,21 +129,21 @@ export default function Settings({setSpace}: Props) {
             {/* account settings */}
             <div className={styles.division}>
                 <h5>Account settings</h5>
-                <div className={styles.option}>
-                <span>Email</span>
+                <div onClick={() => setEditSpace('email')} className={styles.option}>
+                    <span>Email</span>
                     <span>
                         {user && user?.email?.email}
                         {rightIcon}
                     </span>
                 </div>
-                <div className={styles.option}>
-                <span>Phone</span>
+                <div onClick={() => setEditSpace('phone')} className={styles.option}>
+                    <span>Phone</span>
                     <span>
                         {user && `+${user.phone.countryCode}  ${user?.phone?.phone}`}
                         {rightIcon}
                     </span>
                 </div>
-                <div className={styles.option}>
+                <div onClick={() => setEditSpace('password')} className={styles.option}>
                     <span>Password</span>
                     <span>
                         {user && "*".repeat(user?.password.length)}
@@ -145,11 +167,23 @@ export default function Settings({setSpace}: Props) {
                 </div>
                 <div className={`${styles.range}`}>
                     <span>Age preference
-                        <span>{age.min} - {age.max}</span>
+                        <span>{minAge} - {maxAge}</span>
                     </span>
                     <div className={styles['age-slider']}>
-                        <input type="range" onChange={(e) => {setAge({min: +e.target.value, max: age.max}); updateAgePreference()}} value={age.min} min={18} max={age.max} /> 
-                        <input type="range" onChange={(e) => {setAge({max: +e.target.value, min: age.min}); updateAgePreference()}} value={age.max} min={age.min} max={100} />
+                        {/* <input type="range" onChange={(e) => {setAge({min: +e.target.value, max: age.max}); updateAgePreference(+e.target.value, age?.max)}} value={age.min} min={18} max={age.max} /> 
+                        <input type="range" onChange={(e) => {setAge({max: +e.target.value, min: age.min}); updateAgePreference(age?.min, +e.target.value)}} value={age.max} min={age.min} max={100} /> */}
+                        <MultiRangeSlider
+                            min={18}
+                            max={85}
+                            step={1}
+                            minValue={minAge}
+                            maxValue={maxAge}
+                            onInput={(e: ChangeResult) => {
+                                setMinAge(e.minValue);
+                                setMaxAge(e.maxValue);
+                                updateAgePreference(e.minValue, e.maxValue);
+                            }}
+                        />
                     </div>
                 </div>
                 <div style={{borderTop: 'none'}} className={styles.option}>
@@ -174,14 +208,14 @@ export default function Settings({setSpace}: Props) {
                 <div className={styles.option}>
                     <span>Enable discovery</span>
                     <label className={toggle.switch}>
-                        <input checked type="checkbox" />
+                        <input checked={discovery} onChange={(e) => {setDiscovery(e.target.checked); updateToggle('discovery', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
                 <div className={styles.option}>
                     <span>Incognito mode</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={incognitoMode} onChange={(e) => {setIncognitoMode(e.target.checked); updateToggle('incognitoMode', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
@@ -202,21 +236,21 @@ export default function Settings({setSpace}: Props) {
                 <div className={styles.option}>
                     <span>Recently active status</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={recentActiveStatus} onChange={(e) => {setRecentActiveStatus(e.target.checked); updateToggle('recentActiveStatus', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
                 <div className={styles.option}>
                     <span>Show my Age in profile</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={showAge} onChange={(e) => {setShowAge(e.target.checked); updateToggle('showAge', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
                 <div className={styles.option}>
                     <span>Show my Distance in profile</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={showDistance} onChange={(e) => {setShowDistance(e.target.checked); updateToggle('showDistance', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
@@ -241,14 +275,14 @@ export default function Settings({setSpace}: Props) {
                 <div className={styles.option}>
                     <span>Only verified users can send message</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={verfiedMessagesOnly} onChange={(e) => {setVerifiedMessagesOnly(e.target.checked); updateToggle('verifiedMessagesOnly', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
                 <div className={styles.option}>
                     <span>Read receipts</span>
                     <label className={toggle.switch}>
-                        <input type="checkbox" />
+                        <input checked={readReceipt} onChange={(e) => {setReadReceipt(e.target.checked); updateToggle('readReceipt', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
                 </div>
@@ -261,7 +295,7 @@ export default function Settings({setSpace}: Props) {
                     Share Zentangle <i className="fa-regular fa-paper-plane"></i>
                 </div>
                 <br />
-                <div className={`${styles.logout} ${styles.option}`}>
+                <div onClick={handleLogout} className={`${styles.logout} ${styles.option}`}>
                     <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout 
                 </div>
                 <br className={styles.logout} />
@@ -269,6 +303,14 @@ export default function Settings({setSpace}: Props) {
                     Delete Account <i className="fa-solid fa-trash"></i>
                 </div>
             </div>
+            {editSpace &&
+            <div className={styles['edit-space']}>
+                <span onClick={() => setEditSpace(null)} className={styles['edit-done']}>done</span>
+                {editSpace === 'email' && user?.email?.email && <EditEmail email={user?.email?.email} />}
+                {editSpace === 'phone' && user?.phone?.phone && <EditPhone phone={user?.phone?.phone} /> }
+                {editSpace === 'password' && user?.password && <EditPassword password={user?.password} /> }
+            </div>
+            }
         </div>
     )
 }

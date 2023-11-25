@@ -14,6 +14,7 @@ import Loading from '../../../components/user/loading/Loading';
 import useGeoLocation from '../../../hooks/useGeoLocation';
 import { useDispatch } from 'react-redux';
 import { setLocation } from '../../../redux/actions/locationActions';
+import axios from '../../../instances/axios';
 
 export default function App() {
     const [inMessage, setInMessage] = useState(false);
@@ -25,6 +26,11 @@ export default function App() {
     useEffect(() => {
         if (latitude !== null && longitude !== null && !error) {
             dispactch(setLocation({latitude, longitude}));
+            axios.put('user/update-settings',{where: 'location', what: {latitude, longitude}}, {
+                headers: {
+                    'Content-Type': "application/json",
+                }
+            }).catch(() => alert("Internal server error"));
         }
         const timeout = setTimeout(() => setLoading(false), 2000);
         return () => clearTimeout(timeout);

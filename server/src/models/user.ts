@@ -49,6 +49,10 @@ var userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  location: {
+    latitude: Number,
+    longitude: Number,
+  },
   preferences: {
     ageRange: {
       min: {
@@ -164,24 +168,33 @@ var userSchema = new Schema({
   },
   privacy: {
     showAge: {
-      type: Boolean
+      type: Boolean,
+      default: true,
     },
     showDistance: {
-      type: Boolean
+      type: Boolean,
+      default: true,
     },
     verifiedMessagesOnly: {
-      type: Boolean
+      type: Boolean,
+      default: false,
     },
     discoverable: {
-      type: Boolean
+      type: Boolean,
+      default: true,
     },
     recentActiveStatus: {
-      type: Boolean
+      type: Boolean,
+      default: true,
     },
     incognitoMode: {
       type: Boolean,
       default: false,
     },
+    readReceipt: {
+      type: Boolean,
+      default: true,
+    }
   },
   match: {
     matched: [{
