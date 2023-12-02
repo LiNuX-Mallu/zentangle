@@ -3,6 +3,7 @@
     overflow-x: hidden;
     margin: 0 !important;
     padding: 0 !important;
+    overflow-y: hidden;
 }
 
 /* .app .brand {
@@ -23,11 +24,14 @@
 .app .brand-app {display: none;}
 
 .space {
+    padding: 0 !important;
     background-color: transparent;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    position: relative;
 }
 
 .app .sidebar {
@@ -35,10 +39,12 @@
     min-height: 100vh;
     padding: 0;
     position: relative;
+    border-left: 2px solid rgba(255, 255, 255, 0.062);
+    box-sizing: border-box;
 }
 
 .app .sidebar .topbar {
-    background-color: purple;
+    background-color: rgb(104, 35, 104);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -90,7 +96,7 @@
 @media (max-width: 768px) {
     .app {
         background: linear-gradient(to top, black, rgb(58, 2, 58));
-        overflow-y: auto;
+        overflow-y: hidden;
     }
     .app .brand-app {
         display: block;
@@ -109,17 +115,18 @@
 
     .space {
         width: 100%;
-        padding: 0;
-        padding-bottom: 10vh;
+        padding: 0 !important;
+        padding-bottom: 10vh !important;
         height: 90vh;
         background-color: transparent;
-        position: relative;
         display: flex;
         align-items: normal;
+        position: relative;
     }
 
     .edit-active {
-        padding-bottom: 0;
+        padding-bottom: 0 !important;
+        height: 100vh;
     }
 
     .sidebar {
@@ -128,13 +135,14 @@
     .belowbar {
         display: flex;
         justify-content: space-evenly;
+        align-items: center;
         height: 6vh;
         background-color: rgb(19, 19, 19);
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 999;
+        z-index: 1000;
         border-top: 1px solid rgba(255, 255, 255, 0.185);
         padding: 11px;
         gap: 40px;

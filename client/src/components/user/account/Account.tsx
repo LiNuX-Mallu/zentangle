@@ -7,11 +7,8 @@ import { ProfileInterface } from '../../../instances/interfaces';
 import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
 
-interface Props {
-    setSpace: React.Dispatch<React.SetStateAction<string>>;
-}
 
-export default function Account({setSpace}: Props) {
+export default function Account() {
     const [percentage, setPercentage] = useState(0);
     const navigate = useNavigate();
     const [profileDetails, setProfileDetails] = useState<ProfileInterface>();
@@ -61,11 +58,11 @@ export default function Account({setSpace}: Props) {
                 <i style={{color: profileDetails?.accountVerified ? '#007BFF' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles.options}>
-                <div onClick={() => setSpace('settings')} className={styles.icon}>
+                <div onClick={() => navigate('/app/account/settings')} className={styles.icon}>
                     <i className="fa-solid fa-gear"></i>
                     <span>Settings</span>
                 </div>
-                <div onClick={() => setSpace('edit')} className={`${styles.icon}`}>
+                <div onClick={() => navigate('/app/account/edit-profile')} className={`${styles.icon}`}>
                     <i className="fa-solid fa-user-pen"></i>
                     <span>Edit details</span>
                 </div>

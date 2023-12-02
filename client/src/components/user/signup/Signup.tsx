@@ -98,17 +98,17 @@ export default function Signup({cancel, login}: Props) {
                 <span className='heading'>Register here</span>
                 <div>
                     <label htmlFor="username">Username</label>
-                    <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username"/>
+                    <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username" required />
                     {usernameError && tooltip && <div className="tooltip-error">{usernameError}</div>}
                 </div>
                 <div className='names'>
                     <div>
                         <label htmlFor='firstname'>Firstname</label>
-                        <input value={firstname} onChange={(e) => setFirstname(e.target.value)} id='firstname'/>
+                        <input value={firstname} onChange={(e) => setFirstname(e.target.value)} id='firstname' required />
                     </div>
                     <div>
                         <label htmlFor='lastname'>Lastname</label>
-                        <input value={lastname} onChange={(e) => setLastname(e.target.value)} id='lastname'/>
+                        <input value={lastname} onChange={(e) => setLastname(e.target.value)} id='lastname' required />
                     </div>
                     {(tooltip && (firstnameError || lastnameError)) ? <div className='tooltip-error'>{firstnameError ? firstnameError : lastnameError}</div>: ""}
                 </div>
@@ -122,13 +122,13 @@ export default function Signup({cancel, login}: Props) {
                     </div>
                     <div>
                         <label htmlFor='dob'>Date for birth</label>
-                        <input value={dob} type='date' onChange={(e) => setDob(e.target.value)} id='dob'/>
+                        <input value={dob} type='date' onChange={(e) => setDob(e.target.value)} id='dob' required />
                     </div>
                     {tooltip && dobError && <div style={{width: 'auto'}} className="tooltip-error">{dobError}</div>}
                 </div>
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input style={{textTransform: 'lowercase'}} value={email} onChange={(e) => setEmail(e.target.value)} id="email"/>
+                    <input style={{textTransform: 'lowercase'}} value={email} onChange={(e) => setEmail(e.target.value)} id="email" required />
                     {tooltip && emailError && <div className='tooltip-error'>{emailError}</div>}
                 </div>
                 <div className='row'>
@@ -137,14 +137,14 @@ export default function Signup({cancel, login}: Props) {
                         <select onChange={(e) => setCountryCode(e.target.value)} className='col-3 col-lg-2'>
                             <option value='91'>+91</option>
                         </select>
-                        <input className='col-9 col-lg-10' value={phone} onChange={(e) => setPhone(e.target.value)} id='phone'/>
+                        <input className='col-9 col-lg-10' value={phone} onChange={(e) => setPhone(e.target.value)} id='phone' required/>
                         {tooltip && phoneError && <div className="tooltip-error">{phoneError}</div> }
                     </div>
                 </div>
                 
                 <div>
                     <label htmlFor="password">Password</label>
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password"/>
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password" required />
                     {tooltip && passwordError && <div className="tooltip-error">{passwordError}</div> }
                 </div>
                 <div className='show-pass'>

@@ -11,7 +11,15 @@ export default function AppRouter() {
         {/* User routes */}
         <Route path='/' element={<Home />} />
         <Route path='/home' element={<Home />} />
-        <Route path='/app' element={<App />} />
+        <Route path='/app' element={<App defaultSpace={null} />} />
+        <Route path='/app/view-profile/:username' element={<App defaultSpace='view-profile' />} />
+        <Route path='/app/account' element={<App defaultSpace='account' /> } />
+        <Route path='/app/explore' element={<App defaultSpace='explore' /> } />
+        <Route path='/app/messages' element={<App defaultSpace='messages' /> } />
+        <Route path='/app/matches' element={<App defaultSpace='matches' /> } />
+        <Route path='/app/account/edit-profile' element={<App defaultSpace='edit-profile' /> } />
+        <Route path='/app/account/settings' element={<App defaultSpace='settings' /> } />
+        <Route path='/app/chat/:username' element={<App defaultSpace={'chat'} defaultMessage={true} />} />
 
         {/* Admin routes */}
         <Route path='/admin/login' element={<AdminLogin />} />

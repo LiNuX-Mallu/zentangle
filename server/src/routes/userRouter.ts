@@ -17,6 +17,12 @@ import uploadMedia from "../controllers/user/uploadMedia";
 import reorderMedia from "../controllers/user/reorderMedia";
 import updateSettings from "../controllers/user/updateSettings";
 import removeMedia from "../controllers/user/removeMedia";
+import getProfiles from "../controllers/user/getProfiles";
+import likeProfile from "../controllers/user/likeProfile";
+import dislikeProfile from "../controllers/user/dislikeProfile";
+import fetchMatches from "../controllers/user/fetchMatches";
+import fetchProfile from "../controllers/user/fetchProfile";
+import getChat from "../controllers/user/getChat";
 
 const router = Router();
 
@@ -34,7 +40,15 @@ router.put('/update-lookingfor', tokenValidation, checkBanned, updateLookingFor)
 router.put('/update-opento', tokenValidation, checkBanned, updateOpenTo);
 router.post('/upload-media', upload.single('file'), tokenValidation, uploadMedia);
 router.put('/reorder-media', tokenValidation, reorderMedia);
-router.put('/update-settings/', tokenValidation, updateSettings);
+router.put('/update-settings', tokenValidation, updateSettings);
 router.delete('/media/:filename', tokenValidation, removeMedia);
+
+router.get('/get-profiles', tokenValidation, getProfiles);
+router.post('/like-profile', tokenValidation, likeProfile);
+router.post('/dislike-profile', tokenValidation, dislikeProfile);
+router.get('/get-profile/:username', tokenValidation, fetchProfile);
+
+router.get('/get-matches', tokenValidation, fetchMatches);
+router.get('/get-chat/:username', tokenValidation, getChat);
 
 export default router;

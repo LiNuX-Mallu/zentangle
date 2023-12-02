@@ -228,6 +228,7 @@
         width: 100%;
         height: 100%;
         border-radius: 0;
+        min-height: 100vh;
     }
     .edit .heading {
         border-top-right-radius: 0;

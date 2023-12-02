@@ -15,11 +15,8 @@ import MultiRangeSlider, { ChangeResult } from 'multi-range-slider-react';
 import './extra/multiSlider.css';
 import EditPassword from './childComponents/editPassword/EditPassword';
 
-interface Props {
-    setSpace: React.Dispatch<React.SetStateAction<string>>;
-}
 
-export default function Settings({setSpace}: Props) {
+export default function Settings() {
     const navigate = useNavigate();
     const [editSpace, setEditSpace] = useState<string | null>(null);
     const [user, setUser] = useState<ProfileInterface | undefined>(undefined);
@@ -43,10 +40,8 @@ export default function Settings({setSpace}: Props) {
     const [locality, setLocality] = useState("Fetching...");
 
     const handleLogout = () => {
-        axios.post('/user/logout')
-        .then(response => {
-            if (response.status === 200) navigate('/home');
-        }).catch(() => alert("Internal server error"));
+        axios.post('/user/logout').catch(() => alert("Internal server error"));
+        navigate('/home')
     }
 
     useEffect(() => {
@@ -108,7 +103,7 @@ export default function Settings({setSpace}: Props) {
 
     //update toggles
     const updateToggle = (resource: string, data: boolean) => {
-        axios.put(`/user/update-settings/${resource}`, {what: data}, {
+        axios.put(`/user/update-settings/`, {where: resource, what: data}, {
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -121,8 +116,8 @@ export default function Settings({setSpace}: Props) {
     return(
         <div className={styles.settings}>
             <div className={styles.topbar}>
-                <img onClick={() => setSpace('home')} src={homeIcon} />
-                <span onClick={() => setSpace('account')}><i className="fa-solid fa-angle-left"></i> Settings</span>
+                <img onClick={() => navigate('/app')} src={homeIcon} />
+                <span onClick={() => navigate('/app/account')}><i className="fa-solid fa-angle-left"></i> Settings</span>
                 <button onClick={handleLogout}>Logout</button>
             </div>
 

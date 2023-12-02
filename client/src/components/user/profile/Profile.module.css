@@ -48,43 +48,78 @@
     background-color: rgb(255, 255, 255) !important;
 }
 
-.right-click {
+
+.right-click, .left-click {
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.849);
     position: absolute;
-    right: 12px;
-    top: 50%;
     font-size: 30px;
     color: aliceblue;
+    top: 45%;
+}
+
+.right-click { 
+    right: 12px;
 }
 
 .left-click {
-    position: absolute;
     left: 12px;
-    top: 50%;
-    font-size: 30px;
 }
 
 .other-details {
     text-align: left;
     width: 100%;
     padding: 10px;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
 }
 .name {
-    font-weight: 500;
+    font-weight: 600;
+    text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.849);
 }
 .age {
     font-weight: 200;
 }
 
+.other-details .items {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+}
+
+.other-details .items span {
+    border: 1px solid white;
+    background-color: rgba(70, 70, 70, 0.767);
+    color: white;
+    border-radius: 15px;
+    padding: 2px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.other-details .items span  i {
+    font-size: small;
+}
+
+.other-details .distance {
+    opacity: 90%;
+    display: block;
+    font-family: sans-serif;
+    margin-top: 10px;
+}
+
 @media (max-width: 768px) {
     .profile {
-        margin-left: 10px;
-        margin-right: 10px;
         margin-top: 20px;
-        width: 100%;
+        width: 90%;
         height: 95%;
         border-radius: 0.4rem;
         box-shadow: 0 0 3px rgba(255, 255, 255, 0.349);
+        border-radius: 10px;
     }
     .belowbar i {
         font-size: 20px;

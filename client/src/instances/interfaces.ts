@@ -15,7 +15,13 @@ export interface ProfileInterface {
         phone: number;
         verified: string;
         countryCode: number;
-    }
+    },
+    location: {
+        coordinates: [number, number];
+    };
+    distance: number | undefined;
+    matched: boolean | null;
+    liked: boolean | null;
     banned: boolean;
     blocked: {
         users: string[];

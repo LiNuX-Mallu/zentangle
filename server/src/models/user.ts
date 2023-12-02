@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
-var userSchema = new Schema({
+const userSchema = new Schema({
   firstname: {
     type: String,
     required: true,
@@ -20,19 +20,19 @@ var userSchema = new Schema({
     verified: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   phone: {
     countryCode: {
-      type: Number
+      type: Number,
     },
     phone: {
-      type: Number
+      type: Number,
     },
     verified: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   password: {
     type: String,
@@ -43,15 +43,14 @@ var userSchema = new Schema({
     required: true,
   },
   gender: {
-    type: String
+    type: String,
   },
   accountVerified: {
     type: Boolean,
     default: false,
   },
   location: {
-    latitude: Number,
-    longitude: Number,
+    coordinates: [Number, Number],
   },
   preferences: {
     ageRange: {
@@ -62,7 +61,7 @@ var userSchema = new Schema({
       max: {
         type: Number,
         default: 25,
-      }
+      },
     },
     onlyFromAgeRange: {
       type: Boolean,
@@ -79,18 +78,24 @@ var userSchema = new Schema({
   },
   profile: {
     name: String,
-    medias: [{
-      type: String
-    }],
+    medias: [
+      {
+        type: String,
+      },
+    ],
     bio: {
-      type: String
+      type: String,
     },
-    languages: [{
-      type: String
-    }],
-    passions: [{
-      type: String
-    }],
+    languages: [
+      {
+        type: String,
+      },
+    ],
+    passions: [
+      {
+        type: String,
+      },
+    ],
     basics: {
       zodiac: {
         type: String,
@@ -121,9 +126,11 @@ var userSchema = new Schema({
       lookingFor: {
         type: String,
       },
-      openTo: [{
-        type: String,
-      }],
+      openTo: [
+        {
+          type: String,
+        },
+      ],
     },
     lifestyle: {
       pets: {
@@ -146,7 +153,7 @@ var userSchema = new Schema({
       },
       sleep: {
         type: String,
-      }
+      },
     },
     job: {
       title: {
@@ -154,17 +161,19 @@ var userSchema = new Schema({
       },
       company: {
         type: String,
-      }
+      },
     },
     school: {
-      type: String
+      type: String,
     },
     livingIn: {
-      type: String
+      type: String,
     },
-    songs: [{
-      type: String
-    }]
+    songs: [
+      {
+        type: String,
+      },
+    ],
   },
   privacy: {
     showAge: {
@@ -194,37 +203,58 @@ var userSchema = new Schema({
     readReceipt: {
       type: Boolean,
       default: true,
-    }
+    },
   },
   match: {
-    matched: [{
-      type: Schema.Types.ObjectId
-    }],
-    liked: [{
-      isSuper: {
-        type: Boolean
+    matched: [
+      {
+        with: Schema.Types.ObjectId,
+        timestamp: Date,
       },
-      likedBy: {
-        type: Schema.Types.ObjectId
-      }
-    }],
-    disliked: [{
-      type: Schema.Types.ObjectId
-    }]
+    ],
+    liked: [
+      {
+        isSuper: {
+          type: Boolean,
+        },
+        likedBy: {
+          type: Schema.Types.ObjectId,
+        },
+        timestamp: Date,
+      },
+    ],
+    disliked: [
+      {
+        type: Schema.Types.ObjectId,
+      },
+    ],
   },
-  chatHistory: [{
-    type: Schema.Types.ObjectId
-  }],
-  reports: [{
-    type: Schema.Types.ObjectId
-  }],
+  chatHistory: [
+    {
+      chat: {
+        type: Schema.Types.ObjectId,
+        ref: "chat",
+      },
+      with: String,
+      lastAt: Date,
+    },
+  ],
+  reports: [
+    {
+      type: Schema.Types.ObjectId,
+    },
+  ],
   blocked: {
-    users: [{
-      type: Schema.Types.ObjectId
-    }],
-    contacts: [{
-      type: Number
-    }]
+    users: [
+      {
+        type: Schema.Types.ObjectId,
+      },
+    ],
+    contacts: [
+      {
+        type: Number,
+      },
+    ],
   },
   banned: {
     type: Boolean,
@@ -232,4 +262,5 @@ var userSchema = new Schema({
   },
 });
 
-export default model('User', userSchema);
+userSchema.index({ "location.coordinates": "2dsphere" });
+export default model("User", userSchema);

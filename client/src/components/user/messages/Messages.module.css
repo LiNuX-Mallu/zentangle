@@ -1,0 +1,7 @@
+.messages {
+    width: 100%;
+    min-height: 100%;
+    background-color: transparent;
+    color: white;
+    overflow-y: scroll;
+}

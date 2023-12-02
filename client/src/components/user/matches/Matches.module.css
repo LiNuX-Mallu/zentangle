@@ -1,0 +1,83 @@
+.matches {
+    width: 100%;
+    min-height: 100%;
+    background-color: transparent;
+    color: white;
+    overflow-y: scroll;
+}
+
+.matches .box {
+    width: 100%;
+    background-color: rgba(129, 129, 129, 0.048);
+    height: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.068);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-left: 12px;
+    cursor: pointer;
+}
+
+.box .pro-pic {
+    flex: 0 0 auto;
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.box .pro-pic img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    image-rendering: optimizeSpeed;
+    image-resolution: from-image;
+}
+
+.box .name-alert {
+    padding-left: 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1px;
+}
+
+.name-alert span {
+    font-weight: 100;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.815);
+    display: flex;
+    gap: 5px;
+    justify-content: start;
+    align-items: center;
+}
+
+.box .when {
+    flex: 0 0 auto;
+    display: flex;
+    padding-right: 25px;
+    width: 100px;
+    justify-content: center;
+}
+
+.box .when span {
+    width: 100%;
+    font-size: 10px;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.432);
+    padding-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    .matches {
+        min-height: 100vh;
+        width: 100%;
+    }
+    .matches .box {
+        background-color: rgb(31, 14, 31);
+        border-bottom: 1px solid rgba(109, 109, 109, 0.082);
+    }
+}
+

@@ -15,18 +15,36 @@ import useGeoLocation from '../../../hooks/useGeoLocation';
 import { useDispatch } from 'react-redux';
 import { setLocation } from '../../../redux/actions/locationActions';
 import axios from '../../../instances/axios';
+import Matches from '../../../components/user/matches/Matches';
+import ViewProfile from '../../../components/user/viewProfile/viewProfile';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import Messages from '../../../components/user/messages/Messages';
+import Chat from '../../../components/user/chatbox/Chat';
 
-export default function App() {
-    const [inMessage, setInMessage] = useState(false);
-    const [space, setSpace] = useState('home');
+interface Props {
+    defaultSpace: string | null;
+    defaultMessage?: boolean;
+}
+
+export default function App({defaultSpace, defaultMessage = false}: Props) {
+    const [inMessage, setInMessage] = useState(defaultMessage);
+    const [space, setSpace] = useState(defaultSpace || 'home');
     const [loading, setLoading] = useState(true);
     const {latitude, longitude, error} = useGeoLocation();
-    const dispactch = useDispatch();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {username} = useParams();
+
+    useEffect(() => {
+        setSpace(defaultSpace || 'home');
+        setInMessage(defaultMessage);
+    }, [defaultSpace, defaultMessage]);
 
     useEffect(() => {
         if (latitude !== null && longitude !== null && !error) {
-            dispactch(setLocation({latitude, longitude}));
-            axios.put('user/update-settings',{where: 'location', what: {latitude, longitude}}, {
+            dispatch(setLocation({latitude, longitude}));
+            axios.put('user/update-settings',{where: 'location', what: [longitude, latitude]}, {
                 headers: {
                     'Content-Type': "application/json",
                 }
@@ -34,35 +52,39 @@ export default function App() {
         }
         const timeout = setTimeout(() => setLoading(false), 2000);
         return () => clearTimeout(timeout);
-    }, [latitude, longitude, error, dispactch]);
+    }, [latitude, longitude, error, dispatch]);
 
     if (loading) {
         return <Loading />
     }
 
     return(
-        <div className="app container-fluid">
-            {space !== "settings" && space !== 'edit' && 
+        <div key={username} className="app container-fluid">
+            {(space === 'home' || space === 'account') &&
             <div className='brand-app'>
                 <i className="fa-solid fa-cat text-white pe-1"></i>
                 Zentangle
             </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${(space === 'edit' || space === 'settings')? 'edit-active' : ''}`}>
+                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile'].includes(space) ? 'edit-active' : ''}`}>
                     {space === 'home' && <Profile />}
-                    {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
-                    {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
-                    {space === 'settings' && <Settings setSpace={setSpace} />}
-                    {space === 'edit' && <Edit setSpace={setSpace} />}
+                    {space === 'account' && window.innerWidth <= 768 && <Account />}
+                    {space === 'account' && window.innerWidth > 768 && <AccountBig />}
+                    {space === 'settings' && <Settings />}
+                    {space === 'edit-profile' && <Edit />}
+                    {space === 'view-profile' && <ViewProfile defaultProfile={null} />}
+                    {space === 'matches' && window.innerWidth <= 768 && <Matches />}
+                    {space === 'messages' && window.innerWidth <= 768 && <Messages /> }
+                    {space === 'chat' && <Chat /> }
                 </div>
-                {space === 'home' &&
+                {['home', 'view-profile', 'chat'].includes(space) &&
                 <div className="sidebar col-md-3">
                     <div className='topbar'>
                         <div className='explore'>
                             <img src={exploreIcon} alt='explore'></img>
                         </div>
-                        <div onClick={() => setSpace('account')} className='account'>
+                        <div onClick={() => navigate('/app/account')} className='account'>
                             Account
                             <img src={accountIcon} alt="account" />
                         </div>
@@ -71,16 +93,17 @@ export default function App() {
                         <span onClick={() => setInMessage(false)} style={{borderBottom: !inMessage ? '3px solid white' : '', paddingBottom: '5px'}}>matches</span>
                         <span onClick={() => setInMessage(true)} style={{borderBottom: inMessage ? '3px solid white' : '', paddingBottom: '5px'}}>messages</span>
                     </div>
+                    {inMessage ? <Messages /> : <Matches />}
                 </div>
                 }
-                {(space === 'account' || space === 'edit') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings setSpace={setSpace} /></div>}
-                {space !== 'edit' && space !== 'settings' &&
+                {(space === 'account' || space === 'edit-profile') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings /></div>}
+                {['home', 'explore', 'matches', 'messages', 'account'].includes(space) &&
                 <div className='belowbar'>
-                    <img onClick={() => setSpace('home')} src={homeIcon} alt="home" />
-                    <img onClick={() => setSpace('explore')} src={exploreIcon} alt="explore" />
-                    <img onClick={() => setSpace('matches')} src={startsIcon} alt="matches" />
-                    <img onClick={() => setSpace('chats')} src={chatIcon} alt="chats" />
-                    <img onClick={() => setSpace('account')} src={accountIcon} alt="account" />
+                    <img onClick={() => navigate('/app')} src={homeIcon} alt="home" />
+                    <img onClick={() => navigate('/app/explore')} src={exploreIcon} alt="explore" />
+                    <img onClick={() => navigate('/app/matches')} src={startsIcon} alt="matches" />
+                    <img onClick={() => navigate('/app/messages')} src={chatIcon} alt="chats" />
+                    <img onClick={() => navigate('/app/account')} src={accountIcon} alt="account" />
                 </div>
                 }
             </div>

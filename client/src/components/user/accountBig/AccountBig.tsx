@@ -7,11 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
 
-interface Props {
-    setSpace: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function AccountBig({setSpace}: Props) {
+export default function AccountBig() {
     const [loading, setLoading] = useState(true);
     const [profileDetails, setProfileDetails] = useState<ProfileInterface>();
     const navigate = useNavigate();
@@ -30,7 +26,6 @@ export default function AccountBig({setSpace}: Props) {
     }, [navigate]);
 
     const getAge = (dob: string) => {
-        console.log(dob)
         const current = new Date();
         const dateOfBirth = new Date(dob);
         return current.getFullYear() - dateOfBirth.getFullYear();
@@ -75,7 +70,7 @@ export default function AccountBig({setSpace}: Props) {
             </div>
 
             <div className={styles['name-age']}>
-                <span className={styles.name}>{profileDetails && profileDetails.lastname}</span>
+                <span className={styles.name}>{profileDetails && profileDetails.profile?.name || profileDetails?.firstname}</span>
                 <span className={styles.age}>{profileDetails && getAge(profileDetails.dob)}</span>
                 <i style={{color: profileDetails?.accountVerified ? 'purple' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
@@ -149,7 +144,7 @@ export default function AccountBig({setSpace}: Props) {
                 </div>
             </div>
             <div className={styles['edit-button']}>
-                <button type='button' onClick={() => setSpace('edit')}>Edit</button>
+                <button type='button' onClick={() => navigate('/app/account/edit-profile')}>Edit</button>
             </div>
         </div>
     )

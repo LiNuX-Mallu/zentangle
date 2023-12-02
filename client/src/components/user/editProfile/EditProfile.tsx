@@ -15,11 +15,7 @@ import LookingFor from './childComponents/lookingFor/LookingFor';
 import OpenTo from './childComponents/openTo/OpenTo';
 import { ApiUrl } from '../../../instances/urls';
 
-interface Props {
-    setSpace: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function EditProfile({setSpace}: Props) {
+export default function EditProfile() {
     const [loading, setLoading] = useState(true);
     const [enabled, setEnabled] = useState(false);
     const [editOption, setEditOption] = useState<null | string>(null);
@@ -107,7 +103,7 @@ export default function EditProfile({setSpace}: Props) {
             }
         }).then(response => {
             if (response.status === 200) {
-                return setSpace('account');
+                return navigate('/app/account');
             }
         }).catch(() => {
             alert('Internal server error');
@@ -116,7 +112,6 @@ export default function EditProfile({setSpace}: Props) {
 
     const handleUpload = (selectedImage: File | undefined) => {
         if (!selectedImage) return;
-        setLoading(true);
         axios.post('/user/upload-media', {file: selectedImage}, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -124,7 +119,6 @@ export default function EditProfile({setSpace}: Props) {
         }).then((response) => {
             setMedias(response.data);
         }).catch(() => alert("Internal server error"))
-        .finally(() => setLoading(false));
     };
 
     const handleRemoveMedia = (media: string) => {

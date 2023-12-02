@@ -5,6 +5,7 @@ import nocache from 'nocache';
 import dotenv from 'dotenv';
 import {connect as mongoConnect} from 'mongoose';
 import router from './router';
+import io from 'socket.io';
 
 dotenv.config();
 let {MONGO_URI, PORT, HOST, CLIENT_HOST, CLIENT_PORT} = process.env;

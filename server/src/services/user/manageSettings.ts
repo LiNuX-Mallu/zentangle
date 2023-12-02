@@ -1,6 +1,6 @@
 import User from "../../models/user";
 
-export default async (where: string, what: string | boolean | object, userId: string) => {
+export default async (where: string, what: string | boolean | object | [number, number], userId: string) => {
     try {
         let field: null | string = null;
         switch (where) {
@@ -44,7 +44,7 @@ export default async (where: string, what: string | boolean | object, userId: st
                 field = "phone.phone";
                 break;
             case 'location':
-                field = "location";
+                field = "location.coordinates";
                 break;
             default:
                 field = null;

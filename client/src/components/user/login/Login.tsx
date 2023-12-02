@@ -74,12 +74,12 @@ export default function Login({cancel, signup}: Props) {
                 {tooltip && error && <div className="tooltip-error">{error}</div>}
                 <div>
                     <label htmlFor="username">Username</label>
-                    <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username"/>
+                    <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username" required />
                 </div>
                 
                 <div>
                     <label htmlFor="password">Password</label>
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password"/>
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password" required />
                 </div>
                 <div className='show-pass'>
                     <label htmlFor='showPass'>
