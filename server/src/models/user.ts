@@ -235,8 +235,7 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "chat",
       },
-      with: String,
-      lastAt: Date,
+      with: {type: String},
     },
   ],
   reports: [

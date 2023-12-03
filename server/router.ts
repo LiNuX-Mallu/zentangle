@@ -4,6 +4,7 @@ import adminRouter from "./src/routes/adminRouter";
 import path from "path";
 import user from "./src/models/user";
 
+
 const router = Router();
 
 router.use('/user', (req, _, next: NextFunction) => {
@@ -17,6 +18,7 @@ router.use('/admin', (req, _, next: NextFunction) => {
 }, adminRouter);
 
 router.use('/media', expressStatic(path.join(__dirname, './src/uploads')));
+
 
 //test only
 router.get('/clear-matches', async (_, res) => {await user.updateMany({}, {$unset: {match: null}}); res.send('did')});

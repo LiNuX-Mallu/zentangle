@@ -4,7 +4,7 @@
     height: 100vh;
     overflow-y: auto !important;
     color: white;
-    padding-bottom: 12vh;
+    padding-bottom: 11vh;
     scroll-behavior: smooth;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .chat .typebox {
-    box-shadow: 1px 0 1px 2px rgba(255, 255, 255, 0.582);
+    box-shadow: 1px 0 2px 2px rgba(255, 255, 255, 0.26);
     background-color: rgb(43, 43, 43);
     height: 9vh;
     display: flex;
@@ -156,6 +156,7 @@
     justify-content: space-around;
     align-items: end;
     gap: 20px;
+    white-space: pre-wrap;
 }
 
 .msg .send {
@@ -170,11 +171,18 @@
 
 .msg .time {
     font-size: 12px;
-    white-space: nowrap;
+    white-space: nowrap !important;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.msg .typing i {
+    font-size: 50px;
+}
+
 @media (max-width: 768px) {
+    .chat {
+        padding-bottom: 8vh;
+    }
     .chat .typebox {
         height: 6vh;
         padding-left: 20px;
@@ -213,5 +221,11 @@
         padding-left: 10px;
         border-radius: 5px;
         background-color: purple;
+    }
+    .msg .time {
+        font-size: 10px;
+    }
+    .msg .typing i {
+        font-size: 30px;
     }
 }

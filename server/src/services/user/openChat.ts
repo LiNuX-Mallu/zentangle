@@ -3,16 +3,18 @@ import Chat from "../../models/chat";
 
 export default async (userId: string, username: string) => {
     try {
-        const chat = await User.findOne(
-            { _id: userId, 'chatHistory.with': username },
-            { 'chatHistory.$': 1, _id: 0 }
-        );
+        const profile = await User.findOne({username}, {firstname: 1, lastname: 1, chatHistory: 1, _id: 0, 'profile.medias': 1});
+        const me = await User.findById(userId, {username: 1, _id: 0});
 
-        const profile = await User.findOne({username}, {firstname: 1, lastname: 1, _id: 0, 'profile.medias': 1});
-        if (!profile) throw new Error("Couldn't find profile");
+        if (!profile || !me) throw new Error("Couldn't find profile or user");
 
-        if (chat) return {chat, profile};
-        else return {profile, chat: []};
+        const chat = profile?.chatHistory?.find(chat => chat.with === me?.username);
+        profile.chatHistory = null!;
+
+        if (chat) {
+            const foundChat = await Chat.findById(chat?.chat);
+            return {chat: foundChat?.messages ?? [], profile, me, chatId: chat?.chat ?? null};
+        } else return {profile, chat: [], me, chatId: null};
     } catch(error) {
         throw new Error("Error at service/user/openChat\n"+error);
     }
