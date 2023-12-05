@@ -6,40 +6,26 @@ import Loading from '../loading/Loading';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
 import { socket } from '../../../instances/socket';
-
-interface Message {
-    sender: string;
-    type: string;
-    message: string;
-    timestamp: Date;
-    status: string;
-}
+import { Message } from '../../../instances/interfaces';
+import { useSelector } from 'react-redux';
+import { getUsername } from '../../../redux/actions/usernameActions';
+import Swal from 'sweetalert2';
 
 export default function Chat() {
     const navigate = useNavigate();
     const {username} = useParams();
     const chatRef = useRef<HTMLDivElement>(null);
+    const myUsername = useSelector(getUsername);
 
     const [profile, setProfile] = useState<ProfileInterface>();
-    const [me, setMe] = useState<ProfileInterface>();
     const [chat, setChat] = useState<Message[]>([]);
     const [chatId, setChatId] = useState<string | null>(null);
     const [isTyping, setIsTyping] = useState(false);
-
     const [inputMessage, setInputMessage] = useState('');
-    const [socketConnected, setSocketConnected] = useState(socket.connected);
-
+    const socketConnected = socket.connected;
 
     useEffect(() => {
-        if (!me) return;
-        socket.connect();
-
-        function onConnect() {
-            setSocketConnected(true);
-        }
-        function onDisconnect() {
-            setSocketConnected(false);
-        }
+        if (!myUsername || !username || !socketConnected) return;
         function onReceiveMessage(message: Message) {
             setChat((prev) => [...prev, message]);
         }
@@ -50,29 +36,61 @@ export default function Chat() {
             setIsTyping(flag);
         }
 
-        socket.emit('joinChat', me?.username);
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
+        socket.emit('joinChat', myUsername+username);
         socket.on('receiveMessage', onReceiveMessage);
         socket.on('receiveChatId', onReceiveChatId);
         socket.on('isTyping', onTyping);
 
         return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
             socket.off('receiveMessage', onReceiveMessage);
             socket.off('receiveChatId', onReceiveChatId);
             socket.off('onTyping', onTyping);
-            socket.emit('leaveChat', me?.username);
-            socket.disconnect();
+            socket.emit('leaveChat', myUsername+username);
         }
-    }, [me]);
+    }, [myUsername, username, socketConnected]);
+
+    const doVideoCall = () => {
+        if (!username || !myUsername || !socketConnected) return;
+        function onRecieveVideoCallRejection(from: string) {
+            socket.off('receiveVideoCallRejection', onRecieveVideoCallRejection);
+            Swal.fire({
+                title: `${from}`,
+                text: 'Call rejected',
+                backdrop: true,
+                background: 'black',
+                iconHtml: `<i class="fa-solid fa-phone"></i>`,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+            });
+        }
+
+        socket.emit('requestVideoCall', {from: myUsername, to: username});
+        socket.on('receiveVideoCallRejection', onRecieveVideoCallRejection);
+        Swal.fire({
+            title: `${username}`,
+            backdrop: true,
+            background: 'black',
+            text: 'Video calling',
+            iconHtml: `<i class="fa-solid fa-phone fa-beat-fade"></i>`,
+            iconColor: 'yellowgreen',
+            showCancelButton: true,
+            cancelButtonText: 'End',
+            cancelButtonColor: 'orangered',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        }).then(response => {
+            if (!response.isConfirmed) {
+                socket.off('receiveVideoCallRejection', onRecieveVideoCallRejection);
+                socket.emit('sendEndCallRequest', {from: myUsername, to: username});
+            }
+        });
+    }
 
     const handleSendMessage = () => {
-        if (!me?.username || !profile) return;
+        if (!myUsername || !profile) return;
         if (inputMessage.trim() === '' || !socketConnected) return;
         const message = {
-            sender: me?.username,
+            sender: myUsername,
             message: inputMessage,
             type: 'text',
             timestamp: new Date(),
@@ -85,9 +103,9 @@ export default function Chat() {
 
     useEffect(() => {
         if (inputMessage.length !== 0) {
-            socket.emit('typing', {username, flag: true});
-        } else if (inputMessage.length === 0) socket.emit('typing', {username, flag: false});
-    }, [inputMessage, username]);
+            socket.emit('typing', {username, me: myUsername, flag: true});
+        } else if (inputMessage.length === 0) socket.emit('typing', {username, me: myUsername, flag: false});
+    }, [inputMessage, username, myUsername]);
 
 
     useEffect(() => {
@@ -96,7 +114,6 @@ export default function Chat() {
         .then(response => {
             if (response.status === 200) {
                 setChat(response.data?.chat);
-                setMe(response.data?.me);
                 setProfile(response.data?.profile);
                 setChat(response.data?.chat);
                 setChatId(response.data?.chatId ?? null);
@@ -128,10 +145,10 @@ export default function Chat() {
             <div className={styles['wrap-content']}>
                 {profile !== undefined &&
                 <div className={styles.profile}>
-                    <div className={styles['profile-pic']}>
+                    <div onClick={() => navigate('/app/view-profile/'+username)} className={styles['profile-pic']}>
                         <img src={`${ApiUrl}/media/${profile.profile?.medias[0]}`} />
                     </div>
-                    <span>{profile.firstname + ' ' + profile.lastname}</span>
+                    <span onClick={() => navigate('/app/view-profile/'+username)}>{profile.firstname + ' ' + profile.lastname}</span>
                     
                     <p>Be cautious about sharing personal info or photos with strangers. Keep things fun and safe! <i className="fa-solid fa-triangle-exclamation"></i> </p>
                 </div>
@@ -153,7 +170,7 @@ export default function Chat() {
             <div className={styles.topbar}>
                 <i onClick={() => window.innerWidth <= 768 ? navigate('/app/messages') : navigate('/app')} className={`fa-solid fa-circle-arrow-left ${styles['back-click']}`}></i>
                 <div>
-                    <i className="fa-solid fa-video"></i>
+                    <i onClick={() => doVideoCall()} className="fa-solid fa-video"></i>
                     <i className="fa-solid fa-ellipsis-vertical"></i>
                 </div>
             </div>

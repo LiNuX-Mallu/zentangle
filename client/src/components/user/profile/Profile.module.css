@@ -78,6 +78,9 @@
 .age {
     font-weight: 200;
 }
+.bio {
+    white-space: pre-wrap;
+}
 
 .other-details .items {
     display: flex;

@@ -244,16 +244,8 @@ const userSchema = new Schema({
     },
   ],
   blocked: {
-    users: [
-      {
-        type: Schema.Types.ObjectId,
-      },
-    ],
-    contacts: [
-      {
-        type: Number,
-      },
-    ],
+    users: [{type: String}],
+    contacts: [{type: Number}],
   },
   banned: {
     type: Boolean,

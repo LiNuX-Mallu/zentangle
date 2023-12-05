@@ -76,3 +76,11 @@ export interface ProfileInterface {
         languages: string[];
     }
 }
+
+export interface Message {
+    sender: string;
+    type: string;
+    message: string;
+    timestamp: Date;
+    status: string;
+}

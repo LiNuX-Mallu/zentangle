@@ -23,6 +23,8 @@ import dislikeProfile from "../controllers/user/dislikeProfile";
 import fetchMatches from "../controllers/user/fetchMatches";
 import fetchProfile from "../controllers/user/fetchProfile";
 import getChat from "../controllers/user/getChat";
+import fetchMessages from "../controllers/user/fetchMessages";
+import blockUser from "../controllers/user/blockUser";
 
 const router = Router();
 
@@ -38,17 +40,20 @@ router.put('/update-lifestyle', tokenValidation, checkBanned, updateLifestyle);
 router.put('/update-details', tokenValidation, checkBanned, updateDetails);
 router.put('/update-lookingfor', tokenValidation, checkBanned, updateLookingFor);
 router.put('/update-opento', tokenValidation, checkBanned, updateOpenTo);
-router.post('/upload-media', upload.single('file'), tokenValidation, uploadMedia);
-router.put('/reorder-media', tokenValidation, reorderMedia);
-router.put('/update-settings', tokenValidation, updateSettings);
-router.delete('/media/:filename', tokenValidation, removeMedia);
+router.post('/upload-media', upload.single('file'), tokenValidation, checkBanned, uploadMedia);
+router.put('/reorder-media', tokenValidation, checkBanned, reorderMedia);
+router.put('/update-settings', tokenValidation, checkBanned, updateSettings);
+router.delete('/media/:filename', tokenValidation, checkBanned, removeMedia);
 
-router.get('/get-profiles', tokenValidation, getProfiles);
-router.post('/like-profile', tokenValidation, likeProfile);
-router.post('/dislike-profile', tokenValidation, dislikeProfile);
-router.get('/get-profile/:username', tokenValidation, fetchProfile);
+router.get('/get-profiles', tokenValidation, checkBanned, getProfiles);
+router.post('/like-profile', tokenValidation, checkBanned, likeProfile);
+router.post('/dislike-profile', tokenValidation, checkBanned, dislikeProfile);
+router.get('/get-profile/:username', tokenValidation, checkBanned, fetchProfile);
 
-router.get('/get-matches', tokenValidation, fetchMatches);
-router.get('/get-chat/:username', tokenValidation, getChat);
+router.get('/get-matches', tokenValidation, checkBanned, fetchMatches);
+router.get('/get-messages', tokenValidation, checkBanned, fetchMessages);
+router.get('/get-chat/:username', tokenValidation, checkBanned, getChat);
+
+router.post('/block-user', tokenValidation, checkBanned, blockUser);
 
 export default router;

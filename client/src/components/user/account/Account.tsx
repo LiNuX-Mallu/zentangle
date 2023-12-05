@@ -29,7 +29,6 @@ export default function Account() {
                 setLoading(false);
             }
         }).catch(() => {
-            alert("Internal server error");
             navigate('/home');
         })
     }, [navigate]);

@@ -4,6 +4,7 @@
     padding: 1rem;
     padding-top: 3rem;
     overflow-x: hidden;
+    position: relative;
 }
 
 .table-container {
@@ -82,6 +83,16 @@
     padding-right: 10px;
     background-color: white;
     color: black;
+}
+
+.container .overlay {
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    right: auto;
+    width: 50%;
+    height: 80%;
+    z-index: 99;
 }
 
 

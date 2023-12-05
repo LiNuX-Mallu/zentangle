@@ -13,8 +13,8 @@ export default async (userId: string, username: string) => {
 
         if (chat) {
             const foundChat = await Chat.findById(chat?.chat);
-            return {chat: foundChat?.messages ?? [], profile, me, chatId: chat?.chat ?? null};
-        } else return {profile, chat: [], me, chatId: null};
+            return {chat: foundChat?.messages ?? [], profile, chatId: chat?.chat ?? null};
+        } else return {profile, chat: [], chatId: null};
     } catch(error) {
         throw new Error("Error at service/user/openChat\n"+error);
     }

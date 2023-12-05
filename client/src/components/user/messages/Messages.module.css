@@ -5,3 +5,57 @@
     color: white;
     overflow-y: scroll;
 }
+
+.messages .msg {
+    width: 100%;
+    background-color: rgba(129, 129, 129, 0.048);
+    height: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.068);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: 12px;
+    cursor: pointer;
+}
+
+.msg .propic {
+    flex: 0 0 auto;
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.171);
+}
+
+.propic img {
+    height: auto;
+    width: 100%;
+    object-fit: cover;
+    image-rendering: optimizeSpeed;
+    image-resolution: from-image;
+}
+
+.msg .name-msg {
+    padding-left: 10px;
+    padding-right: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+}
+
+.msg .name-msg span::first-letter {
+    text-transform: capitalize;
+}
+
+.name-msg .msg-time {
+    font-family: 'Niramit', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.548);
+    font-size: 14.5px;
+    align-items: center;
+}

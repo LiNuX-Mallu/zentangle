@@ -1,118 +1,22 @@
-import styles from './viewProfile.module.css';
-import { useEffect, useState } from 'react';
-import axios from '../../../instances/axios';
+import styles from './ViewUser.module.css';
+import { useState } from 'react';
 import { ProfileInterface } from '../../../instances/interfaces';
-import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
-import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     defaultProfile: ProfileInterface | null;
 }
 
-export default function ViewProfile({defaultProfile}: Props) {
-    const [loading, setLoading] = useState(true);
-    const [profile, setProfile] = useState<ProfileInterface | null>(defaultProfile);
+export default function ViewUser({defaultProfile}: Props) {
+    const [profile] = useState<ProfileInterface | null>(defaultProfile);
     const [imageIndex, setImageIndex] = useState(0);
-    const { username } = useParams();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        setLoading(false);
-        if (!username || profile) return;
-        axios.get(`/user/get-profile/${username}`).then(response => {
-            if (response.status === 200) {
-                setProfile(response?.data);
-            }
-        }).catch(() => {
-            alert("Internal server error");
-        }).finally(() => {
-            setLoading(false);
-        })
-    }, [username, profile]);
 
     const getAge = (dob: string) => {
         const current = new Date();
         const dateOfBirth = new Date(dob);
         return current.getFullYear() - dateOfBirth.getFullYear();
-    }
-
-    const handleLike = (isSuper: boolean) => {
-        if (!profile) return;
-        axios.post('/user/like-profile', {profileId: profile._id, isSuper}, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => {
-            if (response.status === 200) {
-                if (response.data.matched) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: "success",
-                        iconColor: "purple",
-                        background: 'black',
-                        color: 'white',
-                        title: "Congo, It's a match!",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    }).then(() => {
-                        setProfile(null);
-                        window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app');
-                    })
-                }
-            }
-        })
-        .catch(() => alert("Internal server error"));
-    };
-
-    const handleDislike = () => {
-        if (!profile) return;
-        axios.post('/user/dislike-profile', {profileId: profile._id}, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => {
-            if (response.status === 200) {
-                setProfile(null);
-                navigate('/app')
-                window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app');
-            }
-        })
-        .catch(() => alert("Internal server error"));
-    };
-
-    const handleBlock = async () => {
-        if (!username) return;
-        const swal = await Swal.fire({
-            text: `Are you sure want to block ${username}?`,
-            color: 'white',
-            icon: 'info',
-            backdrop: true,
-            background: 'black',
-            confirmButtonColor: 'orangered',
-            showCancelButton: true,
-            cancelButtonText: "No, don't block",
-            confirmButtonText: `Yes, block ${username}`,
-            cancelButtonColor: 'gray',
-            focusCancel: true,
-        });
-        if (!swal.isConfirmed) return;
-        axios.post('/user/block-user', {username}, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => {
-            if (response.status === 200) {
-                navigate('/app');
-            }
-        });
-    }
-
-    if (loading) {
-        return <Loading />
     }
 
     return (
@@ -234,49 +138,8 @@ export default function ViewProfile({defaultProfile}: Props) {
                         })}
                     </div>
                 </div>
-                <hr />
             </>: ''}
-
-            {/* unmatch */}
-            {profile && profile.matched === true &&
-            <> 
-                <div className={styles.options}>
-                    <div>
-                        <h4>Unmatch {profile?.profile?.name}</h4>
-                        <p>No longer friends</p>
-                    </div>
-                </div>
-                <hr />
-            </>
-            }
-
-            {/* block */}
-            <div onClick={handleBlock} className={styles.options}>
-                <div>
-                    <h4>Block {profile?.profile?.name}</h4>
-                    <p>You won't see them, they won't see you.</p>
-                </div>
-            </div>
-            <hr />
-
-            {/* report */}
-            <div className={styles.options}>
-                <div>
-                    <h4>Report {profile?.profile?.name}</h4>
-                    <p>Don't worry we won't tell them.</p>
-                </div>
-            </div>
-            <div className={`${!profile?.matched ? 'p-5' : 'p-4'}`}></div>
-            {profile && (!profile.matched || (!profile.liked && !profile.matched)) && 
-            <div className={styles.belowbar}>
-                <i onClick={handleDislike} style={{color: 'lightsalmon'}} className="fa-solid fa-thumbs-down"></i>
-                <i onClick={() => handleLike(false)} style={{color: 'cornflowerblue'}} className="fa-solid fa-thumbs-up"></i>
-                <i onClick={() => handleLike(true)} style={{color: 'violet'}} className="fa-solid fa-heart-circle-bolt"></i>
-            </div>}
-            {(profile && profile.matched) ? <div onClick={() => navigate(`/app/chat/${profile.username}`)} className={styles['belowbar']}>
-                <span className={styles['send-message']}>Send message</span>
-            </div>: ''}
-            
+            <div className='p-3'></div>
         </div>
     )
 }

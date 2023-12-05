@@ -18,7 +18,6 @@ export default function AccountBig() {
                 setProfileDetails(response.data);
             }
         }).catch(() => {
-            alert("Internal server error");
             navigate('/home');
         }).finally(() => {
             setLoading(false);

@@ -22,8 +22,7 @@ export default function Profile() {
             if (response.status === 200) {
                 setProfiles(response?.data as ProfileInterface[]);
             }
-        })
-        .catch(() => alert("Internal server error"));
+        });
     }, [profiles]);
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
@@ -128,8 +127,7 @@ export default function Profile() {
                     setProfiles([]);
                 }
             }
-        })
-        .catch(() => alert("Internal server error"));
+        });
     };
 
     const handleDislike = () => {
@@ -148,8 +146,7 @@ export default function Profile() {
                     setProfiles([]);
                 }
             }
-        })
-        .catch(() => alert("Internal server error"));
+        });
     };
 
     if (!profiles || profiles.length === 0) {
@@ -181,7 +178,7 @@ export default function Profile() {
                     {profiles && profiles[userIndex]?.profile?.livingIn && imageIndex === 0 &&
                         <>
                         <span className={styles.living}><i className="fa-solid fa-house"></i> Lives in {profiles[userIndex].profile.livingIn}</span>
-                        {profiles && profiles[userIndex]?.distance && <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profiles[userIndex]?.distance} kilometers away</span>}
+                        {profiles && profiles[userIndex] && (profiles[userIndex]?.distance !== null && profiles[userIndex]?.distance !== undefined) && <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profiles[userIndex]?.distance} kilometers away</span>}
                         </>
                     }
                     {imageIndex === 1 &&

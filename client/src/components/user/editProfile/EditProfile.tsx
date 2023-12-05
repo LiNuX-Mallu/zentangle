@@ -14,6 +14,7 @@ import Lifestyle from './childComponents/lifestyle/Lifestyle';
 import LookingFor from './childComponents/lookingFor/LookingFor';
 import OpenTo from './childComponents/openTo/OpenTo';
 import { ApiUrl } from '../../../instances/urls';
+import Swal from 'sweetalert2';
 
 export default function EditProfile() {
     const [loading, setLoading] = useState(true);
@@ -60,7 +61,6 @@ export default function EditProfile() {
                 setMedias(response?.data?.profile?.medias ? response?.data?.profile?.medias : []);
             }
         }).catch(() => {
-            alert("Internal server error");
             navigate('/home');
         }).finally(() => {
             setLoading(false);
@@ -105,8 +105,6 @@ export default function EditProfile() {
             if (response.status === 200) {
                 return navigate('/app/account');
             }
-        }).catch(() => {
-            alert('Internal server error');
         }).finally(() => setLoading(false));
     };
 
@@ -118,14 +116,21 @@ export default function EditProfile() {
             }
         }).then((response) => {
             setMedias(response.data);
-        }).catch(() => alert("Internal server error"))
+        });
     };
 
     const handleRemoveMedia = (media: string) => {
+        if (medias.length === 1) {
+            Swal.fire({
+                title: "Cannot remove media",
+                text: "Should keep atleast one image",
+                icon: "info",
+            });
+            return;
+        }
         setLoading(true);
         axios.delete(`/user/media/${media}`)
         .then(response => setMedias(response.data))
-        .catch(() => alert("Internal server errror"))
         .finally(() => setLoading(false));
     }
 

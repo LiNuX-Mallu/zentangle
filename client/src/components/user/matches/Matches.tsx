@@ -23,7 +23,6 @@ export default function Matches() {
                 setMatches(response?.data);
             }
         })
-        .catch(() => alert("Internal server error"));
     }, []);
     
     return (

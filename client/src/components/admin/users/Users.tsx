@@ -3,10 +3,12 @@ import styles from './Users.module.css';
 import { ProfileInterface } from '../../../instances/interfaces';
 import axios from '../../../instances/axios';
 import Swal from 'sweetalert2';
+import ViewUser from '../viewUser/ViewUser';
 
 export default function Users() {
     const [data, setData] = useState<ProfileInterface[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [viewProfile, setViewProfile] = useState<ProfileInterface | null>(null)
 
     useEffect(() => {
         axios.get(`/admin/get-users/${currentPage}`)
@@ -57,7 +59,16 @@ export default function Users() {
     }
 
     return (
-        <div className={styles.container}>
+        <div onClick={() => {
+            if (viewProfile) {
+                setViewProfile(null);
+            }
+        }} className={styles.container}>
+            {viewProfile !== null &&
+                <div onClick={(e) => e.stopPropagation()} className={styles.overlay}>
+                    <ViewUser defaultProfile={viewProfile} />
+                </div>
+            }
             <div className={styles['table-container']}>
                 <table className={styles.data}>
                     <thead>
@@ -77,7 +88,7 @@ export default function Users() {
                                     <td>{user.email.email}</td>
                                     <td className={styles['action-body']}>
                                         <button onClick={() => handleBan(user.username, user.banned)} style={{backgroundColor: user.banned ? 'green' : ''}}>{user.banned ? 'Unban' : 'Ban'}</button>
-                                        <button style={{backgroundColor: 'gray'}}>View</button>
+                                        <button onClick={() => setViewProfile(user)} style={{backgroundColor: 'gray'}}>View</button>
                                     </td>
                                 </tr>
                             )

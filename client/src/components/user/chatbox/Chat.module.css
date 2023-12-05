@@ -16,7 +16,7 @@
     height: 7vh;
     background-color: rgb(37, 37, 37);
     box-sizing: border-box;
-    z-index: 99;
+    z-index: 100;
     display: flex;
     flex-direction: ROW;
     align-items: center;
@@ -105,6 +105,7 @@
     width: 170px;
     border-radius: 50%;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .profile .profile-pic img {
@@ -119,6 +120,7 @@
     padding-top: 10px;
     color: rgba(255, 255, 255, 0.884);
     font-size: 23px;
+    cursor: pointer;
 }
 
 .profile p {
@@ -145,18 +147,18 @@
 .msg p {
     align-self: flex-start;
     max-width: 40%;
-    padding: 5px;
+    padding: 3px;
     padding-right: 10px;
     padding-left: 10px;
     border-radius: 5px;
     background-color: purple;
     font-family: 'Niramit', sans-serif;
-    color: rgb(235, 235, 235);
+    color: rgb(238, 238, 238);
     display: flex;
-    justify-content: space-around;
-    align-items: end;
-    gap: 20px;
-    white-space: pre-wrap;
+    align-items: flex-start;
+    flex-direction: column;
+    line-break: anywhere;
+    font-size: 16px;
 }
 
 .msg .send {
@@ -170,9 +172,12 @@
 }
 
 .msg .time {
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.527);
+    font-size: 11px;
+    align-self: flex-end;
     white-space: nowrap !important;
     font-family: Arial, Helvetica, sans-serif;
+    padding-left: 20px;
 }
 
 .msg .typing i {

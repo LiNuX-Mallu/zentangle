@@ -9,6 +9,7 @@ import { Server, Socket } from "socket.io";
 import http from 'http';
 import { MessageInterface } from './src/interfaces/messageInterface';
 import saveMessage from './src/services/user/saveMessage';
+import user from './src/models/user';
 
 
 dotenv.config();
@@ -55,29 +56,46 @@ const io = new Server(server, {
 
 //chat configuration
 io.on('connection', async (socket: Socket) => {
-    socket.on('joinChat', (username) => {
+    socket.on('joinApp', (username: string) => {
         socket.join(username);
     });
-    socket.on('leaveChat', (username) => {
+    socket.on('leaveApp', (username: string) => {
         socket.leave(username);
+    });
+
+    socket.on('joinChat', (name: string) => {
+        socket.join(name);
+    });
+    socket.on('leaveChat', (name: string) => {
+        socket.leave(name);
+    });
+
+    socket.on('requestVideoCall', (data: {from: string, to: string}) => {
+        io.to(data.to).emit('receiveVideoCallRequest', data.from);
+    }); 
+    socket.on('rejectVideoCall', (data: {from: string, to: string}) => {
+        io.to(data?.to+data?.from).emit('receiveVideoCallRejection', data?.from)
+    })
+    socket.on('sendEndCallRequest', (data: {from: string, to: string}) => {
+        io.to(data?.to).emit('receiveEndCallRequest', data?.from);
     })
 
     socket.on('sendMessage', (message: {message: MessageInterface, to: string, chatId: string | null}) => {
-        io.to(message.to).emit('receiveMessage', message.message);
+        io.to(message.to+message?.message?.sender).emit('receiveMessage', message.message);
         try {
             saveMessage(message?.chatId, message?.message?.sender, message?.to, message.message)
             .then((res: string | null | undefined) => {
                 if (res) {
-                    io.to(message?.message?.sender).emit('receiveChatId', res);
-                    io.to(message?.to).emit('receiveChatId', res);
+                    io.to(message?.message?.sender+message?.to).emit('receiveChatId', res);
+                    io.to(message?.to+message?.message?.sender).emit('receiveChatId', res);
                 }
             });
         } catch(error) {
             console.error(error);
         }
     });
-    socket.on('typing', (data: {username: string, flag: boolean}) => {
-        io.to(data.username).emit('isTyping', data.flag);
+    socket.on('typing', (data: {username: string, me: string, flag: boolean}) => {
+        io.to(data?.username+data?.me).emit('isTyping', data.flag);
     });
 });
 ////////////////////////////////////////////////

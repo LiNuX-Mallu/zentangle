@@ -13,7 +13,7 @@ export default async (userId: string, username: string) => {
         const user = await User.findById(userId);
         const profile = await User.findOne({
             username,
-            'blocked.users': {$nin: [userId]},
+            'blocked.users': {$nin: [user?.username]},
             'blocked.contacts': {$nin : [user?.phone?.phone]},
         }, {
             match: 0,

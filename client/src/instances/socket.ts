@@ -4,6 +4,6 @@ import { server } from "./urls";
 const url = server;
 
 export const socket = io(url, {
-    autoConnect: false,
+    autoConnect: true,
     withCredentials: true,
 });

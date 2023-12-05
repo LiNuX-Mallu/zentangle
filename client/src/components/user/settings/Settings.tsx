@@ -30,7 +30,7 @@ export default function Settings() {
     const [global, setGlobal] = useState(true);
     const [discovery, setDiscovery] = useState(true);
     const [incognitoMode, setIncognitoMode] = useState(false);
-    const [recentActiveStatus, setRecentActiveStatus] = useState(true);
+    //const [recentActiveStatus, setRecentActiveStatus] = useState(true);
     const [showAge, setShowAge] = useState(true);
     const [showDistance, setShowDistance] = useState(true);
     const [verfiedMessagesOnly, setVerifiedMessagesOnly] = useState(false);
@@ -51,7 +51,7 @@ export default function Settings() {
             if (response.status === 200) {
                 setLocality(response?.data?.locality+', '+response?.data?.city);
             }
-        }).catch((error) => console.log(error));
+        })
 
         // Profile details
         axios.get('/user/get-details')
@@ -69,7 +69,7 @@ export default function Settings() {
                 setShowDistance(response?.data?.privacy?.showDistance);
                 setVerifiedMessagesOnly(response?.data?.privacy?.verifiedMessagesOnly);
                 setReadReceipt(response?.data?.privacy?.readReceipt);
-                setRecentActiveStatus(response?.data?.privacy?.recentActiveStatus);
+                //setRecentActiveStatus(response?.data?.privacy?.recentActiveStatus);
             }
         })
         .catch(() => alert("Internal server error"))
@@ -85,7 +85,6 @@ export default function Settings() {
                 'Content-Type': 'application/json',
             }
         }).catch(() => {
-            alert('Internal server error');
             setDistance(temp);
         });
     }
@@ -96,8 +95,6 @@ export default function Settings() {
             headers: {
                 'Content-Type': 'application/json',
             }
-        }).catch(() => {
-            alert('Internal server error');
         });
     };
 
@@ -107,8 +104,6 @@ export default function Settings() {
             headers: {
                 'Content-Type': 'application/json',
             }
-        }).catch(() => {
-            alert('Internal server error');
         })
     }
 
@@ -173,7 +168,7 @@ export default function Settings() {
                             step={1}
                             minValue={minAge}
                             maxValue={maxAge}
-                            onInput={(e: ChangeResult) => {
+                            onChange={(e: ChangeResult) => {
                                 setMinAge(e.minValue);
                                 setMaxAge(e.maxValue);
                                 updateAgePreference(e.minValue, e.maxValue);
@@ -228,13 +223,13 @@ export default function Settings() {
                     <span>blocked contacts</span>
                     <span>{rightIcon}</span>
                 </div>
-                <div className={styles.option}>
+                {/* <div className={styles.option}>
                     <span>Recently active status</span>
                     <label className={toggle.switch}>
                         <input checked={recentActiveStatus} onChange={(e) => {setRecentActiveStatus(e.target.checked); updateToggle('recentActiveStatus', e.target.checked)}} type="checkbox" />
                         <span className={toggle.slider}></span>
                     </label>
-                </div>
+                </div> */}
                 <div className={styles.option}>
                     <span>Show my Age in profile</span>
                     <label className={toggle.switch}>
@@ -256,7 +251,7 @@ export default function Settings() {
                 <h5>Web profile</h5>
                 <div className={styles.option}>
                     <span>username</span>
-                    <span>{rightIcon}</span>
+                    <span>{user?.username}</span>
                 </div>
                 <div className={styles.option}>
                     <span>Share My URL</span>

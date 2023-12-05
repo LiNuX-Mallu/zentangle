@@ -21,6 +21,9 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Messages from '../../../components/user/messages/Messages';
 import Chat from '../../../components/user/chatbox/Chat';
+import { setUsername } from '../../../redux/actions/usernameActions';
+import { socket } from '../../../instances/socket';
+import Swal from 'sweetalert2';
 
 interface Props {
     defaultSpace: string | null;
@@ -35,6 +38,9 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {username} = useParams();
+    const [myUsername, setMyUsername] = useState<string | undefined>();
+    const socketConnected = socket.connected;
+    const [incommingCall, setIncommingCall] = useState<string | null>(null);
 
     useEffect(() => {
         setSpace(defaultSpace || 'home');
@@ -42,17 +48,73 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     }, [defaultSpace, defaultMessage]);
 
     useEffect(() => {
+        axios.get('/user/get-details').then((response) => {
+            if (response.status === 200 && response?.data?.username) {
+                dispatch(setUsername(response?.data?.username));
+                setMyUsername(response?.data?.username)
+            }
+        });
         if (latitude !== null && longitude !== null && !error) {
             dispatch(setLocation({latitude, longitude}));
             axios.put('user/update-settings',{where: 'location', what: [longitude, latitude]}, {
                 headers: {
                     'Content-Type': "application/json",
                 }
-            }).catch(() => alert("Internal server error"));
+            })
         }
         const timeout = setTimeout(() => setLoading(false), 2000);
-        return () => clearTimeout(timeout);
+        return () => {
+            clearTimeout(timeout);
+        };
     }, [latitude, longitude, error, dispatch]);
+
+    useEffect(() => {
+        if (!socketConnected || !myUsername) return;
+
+        function onReceiveVideoCallRequest(from: string) {
+            setIncommingCall(from);
+        }
+        function endCall(from: string) {
+            if (from === incommingCall) {
+                setIncommingCall(null);
+            }
+        }
+
+        socket.emit('joinApp', myUsername);
+        socket.on('receiveVideoCallRequest', onReceiveVideoCallRequest)
+        socket.on('receiveEndCallRequest', endCall);
+
+        return () => {
+            socket.off('receiveVideoCallRequest', onReceiveVideoCallRequest);
+            socket.off('receiveEndCallRequest', endCall);
+            socket.emit('leaveApp', myUsername);
+        }
+    }, [myUsername, socketConnected, incommingCall]);
+
+    useEffect(() => {
+        if (incommingCall !== null) {
+             Swal.fire({
+                title: `${incommingCall}`,
+                text: 'Incomming video call',
+                backdrop: true,
+                background: 'black',
+                iconHtml: `<i class="fa-solid fa-phone fa-beat-fade"></i>`,
+                iconColor: 'yellowgreen',
+                showCancelButton: true,
+                confirmButtonText: 'Accept',
+                cancelButtonText: 'Reject',
+                cancelButtonColor: 'orangered',
+                confirmButtonColor: 'green',
+            }).then(res => {
+                if (!res.isConfirmed) {
+                    socket.emit('rejectVideoCall', {from: myUsername, to: incommingCall});
+                    setIncommingCall(null);
+                }
+            })
+        } else {
+            Swal.close();
+        }
+    }, [incommingCall, myUsername]);
 
     if (loading) {
         return <Loading />

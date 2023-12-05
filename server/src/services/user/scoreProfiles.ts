@@ -42,10 +42,17 @@ export default async (userId: string) => {
         let profiles = await User.find({
             _id: {$ne: userId},
             'match.matched.with': {$nin: [userId]},
-            'match.liked.likedBy': {$nin : [userId]},
-            'match.disliked': {$nin: [userId]},
-            'blocked.users': {$nin: [userId]},
-            'blocked.contacts': {$nin : [user.phone?.phone]},
+            //'match.liked.likedBy': {$nin : [userId]},
+            'match.disliked': {$nin: [userId]},    
+            $nor: [
+                //user block
+                {'blocked.users': {$in: [user?.username]}},
+                {'username': {$in: user?.blocked?.users ?? []}},
+                
+                //contact block
+                {'blocked.contacts': {$in : [user?.phone?.phone]}},
+                {'phone.phone': {$in: user?.blocked?.contacts ?? []}},
+            ],
             ...ageRangeQuery,
             'location.coordinates': {$exists: true, $ne: null},
             ...distanceQuery,
