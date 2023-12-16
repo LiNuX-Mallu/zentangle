@@ -1,0 +1,129 @@
+.preview {
+    background-color: rgb(24, 24, 24);
+    width: 100%;
+    height: 100vh;
+    display: block;
+    border-radius: 1rem;
+    color: white;
+    font-size: medium;
+    cursor: pointer;
+    padding: 4%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    position: relative;
+    user-select: none;
+}
+
+.preview .back-icon {
+    position: absolute;
+    z-index: 99;
+    margin-top: 12px;
+    margin-left: 12px;
+    color: rgba(255, 255, 255, 0.87);
+    font-size: 25px;
+}
+
+.details {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+}
+
+.belowbar {
+    background-color: black;
+    height: 12%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.belowbar i {
+    font-size: 25px;
+    border: 1px solid white;
+    border-radius: 50%;
+    padding: 10px;
+    transition: transform .2s;
+}
+
+.belowbar i:hover, .belowbar i:active {
+    transform: scale(1.2) !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+
+.right-click, .left-click {
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.849);
+    position: absolute;
+    font-size: 30px;
+    color: aliceblue;
+    top: 45%;
+}
+
+.right-click { 
+    right: 12px;
+}
+
+.left-click {
+    left: 12px;
+}
+
+.other-details {
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    padding-bottom: 20px;
+}
+.name {
+    font-weight: 600;
+    text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.849);
+}
+.age {
+    font-weight: 200;
+}
+.bio {
+    white-space: pre-wrap;
+}
+
+.other-details .items {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+}
+
+.other-details .items span {
+    border: 1px solid white;
+    background-color: rgba(70, 70, 70, 0.767);
+    color: white;
+    border-radius: 15px;
+    padding: 2px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.other-details .items span  i {
+    font-size: small;
+}
+
+.other-details .distance {
+    opacity: 90%;
+    display: block;
+    font-family: sans-serif;
+    margin-top: 10px;
+}

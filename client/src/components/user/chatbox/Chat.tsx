@@ -10,6 +10,7 @@ import { Message } from '../../../instances/interfaces';
 import { useSelector } from 'react-redux';
 import { getUsername } from '../../../redux/actions/usernameActions';
 import Swal from 'sweetalert2';
+import VideoCall from '../videoCall/VideoCall';
 
 export default function Chat() {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function Chat() {
     const [chat, setChat] = useState<Message[]>([]);
     const [chatId, setChatId] = useState<string | null>(null);
     const [isTyping, setIsTyping] = useState(false);
+    const [inVideoCall, setInVideoCall] = useState<string | null>(null);
     const [inputMessage, setInputMessage] = useState('');
     const socketConnected = socket.connected;
 
@@ -49,10 +51,30 @@ export default function Chat() {
         }
     }, [myUsername, username, socketConnected]);
 
+    useEffect(() => {
+        function callEnd(from: string) {
+            if (inVideoCall === from) {
+                setInVideoCall(null);
+                Swal.fire({
+                    text: 'Call Ended',
+                    backdrop: true,
+                    background: 'black',
+                    iconHtml: `<i class="fa-solid fa-phone"></i>`,
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                });
+            }
+        }
+        if (inVideoCall) {
+            socket.on('receiveEndCall', callEnd);
+        } else socket.off('receiveEndCall', callEnd);
+
+    }, [inVideoCall]);
+
     const doVideoCall = () => {
         if (!username || !myUsername || !socketConnected) return;
-        function onRecieveVideoCallRejection(from: string) {
-            socket.off('receiveVideoCallRejection', onRecieveVideoCallRejection);
+        function onReceiveVideoCallRejection(from: string) {
+            socket.off('receiveVideoCallRejection', onReceiveVideoCallRejection);
             Swal.fire({
                 title: `${from}`,
                 text: 'Call rejected',
@@ -64,8 +86,16 @@ export default function Chat() {
             });
         }
 
+        function onReceiveVideoCallAcceptance(from: string) {
+            if (from !== username) return;
+            socket.off('receiveVideoCallAcceptance', onReceiveVideoCallAcceptance);
+            Swal.close();
+            setInVideoCall(username);
+        }
+
         socket.emit('requestVideoCall', {from: myUsername, to: username});
-        socket.on('receiveVideoCallRejection', onRecieveVideoCallRejection);
+        socket.on('receiveVideoCallRejection', onReceiveVideoCallRejection);
+        socket.on('receiveVideoCallAcceptance', onReceiveVideoCallAcceptance);
         Swal.fire({
             title: `${username}`,
             backdrop: true,
@@ -80,8 +110,8 @@ export default function Chat() {
             allowOutsideClick: false,
         }).then(response => {
             if (!response.isConfirmed) {
-                socket.off('receiveVideoCallRejection', onRecieveVideoCallRejection);
-                socket.emit('sendEndCallRequest', {from: myUsername, to: username});
+                socket.off('receiveVideoCallRejection', onReceiveVideoCallRejection);
+                socket.emit('sendStopCall', {from: myUsername, to: username});
             }
         });
     }
@@ -139,8 +169,10 @@ export default function Chat() {
         }).format(timestamp);
     };
 
-    if (!username || !profile) return <Loading />
+    if (!username || !profile || !myUsername) return <Loading />
     return (
+        <>
+        {inVideoCall !== null && <VideoCall username={username} myUsername={myUsername} setInVideoCall={setInVideoCall} />}
         <div ref={chatRef} className={styles.chat}>
             <div className={styles['wrap-content']}>
                 {profile !== undefined &&
@@ -180,5 +212,6 @@ export default function Chat() {
                 <span onClick={handleSendMessage}>Send</span>
             </div>
         </div>
+        </>
     )
 }

@@ -15,7 +15,16 @@ export default async (userId: string) => {
             }
         }));
 
-        return chatHistory.reverse() ?? [];
+        chatHistory.sort((a, b) => {
+            const timeA = a.lastMessage?.timestamp?.getTime();
+            const timeB = b.lastMessage?.timestamp?.getTime();
+            if (timeA && timeB) {
+              return timeB - timeA;
+            }
+            return 0;
+        })
+        
+        return chatHistory ?? [];
     } catch(error) {
         throw new Error("Error at service/user/getMessages\n"+error);
     }

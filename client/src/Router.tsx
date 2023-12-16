@@ -13,6 +13,7 @@ export default function AppRouter() {
         <Route path='/home' element={<Home />} />
         <Route path='/app' element={<App defaultSpace={null} />} />
         <Route path='/app/view-profile/:username' element={<App defaultSpace='view-profile' />} />
+        <Route path='/app/view-blocked-profile/:username' element={<App defaultSpace='view-blocked-profile' />} />
         <Route path='/app/account' element={<App defaultSpace='account' /> } />
         <Route path='/app/explore' element={<App defaultSpace='explore' /> } />
         <Route path='/app/messages' element={<App defaultSpace='messages' /> } />

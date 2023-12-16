@@ -9,8 +9,6 @@ import { Server, Socket } from "socket.io";
 import http from 'http';
 import { MessageInterface } from './src/interfaces/messageInterface';
 import saveMessage from './src/services/user/saveMessage';
-import user from './src/models/user';
-
 
 dotenv.config();
 let {MONGO_URI, PORT, HOST, CLIENT_HOST, CLIENT_PORT} = process.env;
@@ -30,8 +28,6 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use('/api', router);
-
 declare namespace NodeJS {
     interface ProcessEnv {
       PORT: number;
@@ -41,6 +37,8 @@ declare namespace NodeJS {
 }
 
 const server = http.createServer(app);
+
+app.use('/api', router);
 
 //socket io
 const io = new Server(server, {
@@ -54,7 +52,7 @@ const io = new Server(server, {
 });
 
 
-//chat configuration
+//chat and video configuration
 io.on('connection', async (socket: Socket) => {
     socket.on('joinApp', (username: string) => {
         socket.join(username);
@@ -70,16 +68,35 @@ io.on('connection', async (socket: Socket) => {
         socket.leave(name);
     });
 
+    //video call
     socket.on('requestVideoCall', (data: {from: string, to: string}) => {
         io.to(data.to).emit('receiveVideoCallRequest', data.from);
     }); 
     socket.on('rejectVideoCall', (data: {from: string, to: string}) => {
         io.to(data?.to+data?.from).emit('receiveVideoCallRejection', data?.from)
-    })
-    socket.on('sendEndCallRequest', (data: {from: string, to: string}) => {
-        io.to(data?.to).emit('receiveEndCallRequest', data?.from);
-    })
+    });
+    socket.on('acceptVideoCall', (data: {from: string, to: string}) => {
+        io.to(data.to).emit('receiveVideoCallAcceptance', data?.from);
+    });
+    socket.on('sendStopCall', (data: {from: string, to: string}) => {
+        io.to(data?.to).emit('receiveStopCall', data?.from);
+    });
+    socket.on('sendEndCall', (data: {from: string, to: string}) => {
+        io.to(data?.to).emit('receiveEndCall', data?.from);
+    });
 
+    interface Data {
+        offer?: RTCSessionDescription;
+        answer?: RTCSessionDescription;
+        candidate?: RTCIceCandidate;
+        to: string;
+    }
+
+    socket.on('sendSignal', (data: Data) => {
+        io.to(data.to).emit('receiveSignal', data);
+    });
+
+    //messaging
     socket.on('sendMessage', (message: {message: MessageInterface, to: string, chatId: string | null}) => {
         io.to(message.to+message?.message?.sender).emit('receiveMessage', message.message);
         try {
@@ -98,7 +115,6 @@ io.on('connection', async (socket: Socket) => {
         io.to(data?.username+data?.me).emit('isTyping', data.flag);
     });
 });
-////////////////////////////////////////////////
 
 
 mongoConnect(MONGO_URI!).then(() => {

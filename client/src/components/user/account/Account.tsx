@@ -7,8 +7,11 @@ import { ProfileInterface } from '../../../instances/interfaces';
 import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
 
+interface Props {
+    setSpace: React.Dispatch<React.SetStateAction<string>>;
+}
 
-export default function Account() {
+export default function Account({setSpace}: Props) {
     const [percentage, setPercentage] = useState(0);
     const navigate = useNavigate();
     const [profileDetails, setProfileDetails] = useState<ProfileInterface>();
@@ -65,10 +68,11 @@ export default function Account() {
                     <i className="fa-solid fa-user-pen"></i>
                     <span>Edit details</span>
                 </div>
-                <div className={styles.icon}>
+                <div onClick={() => setSpace('preview')} className={styles.icon}>
                     <i className="fa-solid fa-mobile"></i>
                     <span>Preview</span>
                 </div>
+
             </div>
         </div>
     )

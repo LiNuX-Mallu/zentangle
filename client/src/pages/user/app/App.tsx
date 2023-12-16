@@ -24,6 +24,8 @@ import Chat from '../../../components/user/chatbox/Chat';
 import { setUsername } from '../../../redux/actions/usernameActions';
 import { socket } from '../../../instances/socket';
 import Swal from 'sweetalert2';
+import VideoCall from '../../../components/user/videoCall/VideoCall';
+import Preview from '../../../components/user/preview/Preview';
 
 interface Props {
     defaultSpace: string | null;
@@ -41,6 +43,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     const [myUsername, setMyUsername] = useState<string | undefined>();
     const socketConnected = socket.connected;
     const [incommingCall, setIncommingCall] = useState<string | null>(null);
+    const [inVideoCall, setInVideoCall] = useState<string | null>(null);
 
     useEffect(() => {
         setSpace(defaultSpace || 'home');
@@ -74,22 +77,42 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
         function onReceiveVideoCallRequest(from: string) {
             setIncommingCall(from);
         }
-        function endCall(from: string) {
+        function stopCall(from: string) {
             if (from === incommingCall) {
                 setIncommingCall(null);
             }
         }
+        function endCall(from: string) {
+            if (from === inVideoCall) {
+                setInVideoCall(null);
+                Swal.fire({
+                    text: 'Call Ended',
+                    backdrop: true,
+                    background: 'black',
+                    iconHtml: `<i class="fa-solid fa-phone"></i>`,
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                });
+            }
+        }
 
         socket.emit('joinApp', myUsername);
-        socket.on('receiveVideoCallRequest', onReceiveVideoCallRequest)
-        socket.on('receiveEndCallRequest', endCall);
+        socket.on('receiveVideoCallRequest', onReceiveVideoCallRequest);
+
+        if (incommingCall) {
+            socket.on('receiveStopCall', stopCall);
+        } else socket.off('receiveStopCall', stopCall);
+
+        if (inVideoCall) {
+            socket.on('receiveEndCall', endCall);
+        } else socket.off('receiveEndCall', endCall);
 
         return () => {
             socket.off('receiveVideoCallRequest', onReceiveVideoCallRequest);
-            socket.off('receiveEndCallRequest', endCall);
+            socket.off('receiveStopCall', stopCall);
             socket.emit('leaveApp', myUsername);
         }
-    }, [myUsername, socketConnected, incommingCall]);
+    }, [myUsername, socketConnected, incommingCall, inVideoCall]);
 
     useEffect(() => {
         if (incommingCall !== null) {
@@ -109,18 +132,25 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                 if (!res.isConfirmed) {
                     socket.emit('rejectVideoCall', {from: myUsername, to: incommingCall});
                     setIncommingCall(null);
+                } else {
+                    socket.emit('acceptVideoCall', {from: myUsername, to: incommingCall});
+                    setInVideoCall(incommingCall);
+                    setIncommingCall(null);
                 }
-            })
+            });
         } else {
             Swal.close();
         }
-    }, [incommingCall, myUsername]);
+    }, [incommingCall, myUsername, username]);
 
-    if (loading) {
+    if (loading || !myUsername) {
         return <Loading />
     }
 
     return(
+        <>
+        {inVideoCall !== null && <VideoCall myUsername={myUsername} username={inVideoCall} setInVideoCall={setInVideoCall} /> }
+
         <div key={username} className="app container-fluid">
             {(space === 'home' || space === 'account') &&
             <div className='brand-app'>
@@ -129,13 +159,15 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
             </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile'].includes(space) ? 'edit-active' : ''}`}>
+                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview'].includes(space) ? 'edit-active' : ''}`}>
                     {space === 'home' && <Profile />}
-                    {space === 'account' && window.innerWidth <= 768 && <Account />}
+                    {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
+                    {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
                     {space === 'account' && window.innerWidth > 768 && <AccountBig />}
                     {space === 'settings' && <Settings />}
                     {space === 'edit-profile' && <Edit />}
                     {space === 'view-profile' && <ViewProfile defaultProfile={null} />}
+                    {space === 'view-blocked-profile' && <ViewProfile defaultProfile={null} blocked={true} />}
                     {space === 'matches' && window.innerWidth <= 768 && <Matches />}
                     {space === 'messages' && window.innerWidth <= 768 && <Messages /> }
                     {space === 'chat' && <Chat /> }
@@ -170,5 +202,6 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                 }
             </div>
         </div>
+        </>
     )
 }

@@ -14,6 +14,7 @@ import EditPhone from './childComponents/editPhone/EditPhone';
 import MultiRangeSlider, { ChangeResult } from 'multi-range-slider-react';
 import './extra/multiSlider.css';
 import EditPassword from './childComponents/editPassword/EditPassword';
+import BlockedUsers from './childComponents/blockedUsers/blockedUsers';
 
 
 export default function Settings() {
@@ -215,11 +216,11 @@ export default function Settings() {
             {/* privacy settings */}
             <div className={styles.division}>
                 <h5>Privacy settings</h5>
-                <div className={styles.option}>
+                <div onClick={() => setEditSpace('blockedUsers')} className={styles.option}>
                     <span>blocked users</span>
                     <span>{rightIcon}</span>
                 </div>
-                <div className={styles.option}>
+                <div onClick={() => setEditSpace('blockedContacts')} className={styles.option}>
                     <span>blocked contacts</span>
                     <span>{rightIcon}</span>
                 </div>
@@ -299,6 +300,7 @@ export default function Settings() {
                 {editSpace === 'email' && user?.email?.email && <EditEmail email={user?.email?.email} />}
                 {editSpace === 'phone' && user?.phone?.phone && <EditPhone phone={user?.phone?.phone} /> }
                 {editSpace === 'password' && user?.password && <EditPassword password={user?.password} /> }
+                {editSpace === 'blockedUsers' && <BlockedUsers /> }
             </div>
             }
         </div>

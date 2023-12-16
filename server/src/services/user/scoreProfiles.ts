@@ -42,7 +42,7 @@ export default async (userId: string) => {
         let profiles = await User.find({
             _id: {$ne: userId},
             'match.matched.with': {$nin: [userId]},
-            //'match.liked.likedBy': {$nin : [userId]},
+            'match.liked.likedBy': {$nin : [userId]},
             'match.disliked': {$nin: [userId]},    
             $nor: [
                 //user block

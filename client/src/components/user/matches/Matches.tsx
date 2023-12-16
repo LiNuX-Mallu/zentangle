@@ -24,6 +24,10 @@ export default function Matches() {
             }
         })
     }, []);
+
+    if (matches.length === 0) {
+        return <div className='d-flex justify-content-center h-100 text-white pt-5'>Start maching to get matches</div>
+    }
     
     return (
         <div className={styles.matches}>

@@ -9,9 +9,10 @@ import Swal from 'sweetalert2';
 
 interface Props {
     defaultProfile: ProfileInterface | null;
+    blocked?: boolean,
 }
 
-export default function ViewProfile({defaultProfile}: Props) {
+export default function ViewProfile({defaultProfile, blocked = false}: Props) {
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<ProfileInterface | null>(defaultProfile);
     const [imageIndex, setImageIndex] = useState(0);
@@ -251,13 +252,15 @@ export default function ViewProfile({defaultProfile}: Props) {
             }
 
             {/* block */}
-            <div onClick={handleBlock} className={styles.options}>
-                <div>
-                    <h4>Block {profile?.profile?.name}</h4>
-                    <p>You won't see them, they won't see you.</p>
+            {blocked === false && <>
+                <div onClick={handleBlock} className={styles.options}>
+                    <div>
+                        <h4>Block {profile?.profile?.name}</h4>
+                        <p>You won't see them, they won't see you.</p>
+                    </div>
                 </div>
-            </div>
-            <hr />
+                <hr />
+            </>}
 
             {/* report */}
             <div className={styles.options}>
@@ -266,8 +269,9 @@ export default function ViewProfile({defaultProfile}: Props) {
                     <p>Don't worry we won't tell them.</p>
                 </div>
             </div>
-            <div className={`${!profile?.matched ? 'p-5' : 'p-4'}`}></div>
-            {profile && (!profile.matched || (!profile.liked && !profile.matched)) && 
+           {blocked === false && <div className={`${(!profile?.matched) ? 'p-5' : 'p-4'}`}></div>}
+
+            {profile && (!profile.matched || (!profile.liked && !profile.matched)) && blocked === false &&
             <div className={styles.belowbar}>
                 <i onClick={handleDislike} style={{color: 'lightsalmon'}} className="fa-solid fa-thumbs-down"></i>
                 <i onClick={() => handleLike(false)} style={{color: 'cornflowerblue'}} className="fa-solid fa-thumbs-up"></i>

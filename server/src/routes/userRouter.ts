@@ -25,6 +25,8 @@ import fetchProfile from "../controllers/user/fetchProfile";
 import getChat from "../controllers/user/getChat";
 import fetchMessages from "../controllers/user/fetchMessages";
 import blockUser from "../controllers/user/blockUser";
+import fetchBlocked from "../controllers/user/fetchBlocked";
+import unblock from "../controllers/user/unblock";
 
 const router = Router();
 
@@ -52,8 +54,10 @@ router.get('/get-profile/:username', tokenValidation, checkBanned, fetchProfile)
 
 router.get('/get-matches', tokenValidation, checkBanned, fetchMatches);
 router.get('/get-messages', tokenValidation, checkBanned, fetchMessages);
+router.get('/get-blocked/:from', tokenValidation, checkBanned, fetchBlocked)
 router.get('/get-chat/:username', tokenValidation, checkBanned, getChat);
 
 router.post('/block-user', tokenValidation, checkBanned, blockUser);
+router.post('/unblock', tokenValidation, checkBanned, unblock);
 
 export default router;

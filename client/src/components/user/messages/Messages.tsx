@@ -27,6 +27,10 @@ export default function Messages() {
         });
     }, []);
 
+    if (messages.length === 0) {
+        return <div className='d-flex justify-content-center h-100 text-white pt-5'>No messages</div>
+    }
+
     return (
         <div className={styles.messages}>
             {

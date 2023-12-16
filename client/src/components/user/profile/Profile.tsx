@@ -174,11 +174,11 @@ export default function Profile() {
                 {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
                 
                 <div className={styles['other-details']}>
-                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name || profiles[userIndex]?.firstname)}{profiles && profiles[userIndex].dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob)}</span>}</h3>
+                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name || profiles[userIndex]?.firstname)}{profiles && profiles[userIndex].dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>}</h3>
                     {profiles && profiles[userIndex]?.profile?.livingIn && imageIndex === 0 &&
                         <>
                         <span className={styles.living}><i className="fa-solid fa-house"></i> Lives in {profiles[userIndex].profile.livingIn}</span>
-                        {profiles && profiles[userIndex] && (profiles[userIndex]?.distance !== null && profiles[userIndex]?.distance !== undefined) && <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profiles[userIndex]?.distance} kilometers away</span>}
+                        {profiles && profiles[userIndex] && (profiles[userIndex]?.distance !== null && profiles[userIndex]?.distance !== undefined) && <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profiles[userIndex]?.distance ? profiles[userIndex]?.distance : 1} kilometers away</span>}
                         </>
                     }
                     {imageIndex === 1 &&
