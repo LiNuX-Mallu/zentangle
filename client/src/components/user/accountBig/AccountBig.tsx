@@ -1,5 +1,4 @@
 import styles from './AccountBig.module.css';
-import pic from '../../../assets/images/man.jpg'
 import { useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
@@ -9,13 +8,14 @@ import { ApiUrl } from '../../../instances/urls';
 
 export default function AccountBig() {
     const [loading, setLoading] = useState(true);
-    const [profileDetails, setProfileDetails] = useState<ProfileInterface>();
+    const [profile, setProfile] = useState<ProfileInterface>();
     const navigate = useNavigate();
+    const [imageIndex, setImageIndex] = useState(0);
 
     useEffect(() => {
         axios.get('/user/get-details').then(response => {
             if (response.status === 200) {
-                setProfileDetails(response.data);
+                setProfile(response.data);
             }
         }).catch(() => {
             navigate('/home');
@@ -30,121 +30,130 @@ export default function AccountBig() {
         return current.getFullYear() - dateOfBirth.getFullYear();
     }
 
-    if (loading) {
+    if (loading || !profile) {
         return <Loading />
     }
 
     return (
         <div className={styles['account-big']}>
-            <div className={styles.medias}>
-                <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
-                    {/* <div className="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    </div> */}
-                    <div className="carousel-inner">
-                        {profileDetails?.profile?.medias.map((link: string) => {
-                            return (
-                                <div className="carousel-item active">
-                                    <img src={`${ApiUrl}/media/${link}`} className="d-block w-100" key={link} alt="media" />
-                                </div>
-                            )
-                        })}
-                        {!profileDetails?.profile?.medias.length &&
-                            <div className="carousel-item active">
-                                <img src={pic} className="d-block w-100" alt="NoMedia" />
-                            </div>
-                        }
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
+            <div className={styles['medias-container']}>
+                <div
+                    className={styles.medias}
+                    style={{backgroundImage: `url(${ApiUrl}/media/${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
+                >
                 </div>
+
+                {profile && profile.profile?.medias[imageIndex+1] && <i onClick={() => setImageIndex(imageIndex+1)} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}
+                {profile && profile.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
             </div>
 
             <div className={styles['name-age']}>
-                <span className={styles.name}>{profileDetails && profileDetails.profile?.name || profileDetails?.firstname}</span>
-                <span className={styles.age}>{profileDetails && getAge(profileDetails.dob)}</span>
-                <i style={{color: profileDetails?.accountVerified ? 'purple' : 'gray'}} className="fa-solid fa-circle-check"></i>
+                <span className={styles.name}>{profile && profile.profile?.name || profile?.firstname}</span>
+                <span className={styles.age}>{profile && getAge(profile.dob)}</span>
+                <i style={{color: profile?.accountVerified ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles['small-details']}>
-                {profileDetails?.profile?.job?.title && <span>{profileDetails.profile.job.title}</span> }
-                {profileDetails?.profile?.livingIn && <span>{profileDetails.profile.livingIn}</span> }
-                {profileDetails?.profile?.school && <span>{profileDetails.profile.school}</span> }
+                {profile && profile?.profile?.job?.title && <span><i className="fa-solid fa-briefcase"></i> {profile.profile.job.title}</span>}
+                {profile && profile?.profile?.job?.company && <span> at {profile.profile.job.company}</span>}
+                {profile?.profile?.livingIn ? <span><i className="fa-solid fa-house"></i> Lives in {profile.profile.livingIn}</span> : ''}
+                {/* {profile?.profile?.school && <span>{profile.profile.school}</span> } */}
+                {(profile && profile.distance) ? <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profile?.distance} kilometers away</span>: ''}
             </div>
             <hr />
             <div className={styles['other-details']}>
-                {profileDetails?.profile.bio ? <p className={styles.bio}>{profileDetails.profile.bio}</p> : <p className={styles.bio}>Bio...?</p> }
+                {profile?.profile.bio ? <p className={styles.bio}>{profile.profile.bio}</p> : <p className={styles.bio}>Bio...?</p> }
                 <h4>Relationship Type</h4>
                 <div className={styles.wrap}>
-                    {profileDetails?.profile?.relationship?.openTo.length ?
-                        (profileDetails?.profile?.relationship?.openTo.map((ele) => <span key={ele}>{ele}</span>)) : <span>None added</span>
+                    {profile?.profile?.relationship?.openTo.length ?
+                        (profile?.profile?.relationship?.openTo.map((ele) => <span key={ele}>{ele}</span>)) : <span>None added</span>
                     }
                 </div>
             </div>
+
             <hr />
-            <div className={styles['other-details']}>
-                <h4>Languages I Know</h4>
-                <div className={styles.wrap}>
-                    {profileDetails?.profile?.languages.length ?
-                        (profileDetails?.profile?.languages.map((ele) => <span key={ele}>{ele}</span>)) : <span>None added</span>
-                    }
+
+            {/* languages */}
+            {(profile && Object.values(profile?.profile?.languages).length) ?
+            <>
+                <div className={styles['other-details']}>
+                    <h4>Languages I Know</h4>
+                    <div className={styles.wrap}>
+                        {profile?.profile?.languages.length ?
+                            (profile?.profile?.languages.map((ele) => <span key={ele}>{ele}</span>)) : <span>None added</span>
+                        }
+                    </div>
                 </div>
-            </div>
-            <hr />
-            <div className={styles['other-details']}>
-                <h4>Basics</h4>
-                <div className={styles.wrap}>
-                    {profileDetails?.profile?.basics && Object.keys(profileDetails?.profile?.basics).length ?
-                    <>
-                    {profileDetails?.profile?.basics?.zodiac && <span>{profileDetails.profile.basics.zodiac}</span> }
-                    {profileDetails?.profile?.basics?.education && <span>{profileDetails.profile.basics.education}</span>}
-                    {profileDetails?.profile?.basics?.familyPlan && <span>{profileDetails.profile.basics.familyPlan}</span>}
-                    {profileDetails?.profile?.basics?.vaccinated && <span>{profileDetails.profile.basics.vaccinated}</span>}
-                    {profileDetails?.profile?.basics?.personality && <span>{profileDetails.profile.basics.personality}</span>}
-                    {profileDetails?.profile?.basics?.communication && <span>{profileDetails.profile.basics.communication}</span>}
-                    {profileDetails?.profile?.basics?.loveStyle && <span>{profileDetails.profile.basics.loveStyle}</span>}
-                    </>
-                    : <span>None added</span>
-                    }
+                <hr />
+            </>
+            : ''}
+            
+            {/* passions */}
+            {(profile && profile?.profile?.passions.length) ?
+            <>
+                <div style={{marginBottom: '2rem'}} className={styles['other-details']}>
+                    <h4>Passions</h4>
+                    <div className={styles.wrap}>
+                        {profile && profile?.profile?.passions.map((passion) => {
+                            return <span key={passion}>{passion}</span>
+                        })}
+                    </div>
                 </div>
-            </div>
-            <hr />
-            <div className={styles['other-details']}>
-                <h4>Lifestyle</h4>
-                <div className={styles.wrap}>
-                    {profileDetails?.profile?.lifestyle && Object.keys(profileDetails?.profile?.lifestyle).length ?
-                    <>
-                    {profileDetails?.profile?.lifestyle?.pets && <span>{profileDetails.profile.lifestyle.pets}</span>}
-                    {profileDetails?.profile?.lifestyle?.smoke && <span>{profileDetails.profile.lifestyle.smoke}</span>}
-                    {profileDetails?.profile?.lifestyle?.drink && <span>{profileDetails.profile.lifestyle.drink}</span>}
-                    {profileDetails?.profile?.lifestyle?.workout && <span>{profileDetails.profile.lifestyle.workout}</span>}
-                    {profileDetails?.profile?.lifestyle?.diet && <span>{profileDetails.profile.lifestyle.diet}</span>}
-                    {profileDetails?.profile?.lifestyle?.socialMedia && <span>{profileDetails.profile.lifestyle.socialMedia}</span>}
-                    {profileDetails?.profile?.lifestyle?.sleep && <span>{profileDetails.profile.lifestyle.sleep}</span>}
-                    </>
-                    : <span>None added</span>
-                    }
+                <hr />
+            </>: ''}
+
+            {/* basics */}
+            {(profile && profile?.profile?.basics && Object.values(profile?.profile?.basics)?.length) ?
+            <>
+                <div className={styles['other-details']}>
+                    <h4>Basics</h4>
+                    <div className={styles.wrap}>
+                        {Object.entries(profile?.profile?.basics).map(([key, value]) => {
+                            if (!value) return;
+                            return(
+                                <span key={key}>
+                                    {key === 'zodiac' && <i className="fa-solid fa-moon"></i> }
+                                    {key === 'education' && <i className="fa-solid fa-graduation-cap"></i> }
+                                    {key === 'familyPlan' && <i className="fa-solid fa-baby-carriage"></i> }
+                                    {key === 'vaccinated' && <i className="fa-solid fa-syringe"></i>}
+                                    {key === 'personality' && <i className="fa-solid fa-puzzle-piece"></i> }
+                                    {key === 'communication' && <i className="fa-solid fa-message"></i> }
+                                    {key === 'loveStyle' && <i className="fa-solid fa-heart-circle-bolt"></i> }
+                                    {value}
+                                </span>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-            <hr />
-            <div style={{marginBottom: '2rem'}} className={styles['other-details']}>
-                <h4>Passions</h4>
-                <div className={styles.wrap}>
-                    {profileDetails?.profile?.passions.length ?
-                        (profileDetails?.profile?.passions.map((ele) => <span key={ele}>{ele}</span>)) : <span>None added</span>
-                    }
+                <hr />
+            </> : ''}
+
+            
+
+            {/* lifestyle */}
+            {(profile && profile?.profile?.lifestyle && Object.values(profile.profile.lifestyle).length) ?
+            <>
+                <div style={{paddingBottom: '5%'}} className={styles['other-details']}>
+                    <h4>Lifestyle</h4>
+                    <div className={styles.wrap}>
+                        {Object.entries(profile?.profile?.lifestyle).map(([key, value]) => {
+                            if (!value) return;
+                            return(
+                                <span key={key}>
+                                    {key === 'smoke' && <i className="fa-solid fa-smoking"></i> }
+                                    {key === 'drink' && <i className="fa-solid fa-wine-bottle"></i> }
+                                    {key === 'workout' && <i className="fa-solid fa-dumbbell"></i> }
+                                    {key === 'pets' && <i className="fa-solid fa-paw"></i>}
+                                    {key === 'diet' && <i className="fa-solid fa-utensils"></i> }
+                                    {key === 'socialMedia' && <i className="fa-solid fa-mobile-screen"></i> }
+                                    {key === 'sleep' && <i className="fa-solid fa-bed"></i>}
+                                    {value}
+                                </span>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-            <div className={styles['edit-button']}>
-                <button type='button' onClick={() => navigate('/app/account/edit-profile')}>Edit</button>
-            </div>
+            </>: ''}
+            <button className={styles['edit-button']} type='button' onClick={() => navigate('/app/account/edit-profile')}>Edit</button>
         </div>
     )
 }

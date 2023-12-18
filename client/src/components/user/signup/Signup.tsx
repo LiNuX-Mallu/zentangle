@@ -114,8 +114,8 @@ export default function Signup({cancel, login}: Props) {
                 </div>
                 <div className='dob-gender'>
                     <div>
-                        <label htmlFor='dob'>Gender</label>
-                        <select onChange={(e) => setGender(e.target.value)} id='dob'>
+                        <label htmlFor='gender'>Gender</label>
+                        <select onChange={(e) => setGender(e.target.value)} id='gender'>
                             <option selected value='male'>Male</option>
                             <option value='female'>Female</option>
                         </select>

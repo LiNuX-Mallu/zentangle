@@ -27,6 +27,7 @@ import fetchMessages from "../controllers/user/fetchMessages";
 import blockUser from "../controllers/user/blockUser";
 import fetchBlocked from "../controllers/user/fetchBlocked";
 import unblock from "../controllers/user/unblock";
+import unmatchProfile from "../controllers/user/unmatchProfile";
 
 const router = Router();
 
@@ -59,5 +60,5 @@ router.get('/get-chat/:username', tokenValidation, checkBanned, getChat);
 
 router.post('/block-user', tokenValidation, checkBanned, blockUser);
 router.post('/unblock', tokenValidation, checkBanned, unblock);
-
+router.post('/unmatch-user', tokenValidation, checkBanned, unmatchProfile);
 export default router;

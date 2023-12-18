@@ -2,7 +2,6 @@ import User from "../../models/user"
 
 export default async (userId: string, username: string) => {
     try {
-        console.log(username)
         const blocked = await User.findOneAndUpdate({_id: userId}, {
             $push: {'blocked.users': username},
         }, {new: true});

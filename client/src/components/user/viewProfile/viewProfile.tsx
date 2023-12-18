@@ -2,7 +2,6 @@ import styles from './viewProfile.module.css';
 import { useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
-import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -13,14 +12,12 @@ interface Props {
 }
 
 export default function ViewProfile({defaultProfile, blocked = false}: Props) {
-    const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<ProfileInterface | null>(defaultProfile);
     const [imageIndex, setImageIndex] = useState(0);
     const { username } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        setLoading(false);
         if (!username || profile) return;
         axios.get(`/user/get-profile/${username}`).then(response => {
             if (response.status === 200) {
@@ -28,8 +25,6 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             }
         }).catch(() => {
             alert("Internal server error");
-        }).finally(() => {
-            setLoading(false);
         })
     }, [username, profile]);
 
@@ -112,8 +107,35 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
         });
     }
 
-    if (loading) {
-        return <Loading />
+    const handleUnmatch = async () => {
+        if (!username) return;
+        const swal = await Swal.fire({
+            text: `Are you sure want to Unmatch with ${username}?`,
+            color: 'white',
+            icon: 'info',
+            backdrop: true,
+            background: 'black',
+            confirmButtonColor: 'orangered',
+            showCancelButton: true,
+            cancelButtonText: "No, don't Unmatch",
+            confirmButtonText: `Yes, Unmatch ${username}`,
+            cancelButtonColor: 'gray',
+            focusCancel: true,
+        });
+        if (!swal.isConfirmed) return;
+        axios.post('/user/unmatch-user', {username}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => {
+            if (response.status === 200) {
+                navigate('/app');
+            }
+        });
+    }
+
+    if (!profile) {
+        return null
     }
 
     return (
@@ -241,7 +263,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             {/* unmatch */}
             {profile && profile.matched === true &&
             <> 
-                <div className={styles.options}>
+                <div onClick={handleUnmatch} className={styles.options}>
                     <div>
                         <h4>Unmatch {profile?.profile?.name}</h4>
                         <p>No longer friends</p>

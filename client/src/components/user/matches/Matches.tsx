@@ -4,7 +4,6 @@ import axios from '../../../instances/axios';
 import { ApiUrl } from '../../../instances/urls';
 import { timeAgo } from '../../../instances/timeAgo';
 import { useNavigate } from 'react-router-dom';
-
 interface Matches {
     type: string,
     likedBy: {profile: {name: string, medias: string[]}, username: string};

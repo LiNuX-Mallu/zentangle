@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import axios from '../../../instances/axios';
 import styles from './Chat.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import Loading from '../loading/Loading';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
 import { socket } from '../../../instances/socket';
@@ -169,7 +168,7 @@ export default function Chat() {
         }).format(timestamp);
     };
 
-    if (!username || !profile || !myUsername) return <Loading />
+    if (!username || !profile || !myUsername) return null;
     return (
         <>
         {inVideoCall !== null && <VideoCall username={username} myUsername={myUsername} setInVideoCall={setInVideoCall} />}

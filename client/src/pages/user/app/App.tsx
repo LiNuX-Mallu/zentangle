@@ -9,7 +9,7 @@ import Account from '../../../components/user/account/Account';
 import AccountBig from '../../../components/user/accountBig/AccountBig';
 import Settings from '../../../components/user/settings/Settings';
 import Edit from '../../../components/user/editProfile/EditProfile';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Loading from '../../../components/user/loading/Loading';
 import useGeoLocation from '../../../hooks/useGeoLocation';
 import { useDispatch } from 'react-redux';
@@ -31,6 +31,9 @@ interface Props {
     defaultSpace: string | null;
     defaultMessage?: boolean;
 }
+
+const MemoizedMatches = memo(Matches);
+const MemoizedMessages = memo(Messages);
 
 export default function App({defaultSpace, defaultMessage = false}: Props) {
     const [inMessage, setInMessage] = useState(defaultMessage);
@@ -187,7 +190,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                         <span onClick={() => setInMessage(false)} style={{borderBottom: !inMessage ? '3px solid white' : '', paddingBottom: '5px'}}>matches</span>
                         <span onClick={() => setInMessage(true)} style={{borderBottom: inMessage ? '3px solid white' : '', paddingBottom: '5px'}}>messages</span>
                     </div>
-                    {inMessage ? <Messages /> : <Matches />}
+                    {inMessage ? <MemoizedMessages /> : <MemoizedMatches />}
                 </div>
                 }
                 {(space === 'account' || space === 'edit-profile') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings /></div>}
