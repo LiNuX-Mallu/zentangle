@@ -13,15 +13,17 @@ axios.interceptors.response.use(
     },
     (error) => {
       if (error.response && error.response.status === 401) {
-        return Swal.fire("Unauthorized access");
-      } else if (error.response && error.response.status === 403) {
-        return Swal.fire("Your account is banned");
-      } else if (error.response && error.response.status === 500) {
-          return Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-          });
+        return Swal.fire("Unauthorized access").then(() => window.location.href = '/home');
+      }
+      else if (error.response && error.response.status === 403) {
+        Swal.fire("Your account is banned").then(() => window.location.href = '/home')
+      } 
+      else if (error.response && error.response.status === 500) {
+        return Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       } else {
         return Promise.reject(error);
       }

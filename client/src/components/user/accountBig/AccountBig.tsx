@@ -5,8 +5,13 @@ import { ProfileInterface } from '../../../instances/interfaces';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
+import Swal from 'sweetalert2';
 
-export default function AccountBig() {
+interface Props {
+    setSpace: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function AccountBig({setSpace}: Props) {
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<ProfileInterface>();
     const navigate = useNavigate();
@@ -34,6 +39,20 @@ export default function AccountBig() {
         return <Loading />
     }
 
+    const handleBlueClick = () => {
+        if (profile.accountVerified === 'notverified') setSpace('verification');   
+        else if (profile.accountVerified === 'verified') return;
+        else if (profile.accountVerified === 'pending') {
+            Swal.fire({
+                title: "Already requested for verification",
+                text: "This will take upto 24 hours",
+                backdrop: true,
+                background: 'black',
+                showConfirmButton: true,
+            });
+        }
+    };
+
     return (
         <div className={styles['account-big']}>
             <div className={styles['medias-container']}>
@@ -50,7 +69,7 @@ export default function AccountBig() {
             <div className={styles['name-age']}>
                 <span className={styles.name}>{profile && profile.profile?.name || profile?.firstname}</span>
                 <span className={styles.age}>{profile && getAge(profile.dob)}</span>
-                <i style={{color: profile?.accountVerified ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i>
+                <i onClick={handleBlueClick} style={{color: profile?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles['small-details']}>
                 {profile && profile?.profile?.job?.title && <span><i className="fa-solid fa-briefcase"></i> {profile.profile.job.title}</span>}

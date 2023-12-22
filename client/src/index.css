@@ -9,10 +9,15 @@ body {
   /* min-width: 320px; */
   background-color: #111111;
   font-family: 'Lexend';
+  user-select: none;
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+i {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProfileInterface } from '../../../instances/interfaces';
 import Loading from '../loading/Loading';
 import { ApiUrl } from '../../../instances/urls';
+import Swal from 'sweetalert2';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -42,6 +43,20 @@ export default function Account({setSpace}: Props) {
         return current.getFullYear() - dateOfBirth.getFullYear();
     }
 
+    const handleBlueClick = () => {
+        if (profileDetails?.accountVerified === 'notverified') setSpace('verification');   
+        else if (profileDetails?.accountVerified === 'verified') return;
+        else if (profileDetails?.accountVerified === 'pending') {
+            Swal.fire({
+                title: "Already requested for verification",
+                text: "This will take upto 24 hours",
+                backdrop: true,
+                background: 'black',
+                showConfirmButton: true,
+            });
+        }
+    };
+
     if (loading) {
         return <Loading />
     }
@@ -57,7 +72,7 @@ export default function Account({setSpace}: Props) {
             <div className={styles['name-age']}>
                 <span className={styles.name}>{profileDetails && (profileDetails?.profile?.name && profileDetails?.profile?.name.trim() !== "") ? profileDetails.profile.name : profileDetails?.firstname},</span>
                 <span className={styles.age}>{profileDetails && getAge(profileDetails.dob)}</span>
-                <i style={{color: profileDetails?.accountVerified ? '#007BFF' : 'gray'}} className="fa-solid fa-circle-check"></i>
+                <i onClick={handleBlueClick} style={{color: profileDetails?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles.options}>
                 <div onClick={() => navigate('/app/account/settings')} className={styles.icon}>

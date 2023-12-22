@@ -5,7 +5,11 @@ import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
 
-export default function Profile() {
+interface Props {
+    setMatchKey: React.Dispatch<React.SetStateAction<string>>
+}
+
+export default function Profile({setMatchKey}: Props) {
     const [startX, setStartX] = useState<number | null>(null);
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>();
     const [userIndex, setUserIndex] = useState<number>(0);
@@ -118,6 +122,7 @@ export default function Profile() {
                     }).then(() => {
                         setImageIndex(0);
                         setProfiles(undefined);
+                        setMatchKey(Date.now().toString());
                     })
                 }
                 if (profiles && profiles[userIndex+1]) {
@@ -174,7 +179,7 @@ export default function Profile() {
                 {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
                 
                 <div className={styles['other-details']}>
-                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name || profiles[userIndex]?.firstname)}{profiles && profiles[userIndex].dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>}</h3>
+                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name || profiles[userIndex]?.firstname)}{profiles && profiles[userIndex].dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>} <i style={{color: profiles[userIndex]?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i> </h3>
                     {profiles && profiles[userIndex]?.profile?.livingIn && imageIndex === 0 &&
                         <>
                         <span className={styles.living}><i className="fa-solid fa-house"></i> Lives in {profiles[userIndex].profile.livingIn}</span>

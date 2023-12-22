@@ -28,6 +28,8 @@ import blockUser from "../controllers/user/blockUser";
 import fetchBlocked from "../controllers/user/fetchBlocked";
 import unblock from "../controllers/user/unblock";
 import unmatchProfile from "../controllers/user/unmatchProfile";
+import uploadWebcams from "../middlewares/uploadWebcams";
+import requestVerification from "../controllers/user/requestVerification";
 
 const router = Router();
 
@@ -47,6 +49,8 @@ router.post('/upload-media', upload.single('file'), tokenValidation, checkBanned
 router.put('/reorder-media', tokenValidation, checkBanned, reorderMedia);
 router.put('/update-settings', tokenValidation, checkBanned, updateSettings);
 router.delete('/media/:filename', tokenValidation, checkBanned, removeMedia);
+
+router.post('/request-verification', tokenValidation, checkBanned, uploadWebcams.single('file'), requestVerification);
 
 router.get('/get-profiles', tokenValidation, checkBanned, getProfiles);
 router.post('/like-profile', tokenValidation, checkBanned, likeProfile);

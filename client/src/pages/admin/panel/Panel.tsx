@@ -6,6 +6,7 @@ import Sidebar from '../../../components/admin/sidebar/Sidebar';
 import Users from '../../../components/admin/users/Users';
 import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
+import VerificationRequest from '../../../components/admin/verification-request/VerificationRequest';
 
 export default function Panel() {
     const [menuActive, setMenuActive] = useState(false);
@@ -37,6 +38,7 @@ export default function Panel() {
             </div>
             <div className={`${styles.space} col-12 col-lg-9`}>
                 {session === 'users' && <Users />}
+                {session === 'verifications' && <VerificationRequest /> }
             </div>
         </div>
         )

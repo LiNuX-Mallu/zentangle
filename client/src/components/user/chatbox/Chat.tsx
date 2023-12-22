@@ -11,7 +11,11 @@ import { getUsername } from '../../../redux/actions/usernameActions';
 import Swal from 'sweetalert2';
 import VideoCall from '../videoCall/VideoCall';
 
-export default function Chat() {
+interface Props {
+    setMessageKey: React.Dispatch<React.SetStateAction<string>>
+}
+
+export default function Chat({setMessageKey}: Props) {
     const navigate = useNavigate();
     const {username} = useParams();
     const chatRef = useRef<HTMLDivElement>(null);
@@ -29,6 +33,7 @@ export default function Chat() {
         if (!myUsername || !username || !socketConnected) return;
         function onReceiveMessage(message: Message) {
             setChat((prev) => [...prev, message]);
+            setMessageKey(Date.now().toString()+'msg');
         }
         function onReceiveChatId(id: string) {
             setChatId(id);
@@ -48,7 +53,7 @@ export default function Chat() {
             socket.off('onTyping', onTyping);
             socket.emit('leaveChat', myUsername+username);
         }
-    }, [myUsername, username, socketConnected]);
+    }, [myUsername, username, socketConnected, setMessageKey]);
 
     useEffect(() => {
         function callEnd(from: string) {
@@ -128,6 +133,7 @@ export default function Chat() {
         socket.emit('sendMessage', {message, to: username, chatId});
         setInputMessage('');
         setChat([...chat, message]);
+        setMessageKey(Date.now().toString()+'msg');
     }
 
     useEffect(() => {

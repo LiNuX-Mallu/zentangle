@@ -3,21 +3,25 @@ import userRouter from './src/routes/userRouter';
 import adminRouter from "./src/routes/adminRouter";
 import path from "path";
 import user from "./src/models/user";
+import userTokenValidation from "./src/middlewares/validation/userTokenValidation";
+import adminTokenValidation from "./src/middlewares/validation/adminTokenValidation";
 
 
 const router = Router();
 
 router.use('/user', (req, _, next: NextFunction) => {
     console.log("new request: user"+ req.url);
-     next();
-    }, userRouter);
+    next();
+}, userRouter);
+router.use('/media', userTokenValidation, expressStatic(path.join(__dirname, './src/uploads')));
+
 
 router.use('/admin', (req, _, next: NextFunction) => {
     console.log("new request: admin"+req.url);
     next();
 }, adminRouter);
+router.use('/media/verification', adminTokenValidation, expressStatic(path.join(__dirname, './src/uploads/verifications')));
 
-router.use('/media', expressStatic(path.join(__dirname, './src/uploads')));
 
 
 //test only

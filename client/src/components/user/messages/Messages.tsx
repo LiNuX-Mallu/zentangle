@@ -36,7 +36,7 @@ export default function Messages() {
             {
                 messages?.map((message) => {
                     return (
-                        <div onClick={() => navigate('/app/chat/'+message.profile.name)} key={message.profile.name} className={styles.msg}>
+                        <div onClick={() => navigate('/app/chat/'+message.profile.name)} key={message.lastMessage.timestamp.toString()} className={styles.msg}>
                             <div className={styles.propic}>
                                 <img src={`${ApiUrl}/media/${message.profile?.picture}`} alt="profile picture" />
                             </div>

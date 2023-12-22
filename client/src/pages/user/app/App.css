@@ -44,7 +44,7 @@
 }
 
 .app .sidebar .topbar {
-    background-color: rgb(104, 35, 104);
+    background-color: rgb(77, 16, 77);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -55,25 +55,47 @@
     font-weight: 500;
 }
 
-.app .sidebar .topbar .explore img {
-    width: 1.7rem;
+.app .sidebar .topbar .explore i {
+    font-size: 29px;
     cursor: pointer;
+    color: white;
+}
+
+.app .sidebar .topbar .explore i:hover {
+    transform: scale(1.2);
 }
 
 .app .sidebar .topbar .account {
-    font-weight: 500;
     cursor: pointer;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    font-size: 18px;
+    gap: 5px;
+    font-family: 'Niramit', sans-serif;
+    box-sizing: border-box;
 }
 
-.app .sidebar .topbar .account img {
-    margin-left: 0.3rem;
-    width: 1.7rem;
-    border: 2px solid white;
+.app .sidebar .topbar .account:hover {
+    transform: scale(1.1);
+}
+
+.account .account-img-container {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    box-shadow: 0 0 1px 2px rgb(255, 255, 255);
+    overflow: hidden;
 }
 
+.account .account-img-container img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    image-rendering: optimizeSpeed;
+    image-resolution: from-image;
+}
 
 
 .app .sidebar .match-message {
@@ -153,5 +175,6 @@
         opacity: 0.9;
         width: 24px;
         height: 24px;
+        cursor: pointer;
     }
 }

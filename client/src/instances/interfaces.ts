@@ -6,7 +6,7 @@ export interface ProfileInterface {
     dob: string;
     gender: string;
     password: string;
-    accountVerified: boolean;
+    accountVerified: string;
     email: {
         email: string;
         verified: boolean

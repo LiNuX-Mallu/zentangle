@@ -14,7 +14,7 @@ import EditPhone from './childComponents/editPhone/EditPhone';
 import MultiRangeSlider, { ChangeResult } from 'multi-range-slider-react';
 import './extra/multiSlider.css';
 import EditPassword from './childComponents/editPassword/EditPassword';
-import BlockedUsers from './childComponents/blockedUsers/blockedUsers';
+import BlockedUsers from './childComponents/blockedUsers/BlockedUsers';
 
 
 export default function Settings() {
@@ -220,10 +220,10 @@ export default function Settings() {
                     <span>blocked users</span>
                     <span>{rightIcon}</span>
                 </div>
-                <div onClick={() => setEditSpace('blockedContacts')} className={styles.option}>
+                {/* <div onClick={() => setEditSpace('blockedContacts')} className={styles.option}>
                     <span>blocked contacts</span>
                     <span>{rightIcon}</span>
-                </div>
+                </div> */}
                 {/* <div className={styles.option}>
                     <span>Recently active status</span>
                     <label className={toggle.switch}>

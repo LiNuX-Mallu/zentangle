@@ -2,12 +2,15 @@ import User from "../../models/user"
 
 export default async (userId: string, username: string) => {
     try {
+        const username = await User.findById(userId, {username: 1});
+        if (!username) throw new Error("Cannot Unmatch User problem");
+
         const profile = await User.findOneAndUpdate({username}, {
             $pull: {
                 'match.matched': {with: userId},
                 'match.liked': {likedBy: userId},
                 'match.disliked': userId,
-                'chatHistory': {with: userId},
+                'chatHistory': {with: username?.username},
             }
         }, {new: true});
         if (!profile) throw new Error("Cannot Unmatch - Profiler problem");

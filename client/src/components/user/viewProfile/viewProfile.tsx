@@ -155,7 +155,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             <div className={styles['name-age']}>
                 <span className={styles.name}>{profile && profile.profile?.name || profile?.firstname}</span>
                 <span className={styles.age}>{profile && getAge(profile.dob)}</span>
-                <i style={{color: profile?.accountVerified ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i>
+                <i style={{color: profile?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i>
             </div>
             <div className={styles['small-details']}>
                 {profile && profile?.profile?.job?.title && <span><i className="fa-solid fa-briefcase"></i> {profile.profile.job.title}</span>}

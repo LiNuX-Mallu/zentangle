@@ -21,7 +21,7 @@ export default function VideoCall({username, myUsername, setInVideoCall}: Props)
     const [stream, setStream] = useState<MediaStream | null>(null);
 
     useEffect(() => {
-        navigator.mediaDevices.getUserMedia({video: true, audio: true})
+        navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}, audio: false})
         .then((stream: MediaStream) => {
             if (myVideoRef.current) {
                 myVideoRef.current.srcObject = stream;
@@ -30,7 +30,16 @@ export default function VideoCall({username, myUsername, setInVideoCall}: Props)
 
             setStream(stream);
             
-            const peerConnection = new RTCPeerConnection();
+            const peerConnection = new RTCPeerConnection({
+                iceServers: [
+                    {
+                      urls: [
+                        "stun:stun.l.google.com:19302",
+                        "stun:global.stun.twilio.com:3478",
+                        ],
+                    },
+                ]
+            });
 
             stream.getTracks().forEach((track) => {
                 peerConnection.addTrack(track, stream);
@@ -45,9 +54,11 @@ export default function VideoCall({username, myUsername, setInVideoCall}: Props)
             peerConnection.ontrack = (event) => {
                 if (remoteVideoRef.current) {
                     remoteVideoRef.current.srcObject = event.streams[0];
-                    remoteVideoRef.current?.play();
+                    remoteVideoRef.current.play();
                 }
             }
+
+            // if (remoteVideoRef.current) remoteVideoRef.current.addEventListener('canplay', () => remoteVideoRef.current?.play());
 
             peerConnection?.createOffer()
             .then((offer) => peerConnection.setLocalDescription(offer))
@@ -60,20 +71,23 @@ export default function VideoCall({username, myUsername, setInVideoCall}: Props)
     }, [username]);
 
     useEffect(() => {
+        if (!peer) return;
         function receiveSignal(data: Data) {
             if (data.offer) {
                 const remoteOffer = new RTCSessionDescription(data.offer);
                 peer?.setRemoteDescription(remoteOffer)
                 .then(() => peer.createAnswer())
                 .then((answer) => peer.setLocalDescription(answer))
-                .then(() => socket.emit('sendSignal', {answer: peer?.localDescription, to: username}));
+                .then(() => socket.emit('sendSignal', {answer: peer.localDescription, to: username}));
+                
             } else if (data.answer) {
-                const remoteAnswer = new RTCSessionDescription(data?.answer);
+                const remoteAnswer = new RTCSessionDescription(data.answer);
                 if (peer?.signalingState !== 'stable' && peer?.signalingState !== 'have-remote-offer') {
                     peer?.setRemoteDescription(remoteAnswer);
                 }
+
             } else if (data.candidate) {
-                const iceCandidate = new RTCIceCandidate(data?.candidate);
+                const iceCandidate = new RTCIceCandidate(data.candidate);
                 if (peer?.remoteDescription) {
                     peer?.addIceCandidate(iceCandidate);
                 }
@@ -94,6 +108,10 @@ export default function VideoCall({username, myUsername, setInVideoCall}: Props)
 
     const handleEndCall = () => {
         socket.emit('sendEndCall', {from: myUsername, to: username});
+        if (stream) {
+            stream.getTracks().forEach((track) => track.stop());
+        }
+        if (peer) peer.close();
         setInVideoCall(null);
     }
 

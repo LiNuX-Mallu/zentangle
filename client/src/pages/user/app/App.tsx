@@ -26,6 +26,8 @@ import { socket } from '../../../instances/socket';
 import Swal from 'sweetalert2';
 import VideoCall from '../../../components/user/videoCall/VideoCall';
 import Preview from '../../../components/user/preview/Preview';
+import { ApiUrl } from '../../../instances/urls';
+import Verification from '../../../components/user/verification/Verification';
 
 interface Props {
     defaultSpace: string | null;
@@ -34,6 +36,9 @@ interface Props {
 
 const MemoizedMatches = memo(Matches);
 const MemoizedMessages = memo(Messages);
+
+const keyForMatches = Date.now().toString();
+const keyForMessages = Date.now().toString()+'msg';
 
 export default function App({defaultSpace, defaultMessage = false}: Props) {
     const [inMessage, setInMessage] = useState(defaultMessage);
@@ -44,9 +49,12 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     const navigate = useNavigate();
     const {username} = useParams();
     const [myUsername, setMyUsername] = useState<string | undefined>();
+    const [myPic, setMyPic] = useState<string | null>(null);
     const socketConnected = socket.connected;
     const [incommingCall, setIncommingCall] = useState<string | null>(null);
     const [inVideoCall, setInVideoCall] = useState<string | null>(null);
+    const [matchKey, setMatchKey] = useState(keyForMatches);
+    const [messageKey, setMessageKey] = useState(keyForMessages);
 
     useEffect(() => {
         setSpace(defaultSpace || 'home');
@@ -57,7 +65,8 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
         axios.get('/user/get-details').then((response) => {
             if (response.status === 200 && response?.data?.username) {
                 dispatch(setUsername(response?.data?.username));
-                setMyUsername(response?.data?.username)
+                setMyUsername(response?.data?.username);
+                setMyPic(response?.data?.profile?.medias[0] ?? null);
             }
         });
         if (latitude !== null && longitude !== null && !error) {
@@ -162,38 +171,41 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
             </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview'].includes(space) ? 'edit-active' : ''}`}>
-                    {space === 'home' && <Profile />}
+                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification'].includes(space) ? 'edit-active' : ''}`}>
+                    {space === 'home' && <Profile setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
-                    {space === 'account' && window.innerWidth > 768 && <AccountBig />}
+                    {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
                     {space === 'settings' && <Settings />}
                     {space === 'edit-profile' && <Edit />}
                     {space === 'view-profile' && <ViewProfile defaultProfile={null} />}
                     {space === 'view-blocked-profile' && <ViewProfile defaultProfile={null} blocked={true} />}
                     {space === 'matches' && window.innerWidth <= 768 && <Matches />}
                     {space === 'messages' && window.innerWidth <= 768 && <Messages /> }
-                    {space === 'chat' && <Chat /> }
+                    {space === 'chat' && <Chat setMessageKey={setMessageKey} /> }
+                    {space === 'verification' && <Verification setSpace={setSpace} /> }
                 </div>
                 {['home', 'view-profile', 'chat'].includes(space) &&
                 <div className="sidebar col-md-3">
                     <div className='topbar'>
                         <div className='explore'>
-                            <img src={exploreIcon} alt='explore'></img>
+                            <i className="fa-brands fa-microsoft"></i>
                         </div>
                         <div onClick={() => navigate('/app/account')} className='account'>
-                            Account
-                            <img src={accountIcon} alt="account" />
+                            {myUsername ?? 'Account'}
+                            <div className='account-img-container'>
+                                <img src={myPic ? ApiUrl+'/media/'+myPic : accountIcon} alt="account" />
+                            </div>
                         </div>
                     </div>
                     <div className='match-message'>
                         <span onClick={() => setInMessage(false)} style={{borderBottom: !inMessage ? '3px solid white' : '', paddingBottom: '5px'}}>matches</span>
                         <span onClick={() => setInMessage(true)} style={{borderBottom: inMessage ? '3px solid white' : '', paddingBottom: '5px'}}>messages</span>
                     </div>
-                    {inMessage ? <MemoizedMessages /> : <MemoizedMatches />}
+                    {inMessage ? <MemoizedMessages key={messageKey} /> : <MemoizedMatches key={matchKey} />}
                 </div>
                 }
-                {(space === 'account' || space === 'edit-profile') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings /></div>}
+                {(space === 'account' || space === 'edit-profile' || space === 'verification') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings /></div>}
                 {['home', 'explore', 'matches', 'messages', 'account'].includes(space) &&
                 <div className='belowbar'>
                     <img onClick={() => navigate('/app')} src={homeIcon} alt="home" />

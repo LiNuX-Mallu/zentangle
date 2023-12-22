@@ -45,10 +45,13 @@ const userSchema = new Schema({
   gender: {
     type: String,
   },
+
   accountVerified: {
-    type: Boolean,
-    default: false,
+    type: String,
+    enum: ['verified', 'notverified', 'pending'],
+    default: 'notverified',
   },
+
   location: {
     coordinates: [Number, Number],
   },

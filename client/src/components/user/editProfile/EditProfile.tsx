@@ -15,6 +15,7 @@ import LookingFor from './childComponents/lookingFor/LookingFor';
 import OpenTo from './childComponents/openTo/OpenTo';
 import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
+import ogAxios from 'axios';
 
 export default function EditProfile() {
     const [loading, setLoading] = useState(true);
@@ -84,8 +85,8 @@ export default function EditProfile() {
         });
     }
 
-    const handleDone = () => {
-        setLoading(true);
+    useEffect(() => {
+        const cancelToken = ogAxios.CancelToken.source();
         const formData = {
             profile: {
                 name,
@@ -98,15 +99,15 @@ export default function EditProfile() {
             gender,
         };
         axios.put('/user/update-details', {data: formData}, {
+            cancelToken: cancelToken.token,
             headers: {
                 'Content-Type': 'application/json',
             }
-        }).then(response => {
-            if (response.status === 200) {
-                return navigate('/app/account');
-            }
-        }).finally(() => setLoading(false));
-    };
+        });
+        
+        return () => cancelToken.cancel();
+    }, [bio, name, job, school, height, livingIn, gender, company, navigate]);
+
 
     const handleUpload = (selectedImage: File | undefined) => {
         if (!selectedImage) return;
@@ -141,7 +142,7 @@ export default function EditProfile() {
         <div className={`${styles.edit}`}>
             <div className={styles.heading}>
                 <span>Edit Info</span>
-                <span className={styles['done-button']} onClick={handleDone}>Done</span>
+                <span className={styles['done-button']} onClick={() => navigate('/app/account')}>Done</span>
             </div>
             
             <div style={{overflow: 'auto'}}>

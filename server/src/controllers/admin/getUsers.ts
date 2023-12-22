@@ -4,7 +4,8 @@ import findUsers from "../../services/admin/findUsers";
 export default async (req: Request, res: Response) => {
     try {
         const currentPage = req.params.page ?? undefined;
-        const users = await findUsers(+currentPage);
+        const filter = req.params.filter;
+        const users = await findUsers(+currentPage, filter);
         if (users) {
             res.status(200).json(users);
         } else {
