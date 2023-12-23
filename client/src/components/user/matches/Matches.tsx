@@ -24,7 +24,7 @@ export default function Matches() {
                 setLen(response?.data?.length)
                 setTimeout(() => {
                     setMatches(response?.data);
-                }, 2000);
+                }, 1000);
             }
         })
     }, []);

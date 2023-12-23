@@ -5,6 +5,7 @@ import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Report from '../report/Report';
 
 interface Props {
     defaultProfile: ProfileInterface | null;
@@ -16,6 +17,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
     const [imageIndex, setImageIndex] = useState(0);
     const { username } = useParams();
     const navigate = useNavigate();
+    const [inReport, setInReport] = useState(false);
 
     useEffect(() => {
         if (!username || profile) return;
@@ -134,11 +136,16 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
         });
     }
 
+    if (inReport) {
+        return <Report close={setInReport} isVisible={inReport} />
+    }
+
     if (!profile) {
         return null
     }
 
     return (
+        <>
         <div className={styles['view-profile']}>
             <div className={styles['medias-container']}>
                 <div
@@ -285,7 +292,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             </>}
 
             {/* report */}
-            <div className={styles.options}>
+            <div onClick={() => setInReport(true)} className={styles.options}>
                 <div>
                     <h4>Report {profile?.profile?.name}</h4>
                     <p>Don't worry we won't tell them.</p>
@@ -304,5 +311,6 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             </div>: ''}
             
         </div>
+        </>
     )
 }

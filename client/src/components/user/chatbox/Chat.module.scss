@@ -6,6 +6,10 @@
     color: white;
     padding-bottom: 11vh;
     scroll-behavior: smooth;
+    transition: opacity 0.3s ease;
+    &.rep {
+        opacity: 0.2;
+    }
 }
 
 .chat .topbar {
@@ -35,6 +39,8 @@
 .chat .topbar .back-click {
     justify-self: flex-end;
     opacity: 0.9;
+    padding-left: 1%;
+    cursor: pointer;
 }
 
 .chat .typebox {

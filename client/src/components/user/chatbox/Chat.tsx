@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from '../../../instances/axios';
-import styles from './Chat.module.css';
+import styles from './Chat.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { getUsername } from '../../../redux/actions/usernameActions';
 import Swal from 'sweetalert2';
 import VideoCall from '../videoCall/VideoCall';
+import Report from '../report/Report';
 
 interface Props {
     setMessageKey: React.Dispatch<React.SetStateAction<string>>
@@ -20,6 +21,7 @@ export default function Chat({setMessageKey}: Props) {
     const {username} = useParams();
     const chatRef = useRef<HTMLDivElement>(null);
     const myUsername = useSelector(getUsername);
+    const [inReport, setInReport] = useState(false);
 
     const [profile, setProfile] = useState<ProfileInterface>();
     const [chat, setChat] = useState<Message[]>([]);
@@ -177,8 +179,9 @@ export default function Chat({setMessageKey}: Props) {
     if (!username || !profile || !myUsername) return null;
     return (
         <>
+        {inReport === true && <Report close={setInReport} isVisible={inReport} />}
         {inVideoCall !== null && <VideoCall username={username} myUsername={myUsername} setInVideoCall={setInVideoCall} />}
-        <div ref={chatRef} className={styles.chat}>
+        <div ref={chatRef} className={`${styles.chat} ${inReport ? styles.rep : ''}`} onClick={() => inReport ? setInReport(false) : false}>
             <div className={styles['wrap-content']}>
                 {profile !== undefined &&
                 <div className={styles.profile}>
@@ -205,10 +208,11 @@ export default function Chat({setMessageKey}: Props) {
                 }
             </div>
             <div className={styles.topbar}>
-                <i onClick={() => window.innerWidth <= 768 ? navigate('/app/messages') : navigate('/app')} className={`fa-solid fa-circle-arrow-left ${styles['back-click']}`}></i>
+                <i onClick={() => window.innerWidth <= 768 ? navigate('/app/messages') : navigate('/app')} className={`fa-solid fa-angle-left ${styles['back-click']}`}>
+                </i>
                 <div>
                     <i onClick={() => doVideoCall()} className="fa-solid fa-video"></i>
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                    <i onClick={() => setInReport(true)} className="fa-solid fa-shield-halved"></i>
                 </div>
             </div>
             <div className={styles.typebox}>

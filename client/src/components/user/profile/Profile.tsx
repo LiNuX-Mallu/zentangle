@@ -27,7 +27,7 @@ export default function Profile({setMatchKey}: Props) {
             if (response.status === 200) {
                 setTimeout(() => {
                     setProfiles(response?.data as ProfileInterface[]);
-                }, 5000);
+                }, 3000);
             }
         });
     }, [profiles]);

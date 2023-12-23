@@ -27,7 +27,7 @@ export default function Messages() {
                 setLen(response.data?.length)
                 setTimeout(() => {
                     setMessages(response?.data);
-                }, 2000);
+                }, 1000);
             }
         });
     }, []);
