@@ -2,7 +2,7 @@ import User from "../../models/user"
 
 export default async (userId: string, username: string) => {
     try {
-        const username = await User.findById(userId, {username: 1});
+        const user = await User.findById(userId, {username: 1});
         if (!username) throw new Error("Cannot Unmatch User problem");
 
         const profile = await User.findOneAndUpdate({username}, {
@@ -10,12 +10,12 @@ export default async (userId: string, username: string) => {
                 'match.matched': {with: userId},
                 'match.liked': {likedBy: userId},
                 'match.disliked': userId,
-                'chatHistory': {with: username?.username},
+                'chatHistory': {with: user?.username},
             }
         }, {new: true});
         if (!profile) throw new Error("Cannot Unmatch - Profiler problem");
 
-        const user = await User.findOneAndUpdate({_id: userId}, {
+        const userUpdated = await User.findOneAndUpdate({_id: userId}, {
             $pull: {
                 'match.matched': {with: profile._id},
                 'match.liked': {likedBy: profile._id},
@@ -23,7 +23,7 @@ export default async (userId: string, username: string) => {
                 'chatHistory': {with: profile.username},
             }
         }, {new: true});
-        if (!user) throw new Error("Cannot Unmatch User problem");
+        if (!userUpdated) throw new Error("Cannot Unmatch User problem");
 
         return true;
         

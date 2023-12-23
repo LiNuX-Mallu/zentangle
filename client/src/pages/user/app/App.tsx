@@ -171,7 +171,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
             </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification'].includes(space) ? 'edit-active' : ''}`}>
+                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification', 'matches', 'messages'].includes(space) ? 'edit-active' : ''}`}>
                     {space === 'home' && <Profile setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }

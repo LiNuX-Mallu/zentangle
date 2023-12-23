@@ -37,8 +37,8 @@
 }
 
 .table-container {
-    overflow-x: scroll;
-    max-height: 80vh;
+    overflow: scroll;
+    height: 65vh;
 }
 
 .data {

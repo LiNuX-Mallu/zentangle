@@ -4,6 +4,7 @@ import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
+import Skeleton from '@mui/material/Skeleton';
 
 interface Props {
     setMatchKey: React.Dispatch<React.SetStateAction<string>>
@@ -24,7 +25,9 @@ export default function Profile({setMatchKey}: Props) {
         axios.get('/user/get-profiles')
         .then((response) => {
             if (response.status === 200) {
-                setProfiles(response?.data as ProfileInterface[]);
+                setTimeout(() => {
+                    setProfiles(response?.data as ProfileInterface[]);
+                }, 5000);
             }
         });
     }, [profiles]);
@@ -154,11 +157,27 @@ export default function Profile({setMatchKey}: Props) {
         });
     };
 
-    if (!profiles || profiles.length === 0) {
+    if (profiles?.length === 0) {
         return (
             <div className={styles.profile}>
                 <div className='w-100 h-100 d-flex justify-content-center align-items-center text-center user-select-none text-white'>
                     <span className='fs-5 p-5'><i className="fa-solid fa-face-sad-tear"></i> Sorry, No more profiles around you!</span>
+                </div>
+            </div>
+        )
+    }
+
+    if (!profiles) {
+        return (
+            <div className={styles.profile}>
+                <div className={styles.details}>
+                    <Skeleton variant='rectangular' animation='wave' sx={{bgcolor: 'grey.900', height: '100%', width: '100%'}}/>
+                </div>
+                <div style={{backgroundColor: '#1f1f1f'}} className={styles.belowbar}>
+                    <Skeleton variant='circular' animation='pulse' sx={{bgcolor: 'grey.800', height: 50, width: 50}}></Skeleton>
+                    <Skeleton variant='circular' animation='pulse' sx={{bgcolor: 'grey.800', height: 50, width: 50}}></Skeleton>
+                    <Skeleton variant='circular' animation='pulse' sx={{bgcolor: 'grey.800', height: 50, width: 50}}></Skeleton>
+                    <Skeleton variant='circular' animation='pulse' sx={{bgcolor: 'grey.800', height: 50, width: 50}}></Skeleton>
                 </div>
             </div>
         )

@@ -4,6 +4,7 @@ import axios from '../../../instances/axios';
 import { ApiUrl } from '../../../instances/urls';
 import { timeAgo } from '../../../instances/timeAgo';
 import { useNavigate } from 'react-router-dom';
+import Skeleton from '@mui/material/Skeleton';
 interface Matches {
     type: string,
     likedBy: {profile: {name: string, medias: string[]}, username: string};
@@ -12,17 +13,33 @@ interface Matches {
 }
 
 export default function Matches() {
-    const [matches, setMatches] = useState<Matches[]>([]);
+    const [matches, setMatches] = useState<Matches[] | null>(null);
     const navigate = useNavigate();
+    const [len, setLen] = useState(3);
 
     useEffect(() => {
         axios.get('/user/get-matches')
         .then(response => {
             if (response.status === 200) {
-                setMatches(response?.data);
+                setLen(response?.data?.length)
+                setTimeout(() => {
+                    setMatches(response?.data);
+                }, 2000);
             }
         })
     }, []);
+
+    if (!matches) {
+        return (
+            <div style={{padding: 0}} className={styles.matches}>
+                {Array.from({length: len}, (_, index) => (
+                    <div style={{padding: 0}} className={styles.box}>
+                        <Skeleton key={index} variant='rectangular' animation='wave' sx={{width: '100%', height: '100%', bgcolor: 'grey.950'}} />
+                    </div>
+                ))}
+            </div>
+        )
+    }
 
     if (matches.length === 0) {
         return <div className='d-flex justify-content-center h-100 text-white pt-5'>Start maching to get matches</div>

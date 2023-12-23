@@ -3,14 +3,13 @@
     min-height: 100%;
     background-color: transparent;
     color: white;
-    overflow-y: scroll;
+    overflow-y: scroll !important;
 }
 
 .matches .box {
     width: 100%;
-    background-color: rgba(129, 129, 129, 0.048);
+    background-color: rgba(150, 150, 150, 0.192);
     height: 30px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.068);
     height: 70px;
     display: flex;
     align-items: center;
@@ -18,6 +17,10 @@
     flex-direction: row;
     padding-left: 12px;
     cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+    margin-top: 0;
+    overflow: hidden;
 }
 
 .box .pro-pic {
@@ -76,8 +79,10 @@
         width: 100%;
     }
     .matches .box {
-        background-color: rgb(31, 14, 31);
-        border-bottom: 1px solid rgba(109, 109, 109, 0.082);
+        margin: 12px;
+        margin-top: 2px;
+        margin-bottom: 3px;
+        border-radius: 8px;
     }
 }
 
