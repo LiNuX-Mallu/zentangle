@@ -1,13 +1,15 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styles from './Report.module.scss';
 import Swal from 'sweetalert2';
+import axios from '../../../instances/axios';
 
 interface Props {
     isVisible: boolean;
     close: React.Dispatch<React.SetStateAction<boolean>>;
+    username: string | undefined;
 }
 
-export default function Report({isVisible, close}: Props) {
+export default function Report({isVisible, close, username}: Props) {
     const [show, setShow] = useState(false);
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
     const [reason, setReason] = useState("");
@@ -53,7 +55,33 @@ export default function Report({isVisible, close}: Props) {
                 iconColor: 'salmon',
               });
         }
+        if (!username) return;
+
+        const formData = new FormData();
+        selectedImages.forEach((image) => formData.append('images', image));
+        formData.append('against', username);
+        formData.append('reason', reason);
+
+        axios.post('/user/report', formData, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Report submitted",
+                    color: 'white',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    backdrop: true,
+                    background: 'black',
+                  }).then(() => close(false));
+            }
+        });
     }
+
+    if (!username) return null;
 
     return (
         <div className={`${styles.report} ${show ? styles.visible : ''}`}>

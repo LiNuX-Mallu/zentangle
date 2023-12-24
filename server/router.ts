@@ -21,6 +21,7 @@ router.use('/admin', (req, _, next: NextFunction) => {
     next();
 }, adminRouter);
 router.use('/media/verification', adminTokenValidation, expressStatic(path.join(__dirname, './src/uploads/verifications')));
+router.use('/media/reports', adminTokenValidation, expressStatic(path.join(__dirname, './src/uploads/reports')));
 
 
 

@@ -137,7 +137,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
     }
 
     if (inReport) {
-        return <Report close={setInReport} isVisible={inReport} />
+        return <Report username={username} close={setInReport} isVisible={inReport} />
     }
 
     if (!profile) {

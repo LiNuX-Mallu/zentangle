@@ -1,17 +1,7 @@
 import { Request, Response } from "express";
 import manageRequestVerification from "../../services/user/manageRequestVerification";
 import user from "../../models/user";
-
-interface MulterFile {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    destination: string;
-    filename: string;
-    path: string;
-    size: number;
-}
+import { MulterFile } from "../../interfaces/MulterFile";
 
 declare module 'express-serve-static-core' {
     interface Request {

@@ -1,7 +1,14 @@
 import { Router } from "express";
+
+//middlewares
+import upload from "../middlewares/upload";
+import uploadReportImages from "../middlewares/uploadReportImages";
 import tokenValidation from "../middlewares/validation/userTokenValidation";
-import register from "../controllers/user/register";
 import registerValidation from "../middlewares/validation/registerValidation";
+import checkBanned from "../middlewares/checkBanned";
+
+//controllers
+import register from "../controllers/user/register";
 import login from "../controllers/user/login";
 import getUserDetails from "../controllers/user/getUserDetails";
 import updatePassion from "../controllers/user/updatePassion";
@@ -11,8 +18,6 @@ import updateLifestyle from "../controllers/user/updateLifestyle";
 import updateDetails from "../controllers/user/updateDetails";
 import updateLookingFor from "../controllers/user/updateLookingFor";
 import updateOpenTo from "../controllers/user/updateOpenTo";
-import checkBanned from "../middlewares/checkBanned";
-import upload from "../middlewares/upload";
 import uploadMedia from "../controllers/user/uploadMedia";
 import reorderMedia from "../controllers/user/reorderMedia";
 import updateSettings from "../controllers/user/updateSettings";
@@ -30,6 +35,7 @@ import unblock from "../controllers/user/unblock";
 import unmatchProfile from "../controllers/user/unmatchProfile";
 import uploadWebcams from "../middlewares/uploadWebcams";
 import requestVerification from "../controllers/user/requestVerification";
+import reportUser from "../controllers/user/reportUser";
 
 const router = Router();
 
@@ -65,4 +71,7 @@ router.get('/get-chat/:username', tokenValidation, checkBanned, getChat);
 router.post('/block-user', tokenValidation, checkBanned, blockUser);
 router.post('/unblock', tokenValidation, checkBanned, unblock);
 router.post('/unmatch-user', tokenValidation, checkBanned, unmatchProfile);
+
+router.post('/report', uploadReportImages.array('images'), tokenValidation, checkBanned, reportUser);
+
 export default router;

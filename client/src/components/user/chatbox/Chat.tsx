@@ -179,7 +179,7 @@ export default function Chat({setMessageKey}: Props) {
     if (!username || !profile || !myUsername) return null;
     return (
         <>
-        {inReport === true && <Report close={setInReport} isVisible={inReport} />}
+        {inReport === true && <Report username={username} close={setInReport} isVisible={inReport} />}
         {inVideoCall !== null && <VideoCall username={username} myUsername={myUsername} setInVideoCall={setInVideoCall} />}
         <div ref={chatRef} className={`${styles.chat} ${inReport ? styles.rep : ''}`} onClick={() => inReport ? setInReport(false) : false}>
             <div className={styles['wrap-content']}>
