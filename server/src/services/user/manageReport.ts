@@ -7,10 +7,11 @@ export default async (userId: string, against: string, reason: string, images: s
         if (!user) throw new Error("Cannot find user");
 
         const report = await new Report({
-            status: 'submitted',
+            status: 'open',
             complainer: user.username,
             complainee: against,
             complaint: reason,
+            images,
         }).save();
         if (!report) throw new Error("Cannot create report");
 

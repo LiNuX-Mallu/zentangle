@@ -28,7 +28,7 @@ export default function Sidebar({session, setMenuActive}: Props) {
             <div onClick={() => navigate('/admin/verifications')} className={`${session === 'verifications' ? styles.active : ''} ${styles.item}`}>
                 <span>Verifications</span>
             </div>
-            <div onClick={() => navigate('/admin/alert-notifications')} className={`${session === 'alert' ? styles.active : ''} ${styles.item}`}>
+            <div onClick={() => navigate('/admin/alerts-notifications')} className={`${session === 'alerts' ? styles.active : ''} ${styles.item}`}>
                 <span>Alert & Notification</span>
             </div>
         </div>

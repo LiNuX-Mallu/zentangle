@@ -20,6 +20,9 @@ axios.interceptors.response.use(
       } 
       else if (error.response && error.response.status === 500) {
         return Swal.fire({
+          backdrop: true,
+          background: 'black',
+          color: 'white',
           icon: "error",
           title: "Oops...",
           text: "Something went wrong!",

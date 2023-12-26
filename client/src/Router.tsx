@@ -28,7 +28,7 @@ export default function AppRouter() {
         <Route path='/admin/users' element={<Panel defaultSession='users' />} />
         <Route path='/admin/reports' element={<Panel defaultSession='reports' />} />
         <Route path='/admin/verifications' element={<Panel defaultSession='verifications' />} />
-        <Route path='/admin/alert-notifications' element={<Panel defaultSession='alert' />} />
+        <Route path='/admin/alerts-notifications' element={<Panel defaultSession='alerts' />} />
         <Route path='/admin/dashboard' element={<Panel defaultSession='dashboard' />} />
 
         {/* 404 */}

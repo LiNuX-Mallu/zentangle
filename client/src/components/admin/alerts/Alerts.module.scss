@@ -25,20 +25,28 @@
     button:hover, .other-btn span:hover {
         opacity: 0.8;
     }
-    .filter {
+    .add-filter {
         width: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding-bottom: 5px;
         select {
-            padding: 5px;
+            padding: 3px;
             width: 15%;
             border-radius: 3px;
             outline: none;
-            background-color: rgb(20, 14, 41);
+            background-color: rgb(54, 54, 54);
             color: white;
             border: none;
             text-align: center;
+        }
+        button {
+            border: none;
+            background-color: rgb(33, 110, 43);
+            border-radius: 2px;
+            padding-left: 10px;
+            padding-right: 10px;
+            color: white;
         }
     }
     
@@ -64,20 +72,23 @@
         &.other-btn {
             cursor: pointer;
             span {
-                background-color: rgb(53, 53, 53);
+                background-color: rgb(206, 206, 206);
                 padding: 2.5px;
                 padding-left: 10px;
                 padding-right: 10px;
                 border-radius: 3px;
-                color: white;
+                color: rgb(0, 0, 0);
                 font-size: 13.5px;
                 padding-bottom: 5px;
             }
         }
+        &.content {
+            width: 100%;
+        }
         button {
             font-size: 13px;
-            background-color: rgb(206, 206, 206);
-            color: black;
+            background-color: rgb(32, 184, 65);
+            color: white;
             padding-left: 5px;
             padding-right: 5px;
             border-radius: 2px;

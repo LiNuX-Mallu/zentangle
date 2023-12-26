@@ -8,6 +8,10 @@ import Updateverification from "../controllers/admin/updateVerification";
 import searchUser from "../controllers/admin/searchUser";
 import unverifyUser from "../controllers/admin/unverifyUser";
 import fetchReports from "../controllers/admin/fetchReports";
+import reportAction from "../controllers/admin/reportAction";
+import fetchAlerts from "../controllers/admin/fetchAlerts";
+import addAlert from "../controllers/admin/addAlert";
+import editAlert from "../controllers/admin/editAlert";
 
 const router = Router();
 
@@ -22,6 +26,11 @@ router.post('/unverify-user', tokenValidation, unverifyUser);
 router.get('/get-verifications/:page', tokenValidation, fetchVerifications);
 router.post('/reject-verification', tokenValidation, Updateverification);
 
-router.get('/get-reports/:page', tokenValidation, fetchReports);
+router.get('/get-reports/:page/:filter', tokenValidation, fetchReports);
+router.post('/report-action', tokenValidation, reportAction);
+
+router.get('/get-alerts/:page/:active', tokenValidation, fetchAlerts);
+router.post('/add-alert', tokenValidation, addAlert);
+router.put('/edit-alert', tokenValidation, editAlert);
 
 export default router;

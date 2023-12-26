@@ -4,73 +4,64 @@ import { ProfileInterface } from '../../../instances/interfaces';
 import axios from '../../../instances/axios';
 import ViewUser from '../viewUser/ViewUser';
 import formatDate from '../../../instances/formatDate';
+import ViewReport from './viewReport/ViewReport';
 
 interface Report {
+    status: string;
     id: string;
     complainer: ProfileInterface;
     complainee: ProfileInterface;
     complaint: string;
-    timestamp: Date,    
+    timestamp: Date;
+    images: string[];  
 }
 
 export default function UserReports() {
     const [data, setData] = useState<Report[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [viewProfile, setViewProfile] = useState<ProfileInterface | null>(null);
-    const [playVideo, setPlayVideo] = useState<string| null>(null);
     const [loading, setLoading] = useState(true);
+    const [viewReport, setViewReport] = useState<Report | null>(null);
+    const [filter, setFilter] = useState('open');
 
     useEffect(() => {
+        if (viewReport !== null) return;
+        
         setLoading(true);
-        axios.get(`/admin/get-reports/${currentPage}`)
+        axios.get(`/admin/get-reports/${currentPage}/${filter}`)
         .then(response => {
             if (response.status === 200) {
                 setData(response.data);
                 console.log(response.data);
             }
         }).finally(() => setLoading(false));
-    }, [currentPage]);
-
-    // const handleReject = (requestId: string, verify: boolean) => {
-    //     Swal.fire({
-    //         title: "Are you sure?",
-    //         text: `This action will Reject Verification`,
-    //         icon: "warning",
-    //         showCancelButton: true,
-    //         confirmButtonColor: "orangered",
-    //         cancelButtonColor: "#3085d6",
-    //         confirmButtonText: "Confirm",
-    //         position: 'center',
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             axios.post('/admin/reject-verification', {requestId, verify}, {
-    //                 headers: {'Content-Type': 'application/json'}
-    //             })
-    //             .then((response) => {
-    //                 if (response.status === 200) {
-    //                     axios.get('/admin/get-verifications/'+currentPage)
-    //                     .then((res) => setData(res?.data));
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
+    }, [currentPage, filter, viewReport]);
 
     return (
         <div onClick={() => {
-            if (viewProfile) setViewProfile(null);
-            if (playVideo) setPlayVideo(null);
-        }} className={styles.container}>
+                if (viewProfile) setViewProfile(null);
+                if (viewReport) setViewReport(null);
+            }}
+            className={styles.container}>
+
             {viewProfile !== null &&
                 <div onClick={(e) => e.stopPropagation()} className={styles.overlay}>
                     <ViewUser defaultProfile={viewProfile} />
                 </div>
             }
-            {playVideo !== null &&
+            {viewReport !== null && viewProfile === null &&
                 <div onClick={(e) => e.stopPropagation()} className={styles.overlay}>
-                    <video src={playVideo} playsInline autoPlay></video>
+                    <ViewReport setViewReport={setViewReport} setViewProfile={setViewProfile} report={viewReport} />
                 </div>
             }
+
+            <div className={styles.filter}>
+                <select onChange={(e) => {setCurrentPage(1), setFilter(e.target.value)}}>
+                    <option defaultChecked={true} value="open">Open</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+
             <div className={styles['table-container']}>
                 <table className={styles.data}>
                     <thead>
@@ -89,7 +80,7 @@ export default function UserReports() {
                                     <td className={styles['other-btn']}> <span onClick={() => setViewProfile(report.complainer)}>{report.complainer.username}</span> </td>
                                     <td className={styles['other-btn']}> <span onClick={() => setViewProfile(report.complainee)}>{report.complainee.username}</span> </td>
                                     <td className={styles['action-body']}>
-                                        <button>View</button>
+                                        <button onClick={() => setViewReport(report)}>View</button>
                                     </td>
                                 </tr>
                             )

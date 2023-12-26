@@ -4,7 +4,9 @@ import getReports from "../../services/admin/getReports";
 export default async (req: Request, res: Response) => {
     try {
         const currentPage = req.params.page;
-        const reports = await getReports(+currentPage);
+        const filter = req.params.filter;
+
+        const reports = await getReports(+currentPage, filter);
         if (reports) {
             res.status(200).json(reports);
         }

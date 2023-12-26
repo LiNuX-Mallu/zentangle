@@ -1,10 +1,16 @@
 import { Schema, model } from "mongoose";
 
 const reportSchema = new Schema({
-    status: {type: String},
+    status: {
+        type: String,
+        enum: ['open', 'closed'],
+    },
     complainer: {type: String},
     complainee: {type: String},
     complaint: {type: String},
+    images: [{
+        type: String,
+    }],
     timestamp: {
         type: Date,
         default: Date.now,

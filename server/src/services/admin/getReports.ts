@@ -1,10 +1,10 @@
 import Report from "../../models/report";
 import User from "../../models/user";
 
-export default async (currentPage: number) => {
+export default async (currentPage: number, filter: string) => {
     const perPage = 6;
     try {
-        const reports = await Report.find()
+        const reports = await Report.find({status: filter ?? 'open'})
             .sort({timestamp: -1})
             .skip((currentPage - 1) * perPage)
             .limit(perPage);
@@ -18,6 +18,7 @@ export default async (currentPage: number) => {
                 complainer: await User.findOne({username: report.complainer}),
                 complainee: await User.findOne({username: report.complainee}),
                 complaint: report.complaint,
+                images: report.images,
                 timestamp: report.timestamp,
             }
         }));

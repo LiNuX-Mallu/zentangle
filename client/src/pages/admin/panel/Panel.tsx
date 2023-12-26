@@ -8,6 +8,7 @@ import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
 import VerificationRequest from '../../../components/admin/verification-request/VerificationRequest';
 import UserReports from '../../../components/admin/reports/userReports';
+import Alerts from '../../../components/admin/alerts/Alerts';
 
 interface Props {
     defaultSession?: string;
@@ -49,6 +50,7 @@ export default function Panel({defaultSession}: Props) {
                 {session === 'users' && <Users />}
                 {session === 'verifications' && <VerificationRequest /> }
                 {session === 'reports' && <UserReports /> }
+                {session === 'alerts' && <Alerts /> }
             </div>
         </div>
     )
