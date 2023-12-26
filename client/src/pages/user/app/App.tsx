@@ -55,6 +55,25 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     const [inVideoCall, setInVideoCall] = useState<string | null>(null);
     const [matchKey, setMatchKey] = useState(keyForMatches);
     const [messageKey, setMessageKey] = useState(keyForMessages);
+    const [alert, setAlert] = useState(null);
+
+    useEffect(() => {
+        if (alert !== null || loading) return;
+        axios.get('/user/alerts')
+        .then((response) => {
+            if (response.status === 200) {
+                setAlert(response.data);
+                Swal.fire({
+                    title: response.data.title,
+                    text: response.data.content,
+                    backdrop: true,
+                    background: 'black',
+                    color: 'white',
+                    confirmButtonColor: 'purple',
+                }).then(() => setAlert(null))
+            }
+        });
+    }, [loading, alert]);
 
     useEffect(() => {
         setSpace(defaultSpace || 'home');

@@ -2,7 +2,7 @@ export interface Alert {
     _id: string;
     title: string,
     content: string;
-    seenBy: object;
+    seenBy: string[];
     timestamp: Date;
     isActive: boolean;
 }

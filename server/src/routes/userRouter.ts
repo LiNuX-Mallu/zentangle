@@ -36,6 +36,7 @@ import unmatchProfile from "../controllers/user/unmatchProfile";
 import uploadWebcams from "../middlewares/uploadWebcams";
 import requestVerification from "../controllers/user/requestVerification";
 import reportUser from "../controllers/user/reportUser";
+import fetchAlerts from "../controllers/user/fetchAlerts";
 
 const router = Router();
 
@@ -73,5 +74,7 @@ router.post('/unblock', tokenValidation, checkBanned, unblock);
 router.post('/unmatch-user', tokenValidation, checkBanned, unmatchProfile);
 
 router.post('/report', uploadReportImages.array('images'), tokenValidation, checkBanned, reportUser);
+
+router.get('/alerts', tokenValidation, checkBanned, fetchAlerts);
 
 export default router;
