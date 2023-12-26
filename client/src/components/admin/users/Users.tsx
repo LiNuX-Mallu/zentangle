@@ -13,8 +13,10 @@ export default function Users() {
     const [searchData, setSearchData] = useState<ProfileInterface[]>([]);
     const [searching, setSearching] = useState("");
     const [filter, setFilter] = useState('all');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         axios.get(`/admin/get-users/${currentPage}/${filter}`)
         .then(response => {
             if (response.status === 200) {
@@ -22,7 +24,7 @@ export default function Users() {
             }
         }).catch(error => {
             alert(error?.message || "Internal server error");
-        });
+        }).finally(() => setLoading(false));
     }, [currentPage, filter]);
 
     const handleBan = (username: string, banned: boolean) => {
@@ -46,7 +48,7 @@ export default function Users() {
                     if (response.status === 200) {
                         Swal.fire({
                             title: "Success",
-                            icon: "success"
+                            icon: "success",
                         }).then(() => {
                             const newData = data.map((user) => {
                                 if (user.username === username) return response.data;
@@ -85,7 +87,9 @@ export default function Users() {
                     }).then(() => {
                         setSearching("");
                         setSearchData([]);
-                        axios.get(`/admin/get-users/${currentPage}/${filter}`).then((res) => setData(res.data));
+                        setLoading(true);
+                        axios.get(`/admin/get-users/${currentPage}/${filter}`).then((res) => setData(res.data))
+                        .finally(() => setLoading(false));
                     });
                 }
             });
@@ -99,12 +103,13 @@ export default function Users() {
         }
         const cancelToken = ogAxios.CancelToken.source();
 
+        setLoading(true);
         axios.get(`/admin/search-users/${searching}/${filter}`, {cancelToken: cancelToken.token})
         .then((response) => {
             if (response.status === 200) {
                 setSearchData(response.data);
             }
-        });
+        }).finally(() => setLoading(false));
 
         return () => cancelToken.cancel();
         
@@ -141,7 +146,7 @@ export default function Users() {
                         </tr>
                     </thead>
                     <tbody>
-                        {searching.length !== 0 && searchData?.map((user) => {
+                        {loading === false && searching.length !== 0 && searchData?.map((user) => {
                             return (
                                 <tr key={user._id} className={styles.user}>
                                     <td style={{textTransform: 'capitalize'}}>{user.firstname  +' '+ user.lastname}</td>
@@ -156,7 +161,7 @@ export default function Users() {
                             )
                         })}
 
-                        {searching.length === 0 && data?.map((user) => {
+                        {loading === false && searching.length === 0 && data?.map((user) => {
                             return (
                                 <tr key={user._id} className={styles.user}>
                                     <td style={{textTransform: 'capitalize'}}>{user.firstname  +' '+ user.lastname}</td>
@@ -172,10 +177,11 @@ export default function Users() {
                         })}
                     </tbody>
                 </table>
+                {((data.length === 0 || loading) || (searching.length !== 0 && searchData.length === 0)) &&
+                <h2 className='text-center p-5'>{loading ? <i className="text-center fa-2xl p-5 fa-solid fa-spinner fa-spin"></i> : 'No data found!'}</h2>
+                }
             </div>
-            {(data.length === 0 || (searching.length !== 0 && searchData.length === 0)) &&
-                <h2 className='text-center p-5'>No data found!</h2>
-            }
+            
             
             {searching.length === 0 &&
             <div className={styles['page-buttons']}>

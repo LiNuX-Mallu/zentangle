@@ -10,7 +10,7 @@ export default async (userId: string, against: string, reason: string, images: s
             status: 'submitted',
             complainer: user.username,
             complainee: against,
-            reason,
+            complaint: reason,
         }).save();
         if (!report) throw new Error("Cannot create report");
 
