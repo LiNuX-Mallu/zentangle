@@ -37,6 +37,8 @@ import uploadWebcams from "../middlewares/uploadWebcams";
 import requestVerification from "../controllers/user/requestVerification";
 import reportUser from "../controllers/user/reportUser";
 import fetchAlerts from "../controllers/user/fetchAlerts";
+import makeOrder from "../controllers/user/makeOrder";
+import paymentStatus from "../controllers/user/paymentStatus";
 
 const router = Router();
 
@@ -76,5 +78,8 @@ router.post('/unmatch-user', tokenValidation, checkBanned, unmatchProfile);
 router.post('/report', uploadReportImages.array('images'), tokenValidation, checkBanned, reportUser);
 
 router.get('/alerts', tokenValidation, checkBanned, fetchAlerts);
+
+router.post('/make-order', tokenValidation, checkBanned, makeOrder);
+router.post('/payment-status', tokenValidation, checkBanned, paymentStatus);
 
 export default router;

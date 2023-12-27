@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import exploreIcon from '../../../assets/images/explore-icon.png';
 import accountIcon from '../../../assets/images/account-icon.png';
 import chatIcon from '../../../assets/images/chat-icon.png';
@@ -28,6 +28,7 @@ import VideoCall from '../../../components/user/videoCall/VideoCall';
 import Preview from '../../../components/user/preview/Preview';
 import { ApiUrl } from '../../../instances/urls';
 import Verification from '../../../components/user/verification/Verification';
+import Premium from '../../../components/user/premium/Premium';
 
 interface Props {
     defaultSpace: string | null;
@@ -56,6 +57,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     const [matchKey, setMatchKey] = useState(keyForMatches);
     const [messageKey, setMessageKey] = useState(keyForMessages);
     const [alert, setAlert] = useState(null);
+    const [showPremium, setShowPremium] = useState(false);
 
     useEffect(() => {
         if (alert !== null || loading) return;
@@ -181,8 +183,8 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
     return(
         <>
         {inVideoCall !== null && <VideoCall myUsername={myUsername} username={inVideoCall} setInVideoCall={setInVideoCall} /> }
-
-        <div key={username} className="app container-fluid">
+        {showPremium && <Premium isVisible={showPremium} close={setShowPremium} /> }
+        <div onClick={() => showPremium ? setShowPremium(false) : false} key={username} className={`app container-fluid ${showPremium ? 'premium' : ''}`}>
             {(space === 'home' || space === 'account') &&
             <div className='brand-app'>
                 <i className="fa-solid fa-cat text-white pe-1"></i>
@@ -191,7 +193,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
 
             <div className="row">
                 <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification', 'matches', 'messages'].includes(space) ? 'edit-active' : ''}`}>
-                    {space === 'home' && <Profile setMatchKey={setMatchKey} />}
+                    {space === 'home' && <Profile setPremium={setShowPremium} setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}

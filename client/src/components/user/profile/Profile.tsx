@@ -7,10 +7,11 @@ import Swal from 'sweetalert2';
 import Skeleton from '@mui/material/Skeleton';
 
 interface Props {
-    setMatchKey: React.Dispatch<React.SetStateAction<string>>
+    setMatchKey: React.Dispatch<React.SetStateAction<string>>;
+    setPremium: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Profile({setMatchKey}: Props) {
+export default function Profile({setMatchKey, setPremium}: Props) {
     const [startX, setStartX] = useState<number | null>(null);
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>();
     const [userIndex, setUserIndex] = useState<number>(0);
@@ -101,6 +102,7 @@ export default function Profile({setMatchKey}: Props) {
     };
 
     const handleLike = (isSuper: boolean) => {
+        setPremium(true);
         if (!profiles || !profiles[userIndex]) return;
         axios.post('/user/like-profile', {profileId: profiles[userIndex]._id, isSuper}, {
             headers: {

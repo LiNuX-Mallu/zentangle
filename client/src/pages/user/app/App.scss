@@ -4,6 +4,10 @@
     margin: 0 !important;
     padding: 0 !important;
     overflow-y: hidden;
+    &.premium {
+        filter: blur(4px) brightness(60%);
+        -webkit-filter: blur(4px) brightness(60%);
+    }
 }
 
 /* .app .brand {

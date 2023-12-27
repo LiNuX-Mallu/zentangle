@@ -52,6 +52,11 @@ const userSchema = new Schema({
     default: 'notverified',
   },
 
+  premium: {
+    status: {type: Boolean},
+    expireDate: {type: Date},
+  },
+
   location: {
     coordinates: [Number, Number],
   },
