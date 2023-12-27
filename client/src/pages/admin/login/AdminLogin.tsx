@@ -16,10 +16,9 @@ export default function AdminLogin() {
             }
         }).then((response) => {
             if (response.status === 200) {
-                navigate('/admin/panel');
+                navigate('/admin');
             }
         }).catch(error => {
-            console.log(error);
             alert(error);
         });
     }

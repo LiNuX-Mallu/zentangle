@@ -73,7 +73,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                 }).then(() => setAlert(null))
             }
         });
-    }, [loading, alert]);
+    }, [loading, alert, space]);
 
     useEffect(() => {
         setSpace(defaultSpace || 'home');
