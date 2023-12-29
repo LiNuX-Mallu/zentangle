@@ -2,7 +2,7 @@
     height: 100vh;
     width: 100%;
     margin: 0 !important;
-    background-color: rgb(37, 37, 37);
+    background-color: rgb(46, 46, 46);
     overflow-y: scroll;
     padding-top: 2.5rem;
 }
@@ -10,7 +10,7 @@
 .settings .topbar {
     padding: 0.9rem;
     color: rgb(0, 0, 0);
-    background-color: rgb(100, 31, 100);
+    background-image: linear-gradient(to right, rgb(65, 8, 65), rgb(80, 11, 80));
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -61,8 +61,8 @@
 
 .division .option {
     font-size: 15px;
-    background-color: rgb(53, 53, 53);
-    border-top: 1px solid rgba(255, 255, 255, 0.281);
+    background-color: rgb(49, 49, 49);
+    border-top: 1px solid rgba(255, 255, 255, 0.247);
     padding: 10px;
     color: rgba(255, 255, 255, 0.932);
     display: flex;

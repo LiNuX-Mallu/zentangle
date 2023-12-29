@@ -1,5 +1,10 @@
 .home {
     background-image: linear-gradient(to bottom, black, rgb(36, 0, 36));
+    background-image: url('../../../assets/images/bg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-clip: border-box;
     min-height: 100vh;
     overflow-y: scroll;
     padding: 0 !important;
@@ -40,6 +45,7 @@
 @media (max-width: 768px) {
     .home {
         background-image: linear-gradient(to bottom, black, rgb(56, 0, 56));
+        background-image: url('../../../assets/images/bg-sm.png');
     }
     .head {
         font-size: 15px;

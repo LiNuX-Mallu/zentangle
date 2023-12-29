@@ -29,7 +29,7 @@
 
 .space {
     padding: 0 !important;
-    background-color: transparent;
+    background-color: rgb(10, 10, 10);
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -39,7 +39,7 @@
 }
 
 .app .sidebar {
-    background-color: rgb(31, 31, 31);
+    background-color: rgb(17, 17, 17);
     min-height: 100vh;
     padding: 0;
     position: relative;
@@ -48,7 +48,7 @@
 }
 
 .app .sidebar .topbar {
-    background-color: rgb(77, 16, 77);
+    background-image: linear-gradient(to right, rgb(43, 3, 43), rgb(80, 11, 80));
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -63,6 +63,7 @@
     font-size: 29px;
     cursor: pointer;
     color: white;
+    transition: transform 0.1s ease;
 }
 
 .app .sidebar .topbar .explore i:hover {
@@ -75,9 +76,10 @@
     flex-direction: row;
     align-items: center;
     font-size: 18px;
-    gap: 5px;
-    font-family: 'Niramit', sans-serif;
+    gap: 10px;
+    font-family: 'Lexend';
     box-sizing: border-box;
+    transition: transform 0.1s ease;
 }
 
 .app .sidebar .topbar .account:hover {

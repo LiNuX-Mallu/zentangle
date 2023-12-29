@@ -185,7 +185,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             <hr />
 
             {/* languages */}
-            {(profile && Object.values(profile?.profile?.languages).length) ?
+            {(profile && profile?.profile?.languages && Object.values(profile?.profile?.languages).length) ?
             <>
                 <div className={styles['other-details']}>
                     <h4>Languages I Know</h4>
@@ -214,7 +214,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             </>: ''}
 
             {/* basics */}
-            {(profile && Object.values(profile?.profile?.basics).length) ?
+            {(profile && profile.profile.lifestyle && Object.values(profile?.profile?.basics).length) ?
             <>
                 <div className={styles['other-details']}>
                     <h4>Basics</h4>

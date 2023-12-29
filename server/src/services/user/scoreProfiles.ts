@@ -44,7 +44,8 @@ export default async (userId: string) => {
             gender: {$ne: user.gender},
             'match.matched.with': {$nin: [userId]},
             'match.liked.likedBy': {$nin : [userId]},
-            'match.disliked': {$nin: [userId]},    
+            'match.disliked': {$nin: [userId]},
+            'profile.medias.0': {$exists: true},
             $nor: [
                 //user block
                 {'blocked.users': {$in: [user?.username]}},
@@ -58,7 +59,7 @@ export default async (userId: string) => {
             'location.coordinates': {$exists: true, $ne: null},
             ...distanceQuery,
             'privacy.discoverable': true,
-            banned: false,
+            banned: {$eq: false},
         }, {match: 0,
             blocked: 0,
             reports: 0,

@@ -89,11 +89,11 @@ export default function AccountBig({setSpace}: Props) {
                 </div>
             </div>
 
-            <hr />
 
             {/* languages */}
             {(profile && Object.values(profile?.profile?.languages).length) ?
             <>
+                <hr />
                 <div className={styles['other-details']}>
                     <h4>Languages I Know</h4>
                     <div className={styles.wrap}>
@@ -102,13 +102,13 @@ export default function AccountBig({setSpace}: Props) {
                         }
                     </div>
                 </div>
-                <hr />
             </>
             : ''}
             
             {/* passions */}
             {(profile && profile?.profile?.passions.length) ?
             <>
+                <hr />
                 <div style={{marginBottom: '2rem'}} className={styles['other-details']}>
                     <h4>Passions</h4>
                     <div className={styles.wrap}>
@@ -117,12 +117,12 @@ export default function AccountBig({setSpace}: Props) {
                         })}
                     </div>
                 </div>
-                <hr />
             </>: ''}
 
             {/* basics */}
             {(profile && profile?.profile?.basics && Object.values(profile?.profile?.basics)?.length) ?
             <>
+                <hr />
                 <div className={styles['other-details']}>
                     <h4>Basics</h4>
                     <div className={styles.wrap}>
@@ -143,7 +143,6 @@ export default function AccountBig({setSpace}: Props) {
                         })}
                     </div>
                 </div>
-                <hr />
             </> : ''}
 
             
@@ -151,6 +150,7 @@ export default function AccountBig({setSpace}: Props) {
             {/* lifestyle */}
             {(profile && profile?.profile?.lifestyle && Object.values(profile.profile.lifestyle).length) ?
             <>
+                <hr />
                 <div style={{paddingBottom: '5%'}} className={styles['other-details']}>
                     <h4>Lifestyle</h4>
                     <div className={styles.wrap}>

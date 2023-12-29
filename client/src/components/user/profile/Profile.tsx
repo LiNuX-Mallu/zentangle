@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import styles from './Profile.module.css';
+import styles from './Profile.module.scss';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { ApiUrl } from '../../../instances/urls';
@@ -102,7 +102,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
     };
 
     const handleLike = (isSuper: boolean) => {
-        setPremium(true);
+        if (isSuper) return setPremium(true);
         if (!profiles || !profiles[userIndex]) return;
         axios.post('/user/like-profile', {profileId: profiles[userIndex]._id, isSuper}, {
             headers: {
@@ -126,7 +126,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                         timer: 1500,
                     }).then(() => {
                         setImageIndex(0);
-                        setProfiles(undefined);
+                        //setProfiles(undefined);
                         setMatchKey(Date.now().toString());
                     })
                 }
@@ -159,17 +159,24 @@ export default function Profile({setMatchKey, setPremium}: Props) {
         });
     };
 
-    if (profiles?.length === 0) {
+    if (profiles && profiles.length === 0) {
         return (
             <div className={styles.profile}>
-                <div className='w-100 h-100 d-flex justify-content-center align-items-center text-center user-select-none text-white'>
-                    <span className='fs-5 p-5'><i className="fa-solid fa-face-sad-tear"></i> Sorry, No more profiles around you!</span>
+                <div className={styles.empty}>
+                    <p>Sorry we are out of profiles nearby</p>
+                    <i onClick={() => setProfiles(undefined)} className="fa-solid fa-rotate-right fa-beat fa-lg"></i>
+                </div>
+                <div className={styles.belowbar}>
+                    <i className="fa-solid fa-rotate-right"></i>
+                    <i className="fa-solid fa-thumbs-down"></i>
+                    <i className="fa-solid fa-thumbs-up"></i>
+                    <i className="fa-solid fa-heart-circle-bolt"></i>
                 </div>
             </div>
         )
     }
 
-    if (!profiles) {
+    if (profiles === undefined) {
         return (
             <div className={styles.profile}>
                 <div className={styles.details}>
@@ -200,7 +207,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                 {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
                 
                 <div className={styles['other-details']}>
-                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name || profiles[userIndex]?.firstname)}{profiles && profiles[userIndex].dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>} <i style={{color: profiles[userIndex]?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i> </h3>
+                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name?.length ? profiles[userIndex]?.profile?.name : profiles[userIndex]?.firstname)}{profiles && profiles[userIndex]?.dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>} <i style={{color: profiles[userIndex]?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i> </h3>
                     {profiles && profiles[userIndex]?.profile?.livingIn && imageIndex === 0 &&
                         <>
                         <span className={styles.living}><i className="fa-solid fa-house"></i> Lives in {profiles[userIndex].profile.livingIn}</span>
@@ -265,7 +272,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                 </div>
 
             </div>
-            <div className={styles.belowbar}>
+            <div className={`${styles.belowbar} ${styles.enabled}`}>
                 <i onClick={handleLookBack} style={{color: 'silver'}}  className="fa-solid fa-rotate-right"></i>
                 <i ref={dislikeRef} onClick={handleDislike} style={{color: 'lightsalmon'}} className="fa-solid fa-thumbs-down"></i>
                 <i ref={likeRef} onClick={() => handleLike(false)} style={{color: 'cornflowerblue'}} className="fa-solid fa-thumbs-up"></i>
