@@ -56,11 +56,9 @@ const userSchema = new Schema({
     expireDate: {type: Date},
     likes: [{
       type: Date,
-      expires: '1m',
     }],
     superLikes: [{
       type: Date,
-      expires: '1m',
     }],
   },
 

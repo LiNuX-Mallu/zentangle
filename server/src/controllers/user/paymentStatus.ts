@@ -4,7 +4,8 @@ import managePayment from "../../services/user/managePayment";
 export default async (req: Request, res: Response) => {
     try {
         const orderId = req.body.orderId;
-        const paid = await managePayment(orderId);
+        const userId = req.userId;
+        const paid = await managePayment(orderId, userId);
         if (paid) {
             res.status(200).end();
         } else res.status(400);
