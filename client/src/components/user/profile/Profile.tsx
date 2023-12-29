@@ -143,7 +143,17 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                 if (error.response?.data?.error === 'premium') {
                     setPremium(true);
                 } else if (error.response?.data?.error === 'super') {
-                    console.log('super');
+                    Swal.fire({
+                        text: 'Daily Limit Reached 1/1',
+                        backdrop: true,
+                        background: 'black',
+                        color: 'white',
+                        confirmButtonColor: 'blueviolet',
+                        showConfirmButton: true,
+                        iconHtml: '<i class="fa-solid fa-heart-circle-bolt"></i>',
+                        iconColor: 'violet',
+                        focusConfirm: false,
+                    });
                 }
             }
         })

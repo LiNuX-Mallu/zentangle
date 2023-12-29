@@ -9,10 +9,11 @@ import Report from '../report/Report';
 
 interface Props {
     defaultProfile: ProfileInterface | null;
-    blocked?: boolean,
+    blocked?: boolean;
+    setPremium: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ViewProfile({defaultProfile, blocked = false}: Props) {
+export default function ViewProfile({defaultProfile, blocked = false, setPremium}: Props) {
     const [profile, setProfile] = useState<ProfileInterface | null>(defaultProfile);
     const [imageIndex, setImageIndex] = useState(0);
     const { username } = useParams();
@@ -42,8 +43,7 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
             headers: {
                 'Content-Type': 'application/json',
             }
-        })
-        .then(response => {
+        }).then(response => {
             if (response.status === 200) {
                 if (response.data.matched) {
                     Swal.fire({
@@ -61,8 +61,26 @@ export default function ViewProfile({defaultProfile, blocked = false}: Props) {
                     })
                 }
             }
+        }).catch((error) => {
+            if (error.response.status === 400) {
+                console.log(error.response?.data)
+                if (error.response?.data?.error === 'premium') {
+                    setPremium(true);
+                } else if (error.response?.data?.error === 'super') {
+                    Swal.fire({
+                        text: 'Daily Limit Reached 1/1',
+                        backdrop: true,
+                        background: 'black',
+                        color: 'white',
+                        confirmButtonColor: 'blueviolet',
+                        showConfirmButton: true,
+                        iconHtml: '<i class="fa-solid fa-heart-circle-bolt"></i>',
+                        iconColor: 'violet',
+                        focusConfirm: false,
+                    });
+                }
+            }
         })
-        .catch(() => alert("Internal server error"));
     };
 
     const handleDislike = () => {

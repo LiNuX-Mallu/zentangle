@@ -199,8 +199,8 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
                     {space === 'settings' && <Settings />}
                     {space === 'edit-profile' && <Edit />}
-                    {space === 'view-profile' && <ViewProfile defaultProfile={null} />}
-                    {space === 'view-blocked-profile' && <ViewProfile defaultProfile={null} blocked={true} />}
+                    {space === 'view-profile' && <ViewProfile setPremium={setShowPremium} defaultProfile={null} />}
+                    {space === 'view-blocked-profile' && <ViewProfile setPremium={setShowPremium} defaultProfile={null} blocked={true} />}
                     {space === 'matches' && window.innerWidth <= 768 && <Matches />}
                     {space === 'messages' && window.innerWidth <= 768 && <Messages /> }
                     {space === 'chat' && <Chat setMessageKey={setMessageKey} /> }
