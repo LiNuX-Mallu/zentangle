@@ -139,7 +139,6 @@ export default function Profile({setMatchKey, setPremium}: Props) {
             }
         }).catch((error) => {
             if (error.response.status === 400) {
-                console.log(error.response?.data)
                 if (error.response?.data?.error === 'premium') {
                     setPremium(true);
                 } else if (error.response?.data?.error === 'super') {

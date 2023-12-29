@@ -1,5 +1,6 @@
 .account-big {
-    background: linear-gradient(to bottom, rgb(32, 22, 32), rgb(0, 0, 0));
+    /* background: linear-gradient(to bottom, rgb(32, 22, 32), rgb(0, 0, 0)); */
+    background: rgb(19, 18, 19);
     width: 50%;
     height: 85%;
     display: flex;

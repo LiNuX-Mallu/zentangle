@@ -2,7 +2,7 @@
     height: 100vh;
     width: 100%;
     margin: 0 !important;
-    background-color: rgb(46, 46, 46);
+    background-color: rgb(44, 43, 43);
     overflow-y: scroll;
     padding-top: 2.5rem;
 }
@@ -10,7 +10,7 @@
 .settings .topbar {
     padding: 0.9rem;
     color: rgb(0, 0, 0);
-    background-image: linear-gradient(to right, rgb(65, 8, 65), rgb(80, 11, 80));
+    background-image: linear-gradient(to right, rgb(56, 11, 56), rgb(94, 14, 94));
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -40,7 +40,7 @@
 .settings .topbar button:hover {
     background-color: white;
     color: black;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .division {
@@ -61,9 +61,10 @@
 
 .division .option {
     font-size: 15px;
-    background-color: rgb(49, 49, 49);
+    background-color: rgb(39, 38, 38);
     border-top: 1px solid rgba(255, 255, 255, 0.247);
     padding: 10px;
+    padding-right: 15px;
     color: rgba(255, 255, 255, 0.932);
     display: flex;
     justify-content: space-between;
@@ -165,9 +166,9 @@ input[type=range]::-moz-range-thumb {
 
 .footer .option {
     padding: 0.7rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.356);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.356);
-    background-color: rgb(53, 53, 53);
+    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.096);
+    background-color: rgb(43, 43, 43);
     width: 100%;
     display: flex;
     justify-content: center;
