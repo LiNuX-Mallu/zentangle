@@ -53,8 +53,15 @@ const userSchema = new Schema({
   },
 
   premium: {
-    status: {type: Boolean},
     expireDate: {type: Date},
+    likes: [{
+      type: Date,
+      expires: '1m',
+    }],
+    superLikes: [{
+      type: Date,
+      expires: '1m',
+    }],
   },
 
   location: {

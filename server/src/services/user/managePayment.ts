@@ -13,7 +13,6 @@ export default async (paymentId: string) => {
                 }
             })
         });
-        console.log(response)
         return response?.status === 'paid';
 
     } catch (error) {

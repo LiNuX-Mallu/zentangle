@@ -1,8 +1,10 @@
 .overlay {
     display: flex;
-    position: fixed;
+    position: absolute;
     top:0;
     left: 0;
+    right: 0;
+    bottom: 0;
     justify-content: center;
     align-items: center;
     background: rgba(31, 31, 31, 0.568);
@@ -10,17 +12,17 @@
     width: 100%;
     height: 100%;
     z-index: 99;
-    padding: 0 !important;
-    margin: 0 !important;
 }
 
 form {
     background-image: linear-gradient(to top, rgba(22, 2, 22, 0.705), rgba(28, 3, 41, 0.856));
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
     padding: 3rem;
     border-radius: 0.4rem;
+    overflow-y: scroll;
 }
 
 .logged {
@@ -145,8 +147,7 @@ form input[type="checkbox"] {
 
 @media (max-width: 768px) {
     form {
-        padding: 0;
-        margin: 0;
+        margin: 0 !important;
         overflow: scroll;
         width: 100%;
     }

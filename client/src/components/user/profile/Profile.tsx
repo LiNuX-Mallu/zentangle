@@ -23,11 +23,13 @@ export default function Profile({setMatchKey, setPremium}: Props) {
 
     useEffect(() => {
         if (profiles) return;
+        setUserIndex(0);
+        setImageIndex(0);
         axios.get('/user/get-profiles')
         .then((response) => {
             if (response.status === 200) {
                 setTimeout(() => {
-                    setProfiles(response?.data as ProfileInterface[]);
+                    setProfiles(response?.data as ProfileInterface[] ?? []);
                 }, 3000);
             }
         });
@@ -74,7 +76,6 @@ export default function Profile({setMatchKey, setPremium}: Props) {
         }
     };
 
-
     const handleDragEnd = () => {
         setStartX(null);
         if (likeRef.current) {
@@ -102,7 +103,6 @@ export default function Profile({setMatchKey, setPremium}: Props) {
     };
 
     const handleLike = (isSuper: boolean) => {
-        if (isSuper) return setPremium(true);
         if (!profiles || !profiles[userIndex]) return;
         axios.post('/user/like-profile', {profileId: profiles[userIndex]._id, isSuper}, {
             headers: {
@@ -132,12 +132,21 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                 }
                 if (profiles && profiles[userIndex+1]) {
                     setImageIndex(0);
-                    setUserIndex(userIndex+1);
+                    setUserIndex(pre => pre + 1);
                 } else {
-                    setProfiles([]);
+                    setProfiles(undefined);
                 }
             }
-        });
+        }).catch((error) => {
+            if (error.response.status === 400) {
+                console.log(error.response?.data)
+                if (error.response?.data?.error === 'premium') {
+                    setPremium(true);
+                } else if (error.response?.data?.error === 'super') {
+                    console.log('super');
+                }
+            }
+        })
     };
 
     const handleDislike = () => {
@@ -153,13 +162,13 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                     setImageIndex(0);
                     setUserIndex(userIndex+1);
                 } else {
-                    setProfiles([]);
+                    setProfiles(undefined);
                 }
             }
         });
     };
 
-    if (profiles && profiles.length === 0) {
+    if (profiles && (profiles.length === 0 || profiles[userIndex] === undefined)) {
         return (
             <div className={styles.profile}>
                 <div className={styles.empty}>
@@ -192,6 +201,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
         )
     }
 
+    if (profiles && profiles[userIndex]) {
     return (
         <div id='profileContainer' className={styles.profile}>
             <div
@@ -280,4 +290,5 @@ export default function Profile({setMatchKey, setPremium}: Props) {
             </div>
         </div>
     );
+    }
 }
