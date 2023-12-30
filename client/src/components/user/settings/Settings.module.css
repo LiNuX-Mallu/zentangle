@@ -215,6 +215,7 @@ input[type=range]::-moz-range-thumb {
         padding: 8px;
         color: rgb(0, 0, 0);
         background-color: rgb(37, 37, 37);
+        background-image: none;
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -232,10 +233,12 @@ input[type=range]::-moz-range-thumb {
         display: block;
         color: white;
         cursor: pointer;
+        padding-left: 10px;
     }
 
     .division {
         margin-top: 17px;
+        padding-left: 10px;
     }
     
     .division h5 {
