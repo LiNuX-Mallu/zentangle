@@ -20,7 +20,7 @@ export default async (req: Request, res: Response) => {
             const token = jwt.sign({adminId: adminExist}, JWT_SECRET!, {expiresIn: '7d'});
             res.cookie('jwt-admin', token, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 sameSite: "strict",
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             });
