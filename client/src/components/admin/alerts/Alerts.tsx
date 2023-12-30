@@ -71,7 +71,7 @@ export default function Alerts() {
             inputPlaceholder: 'Enter content here...',
             inputValue: text,
             showCancelButton: true,
-            inputValidator: (value) => {
+            inputValidator: (value: string) => {
                 if (where === 'title' && !value) return "Cannot be empty";
                 else if (where === 'content' && value.length < 30) return "Must have atleast 30 characters";
             }

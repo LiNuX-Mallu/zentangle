@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   define: {
-    global: {},
+    _global: ({}),
   },
   resolve: {  
     alias: {
@@ -13,7 +14,8 @@ export default defineConfig({
         process: "process/browser",
         stream: "stream-browserify",
         zlib: "browserify-zlib",
-        //'@': path.resolve(__dirname, './src'),
+        '@': path.resolve(__dirname, './src'),
+        './runtimeConfig': './runtimeConfig.browser',
     }
   },
   // optimizeDeps: {
