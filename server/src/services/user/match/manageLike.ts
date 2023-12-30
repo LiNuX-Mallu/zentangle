@@ -21,7 +21,7 @@ export default async (userId: string, profileId: string, isSuper: boolean) => {
     const dateNow = new Date();
 
     const premium = userPlan?.premium?.expireDate
-      ? userPlan.premium.expireDate >= dateNow
+      ? new Date(userPlan.premium.expireDate) >= dateNow
       : false;
 
     let likes, superLikes: Date[] | undefined;

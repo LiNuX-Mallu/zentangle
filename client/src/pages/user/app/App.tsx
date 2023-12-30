@@ -197,7 +197,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
-                    {space === 'settings' && <Settings />}
+                    {space === 'settings' && <Settings setPremium={setShowPremium} />}
                     {space === 'edit-profile' && <Edit />}
                     {space === 'view-profile' && <ViewProfile setPremium={setShowPremium} defaultProfile={null} />}
                     {space === 'view-blocked-profile' && <ViewProfile setPremium={setShowPremium} defaultProfile={null} blocked={true} />}
@@ -226,7 +226,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {inMessage ? <MemoizedMessages key={messageKey} /> : <MemoizedMatches key={matchKey} />}
                 </div>
                 }
-                {(space === 'account' || space === 'edit-profile' || space === 'verification') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings /></div>}
+                {(space === 'account' || space === 'edit-profile' || space === 'verification') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings setPremium={setShowPremium} /></div>}
                 {['home', 'explore', 'matches', 'messages', 'account'].includes(space) &&
                 <div className='belowbar'>
                     <img onClick={() => navigate('/app')} src={homeIcon} alt="home" />

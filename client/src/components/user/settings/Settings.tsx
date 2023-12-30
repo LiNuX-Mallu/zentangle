@@ -15,9 +15,13 @@ import MultiRangeSlider, { ChangeResult } from 'multi-range-slider-react';
 import './extra/multiSlider.css';
 import EditPassword from './childComponents/editPassword/EditPassword';
 import BlockedUsers from './childComponents/blockedUsers/BlockedUsers';
+import formatDate from '../../../instances/formatDate';
 
+interface Props {
+    setPremium: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export default function Settings() {
+export default function Settings({setPremium}: Props) {
     const navigate = useNavigate();
     const [editSpace, setEditSpace] = useState<string | null>(null);
     const [user, setUser] = useState<ProfileInterface | undefined>(undefined);
@@ -139,6 +143,12 @@ export default function Settings() {
                     <span>
                         {user && "*".repeat(user?.password.length)}
                         {rightIcon}
+                    </span>
+                </div>
+                <div onClick={() => (user?.premium?.expireDate === undefined || new Date(user?.premium?.expireDate) < new Date()) ? setPremium(true) : false} className={styles.option}>
+                    <span>Premium Plan <i className="fa-solid fa-crown"></i></span>
+                    <span>
+                        {user?.premium?.expireDate ? new Date(user.premium.expireDate) >= new Date() ? `valid till ${formatDate(user.premium.expireDate)}` : 'no active plan' : 'no active plan'}
                     </span>
                 </div>
             </div>

@@ -45,6 +45,7 @@
 
 .division {
     margin-top: 20px;
+    padding-right: 5px;
 }
 
 .division h5 {
@@ -174,6 +175,7 @@ input[type=range]::-moz-range-thumb {
     justify-content: center;
     align-items: center;
     gap: 2%;
+    cursor: pointer;
 }
 
 .footer .logout {

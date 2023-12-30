@@ -7,6 +7,7 @@ export interface ProfileInterface {
     gender: string;
     password: string;
     accountVerified: string;
+    premium: {expireDate: Date},
     email: {
         email: string;
         verified: boolean
