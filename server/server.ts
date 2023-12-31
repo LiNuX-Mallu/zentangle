@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin: [`http://${CLIENT_HOST}:${CLIENT_PORT}`, 'https://hosting.d1dcml0ytirq8d.amplifyapp.com'],
+		origin: [`http://${CLIENT_HOST}:${CLIENT_PORT}`],
 		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
 		credentials: true,
 	})
