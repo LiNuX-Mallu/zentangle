@@ -9,7 +9,8 @@ declare module "express-serve-static-core" {
 }
 
 export default async (req: Request, res: Response) => {
-  const file = req.file.filename;
+  const file = req.file.location;
+  console.log(file);
   const userId = req.userId;
   try {
     const data = await manageMedia(file, userId);

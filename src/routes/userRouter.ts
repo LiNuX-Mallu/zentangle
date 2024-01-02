@@ -1,11 +1,10 @@
 import { Router } from "express";
 
 //middlewares
-import upload from "../middlewares/upload";
-import uploadReportImages from "../middlewares/uploadReportImages";
+import upload from "../middlewares/upload/upload";
 import tokenValidation from "../middlewares/validation/userTokenValidation";
 import registerValidation from "../middlewares/validation/registerValidation";
-import checkBanned from "../middlewares/checkBanned";
+import checkBanned from "../middlewares/validation/checkBanned";
 
 //controllers
 import register from "../controllers/user/register";
@@ -33,7 +32,6 @@ import blockUser from "../controllers/user/block/blockUser";
 import fetchBlocked from "../controllers/user/block/fetchBlocked";
 import unblock from "../controllers/user/block/unblock";
 import unmatchProfile from "../controllers/user/match/unmatchProfile";
-import uploadWebcams from "../middlewares/uploadWebcams";
 import requestVerification from "../controllers/user/verification/requestVerification";
 import reportUser from "../controllers/user/report/reportUser";
 import fetchAlerts from "../controllers/user/alert/fetchAlerts";
@@ -73,13 +71,13 @@ router.post(
 );
 router.put("/reorder-media", tokenValidation, checkBanned, reorderMedia);
 router.put("/update-settings", tokenValidation, checkBanned, updateSettings);
-router.delete("/media/:filename", tokenValidation, checkBanned, removeMedia);
+router.post("/remove-media", tokenValidation, checkBanned, removeMedia);
 
 router.post(
   "/request-verification",
   tokenValidation,
   checkBanned,
-  uploadWebcams.single("file"),
+  upload.single("file"),
   requestVerification
 );
 
@@ -104,7 +102,7 @@ router.post("/unmatch-user", tokenValidation, checkBanned, unmatchProfile);
 
 router.post(
   "/report",
-  uploadReportImages.array("images"),
+  upload.array("images"),
   tokenValidation,
   checkBanned,
   reportUser

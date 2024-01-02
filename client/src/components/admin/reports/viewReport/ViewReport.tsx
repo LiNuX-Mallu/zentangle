@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ProfileInterface } from '../../../../instances/interfaces';
-import { ApiUrl } from '../../../../instances/urls';
 import styles from './ViewReport.module.scss';
 import axios from '../../../../instances/axios';
 import Swal from 'sweetalert2';
@@ -27,7 +26,7 @@ export default function ViewReport({report, setViewProfile, setViewReport}: Prop
     if (viewImage !== null) {
         return (
             <div onClick={() => setViewImage(null)} className={styles['view-image']}>
-                <img onClick={(e) => e.stopPropagation()} src={ApiUrl+'/media/reports/'+report.images[viewImage]} />
+                <img onClick={(e) => e.stopPropagation()} src={report.images[viewImage]} />
             </div>
         )
     }
@@ -80,7 +79,7 @@ export default function ViewReport({report, setViewProfile, setViewReport}: Prop
                 {Array.from({length: 5}).map((_, index) => (
                     <div className={styles.image}>
                         {index < report.images.length ?
-                            <img onClick={() => setViewImage(index)} src={ApiUrl+'/media/reports/'+report.images[index]} alt="" />
+                            <img onClick={() => setViewImage(index)} src={report.images[index]} alt="report_image" />
                             : 
                             <i className="fa-solid fa-file-circle-xmark"></i>
                         }

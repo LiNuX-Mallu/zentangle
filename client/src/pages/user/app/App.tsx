@@ -26,7 +26,6 @@ import { socket } from '../../../instances/socket';
 import Swal from 'sweetalert2';
 import VideoCall from '../../../components/user/videoCall/VideoCall';
 import Preview from '../../../components/user/preview/Preview';
-import { ApiUrl } from '../../../instances/urls';
 import Verification from '../../../components/user/verification/Verification';
 import Premium from '../../../components/user/premium/Premium';
 
@@ -215,7 +214,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                         <div onClick={() => navigate('/app/account')} className='account'>
                             {myUsername ?? 'Account'}
                             <div className='account-img-container'>
-                                <img src={myPic ? ApiUrl+'/media/'+myPic : accountIcon} alt="account" />
+                                <img src={myPic ? myPic : accountIcon} alt="account" />
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,6 @@ import styles from './VerificationRequest.module.css';
 import { ProfileInterface } from '../../../instances/interfaces';
 import axios from '../../../instances/axios';
 import ViewUser from '../viewUser/ViewUser';
-import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
 import formatDate from '../../../instances/formatDate';
 
@@ -87,7 +86,7 @@ export default function VerificationRequest() {
                             return (
                                 <tr key={request.id} className={styles.user}>
                                     <td>{formatDate(request.requestedOn)}</td>
-                                    <td className={styles['other-btn']}> <span onClick={() => setPlayVideo(`${ApiUrl}/media/verification/${request.doc}`)}>Play</span> </td>
+                                    <td className={styles['other-btn']}> <span onClick={() => setPlayVideo(request?.doc)}>Play</span> </td>
                                     <td className={styles['other-btn']}> <span onClick={() => setViewProfile(request.requestedBy)}>View</span> </td>
                                     <td className={styles['action-body']}>
                                         <button onClick={() => handleReject(request.id, true)}>Approve</button>

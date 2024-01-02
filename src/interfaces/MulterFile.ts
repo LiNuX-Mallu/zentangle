@@ -7,4 +7,5 @@ export interface MulterFile {
     filename: string;
     path: string;
     size: number;
+    location: string;
 }

@@ -2,7 +2,6 @@ import styles from './viewProfile.module.css';
 import { useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
-import { ApiUrl } from '../../../instances/urls';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Report from '../report/Report';
@@ -167,7 +166,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             <div className={styles['medias-container']}>
                 <div
                     className={styles.medias}
-                    style={{backgroundImage: `url(${ApiUrl}/media/${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
+                    style={{backgroundImage: `url(${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
                 >
                 </div>
 

@@ -1,7 +1,6 @@
 import User from "../../../models/user";
 import Verification from "../../../models/verification";
-import path from "path";
-import fs from "fs/promises";
+import s3Remove from "../../user/media/s3Remove";
 
 export default async (requestId: string, verify: boolean) => {
   try {
@@ -18,12 +17,7 @@ export default async (requestId: string, verify: boolean) => {
     if (!user) throw new Error("Error updating verification on user");
 
     if (request?.doc) {
-      const filepath = path.join(
-        __dirname,
-        "../../uploads/verifications/",
-        request?.doc
-      );
-      await fs.unlink(filepath);
+      await s3Remove(request.doc);
     }
     return user ? true : false;
   } catch (error) {

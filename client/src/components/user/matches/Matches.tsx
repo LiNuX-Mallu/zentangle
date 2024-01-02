@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './Matches.module.css';
 import axios from '../../../instances/axios';
-import { ApiUrl } from '../../../instances/urls';
 import { timeAgo } from '../../../instances/timeAgo';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from '@mui/material/Skeleton';
+import accountIcon from '../../../assets/images/account-icon.png';
+
 interface Matches {
     type: string,
     likedBy: {profile: {name: string, medias: string[]}, username: string};
@@ -57,8 +58,8 @@ export default function Matches() {
                         <div style={{border: match.type === 'superLike' ? '2px solid purple' : '1px solid gray'}} className={styles['pro-pic']}>
                             <img
                                 src={(match.type === 'like' || match.type === 'superLike') ? 
-                                `${ApiUrl}/media/${match.likedBy?.profile?.medias[0]}` :
-                                `${ApiUrl}/media/${match.with?.profile.medias[0]}` || ''}
+                                match.likedBy?.profile.medias[0] ?? accountIcon :
+                                match.with?.profile.medias[0] ?? accountIcon }
                                 alt="profile pic"
                             />
                         </div>

@@ -13,7 +13,6 @@ import Basics from './childComponents/basics/Basics';
 import Lifestyle from './childComponents/lifestyle/Lifestyle';
 import LookingFor from './childComponents/lookingFor/LookingFor';
 import OpenTo from './childComponents/openTo/OpenTo';
-import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
 import ogAxios from 'axios';
 
@@ -129,10 +128,9 @@ export default function EditProfile() {
             });
             return;
         }
-        setLoading(true);
-        axios.delete(`/user/media/${media}`)
-        .then(response => setMedias(response.data))
-        .finally(() => setLoading(false));
+        axios.post(`/user/remove-media`, {media}, {
+            headers: {'Content-Type': 'application/json'},
+        }).then(response => setMedias(response.data))
     }
 
     if (!enabled || loading) {
@@ -154,7 +152,7 @@ export default function EditProfile() {
                                     <Draggable key={media} draggableId={media} index={index}>
                                         {(provided) => (
                                             <div className={`col-4 ${styles['media-item']}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                <img src={`${ApiUrl}/media/${media}`} alt="media" loading="lazy" />
+                                                <img src={media} alt="media" loading="lazy" />
                                                 <i onClick={() => handleRemoveMedia(media)} className="fa-solid fa-circle-minus"></i>
                                             </div>
                                         )}

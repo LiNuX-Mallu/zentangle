@@ -95,12 +95,14 @@
 }
 
 .account .account-img-container img {
-    object-fit: cover;
     width: 100%;
     height: auto;
     object-fit: cover;
     image-rendering: optimizeSpeed;
     image-resolution: from-image;
+    object-position: center;
+    -o-object-fit: cover;
+    -o-object-position: center;
 }
 
 

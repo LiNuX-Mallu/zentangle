@@ -4,7 +4,6 @@ import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../loading/Loading';
-import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
 
 interface Props {
@@ -58,7 +57,7 @@ export default function AccountBig({setSpace}: Props) {
             <div className={styles['medias-container']}>
                 <div
                     className={styles.medias}
-                    style={{backgroundImage: `url(${ApiUrl}/media/${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
+                    style={{backgroundImage: `url(${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
                 >
                 </div>
 

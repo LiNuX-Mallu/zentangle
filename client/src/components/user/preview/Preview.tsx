@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styles from './Preview.module.css';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
-import { ApiUrl } from '../../../instances/urls';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -33,7 +32,7 @@ export default function Preview({setSpace}: Props) {
             <i onClick={() => setSpace('account')} className={`back-icon fa-solid fa-circle-chevron-left ${styles['back-icon']}`}></i>
             <div
                 className={styles.details}
-                style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${ApiUrl}/media/${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
+                style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
             >
                 {profile && profile?.profile?.medias[imageIndex+1] && <i onClick={() => setImageIndex(imageIndex+1)} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}
                 {profile && profile?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}

@@ -1,7 +1,6 @@
 import styles from './ViewUser.module.css';
 import { useState } from 'react';
 import { ProfileInterface } from '../../../instances/interfaces';
-import { ApiUrl } from '../../../instances/urls';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -24,7 +23,7 @@ export default function ViewUser({defaultProfile}: Props) {
             <div className={styles['medias-container']}>
                 <div
                     className={styles.medias}
-                    style={{backgroundImage: `url(${ApiUrl}/media/${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
+                    style={{backgroundImage: `url(${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
                 >
                 </div>
 

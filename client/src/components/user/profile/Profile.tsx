@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import styles from './Profile.module.scss';
 import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
-import { ApiUrl } from '../../../instances/urls';
 import Swal from 'sweetalert2';
 import Skeleton from '@mui/material/Skeleton';
 
@@ -220,7 +219,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                 onDragStart={handleDragStart}
                 onDrag={handleDrag}
                 onDragEnd={handleDragEnd}
-                style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${ApiUrl}/media/${profiles ? profiles[userIndex]?.profile?.medias[imageIndex]: ''})`}}
+                style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${profiles ? profiles[userIndex]?.profile?.medias[imageIndex]: ''})`}}
             >
                 {profiles && profiles[userIndex]?.profile?.medias[imageIndex+1] && <i onClick={() => setImageIndex(imageIndex+1)} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}
                 {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}

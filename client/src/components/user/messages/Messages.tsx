@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './Messages.module.css';
 import axios from '../../../instances/axios';
-import { ApiUrl } from '../../../instances/urls';
 import { Message } from '../../../instances/interfaces';
 import { timeAgo } from '../../../instances/timeAgo';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from '@mui/material/Skeleton';
+import accountIcon from '../../../assets/images/account-icon.png';
 
 interface Res {
     profile: {
@@ -55,7 +55,7 @@ export default function Messages() {
                     return (
                         <div onClick={() => navigate('/app/chat/'+message.profile.name)} key={message.lastMessage.timestamp.toString()} className={styles.msg}>
                             <div className={styles.propic}>
-                                <img src={`${ApiUrl}/media/${message.profile?.picture}`} alt="profile picture" />
+                                <img src={message.profile?.picture ?? accountIcon} alt="profile picture" />
                             </div>
                             <div className={styles['name-msg']}>
                                 <span>{message.profile.name}</span>

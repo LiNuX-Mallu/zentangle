@@ -10,10 +10,10 @@ declare module "express-serve-static-core" {
 }
 
 export default async (req: Request, res: Response) => {
-  const file = req.file.filename;
+  const doc = req.file.location;
   const userId = req.userId;
   try {
-    const requested = await manageRequestVerification(userId, file);
+    const requested = await manageRequestVerification(userId, doc);
     if (requested) {
       return res.status(200).json({ message: "Requested for verification" });
     } else {

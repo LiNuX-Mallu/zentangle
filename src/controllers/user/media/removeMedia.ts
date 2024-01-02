@@ -3,12 +3,15 @@ import manageDeleteMedia from "../../../services/user/media/manageDeleteMedia";
 
 export default async (req: Request, res: Response) => {
   try {
-    const filename = req.params.filename;
+    const media = req.body.media;
     const userId = req.userId;
-    const updated = await manageDeleteMedia(filename, userId);
+
+    const updated = await manageDeleteMedia(media, userId);
+
     if (updated) {
       res.status(200).json(updated);
     } else throw new Error("Unknown error");
+
   } catch (error) {
     res.status(500).json({ message: "Internal servern error" });
     console.error("Error ar controller/user/removeMedia\n" + error);

@@ -3,7 +3,7 @@ import axios from '../../../instances/axios';
 import styles from './Chat.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProfileInterface } from '../../../instances/interfaces';
-import { ApiUrl } from '../../../instances/urls';
+import accountIcon from '../../../assets/images/account-icon.png';
 import { socket } from '../../../instances/socket';
 import { Message } from '../../../instances/interfaces';
 import { useSelector } from 'react-redux';
@@ -186,7 +186,7 @@ export default function Chat({setMessageKey}: Props) {
                 {profile !== undefined &&
                 <div className={styles.profile}>
                     <div onClick={() => navigate('/app/view-profile/'+username)} className={styles['profile-pic']}>
-                        <img src={`${ApiUrl}/media/${profile.profile?.medias[0]}`} />
+                        <img src={profile.profile?.medias[0] ?? accountIcon} />
                     </div>
                     <span onClick={() => navigate('/app/view-profile/'+username)}>{profile.firstname + ' ' + profile.lastname}</span>
                     
