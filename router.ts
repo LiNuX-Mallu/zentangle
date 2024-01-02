@@ -26,8 +26,6 @@ router.use('/admin', (req, _, next: NextFunction) => {
 router.use('/media/verification', adminTokenValidation, expressStatic(path.join(__dirname, './src/uploads/verifications')));
 router.use('/media/reports', adminTokenValidation, expressStatic(path.join(__dirname, './src/uploads/reports')));
 
-
-
 //test only
 router.get('/clear-matches', async (_, res) => {await user.updateMany({}, {$unset: {match: null}}); res.send('did')});
 

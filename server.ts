@@ -9,6 +9,7 @@ import { Server, Socket } from "socket.io";
 import http from "http";
 import { MessageInterface } from "./src/interfaces/messageInterface";
 import saveMessage from "./src/services/user/chat/saveMessage";
+import path from "path";
 
 dotenv.config();
 let { MONGO_URI, PORT, HOST, CLIENT_HOST, CLIENT_PORT } = process.env;
@@ -39,6 +40,13 @@ declare namespace NodeJS {
 const server = http.createServer(app);
 
 app.use("/api", router);
+
+app.use(express.static(path.join(__dirname, '../client/dist'), {index: false}));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
+
 
 //socket io
 const io = new Server(server, {
