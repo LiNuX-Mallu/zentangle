@@ -37,18 +37,25 @@ import reportUser from "../controllers/user/report/reportUser";
 import fetchAlerts from "../controllers/user/alert/fetchAlerts";
 import makeOrder from "../controllers/user/premium/makeOrder";
 import paymentStatus from "../controllers/user/premium/paymentStatus";
+import resendOtp from "../controllers/user/otp/resendOtp";
+import verifyOtp from "../controllers/user/otp/verifyOtp";
 
 const router = Router();
 
 router.get("/check-login", tokenValidation, checkBanned, (req, res) =>
   res.status(200)
 );
+
 router.post("/register", registerValidation, register);
+router.post("/resend-otp", resendOtp);
+router.post("/verify-otp", verifyOtp);
+
 router.post("/login", login);
 router.post("/logout", (req, res) => {
   res.clearCookie("jwt", { httpOnly: true });
   res.status(200).end();
 });
+
 router.get("/get-details", tokenValidation, checkBanned, getUserDetails);
 router.put("/update-passions", tokenValidation, checkBanned, updatePassion);
 router.put("/update-languages", tokenValidation, checkBanned, updateLanguages);

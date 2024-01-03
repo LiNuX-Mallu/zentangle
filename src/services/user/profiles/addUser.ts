@@ -1,4 +1,5 @@
 import User from "../../../models/user";
+import mailOtp from "../otp/mailOtp";
 
 interface UserData {
   username: string;
@@ -25,6 +26,7 @@ export default async (data: UserData) => {
     newUser.phone = phone;
     newUser.gender = data.gender;
     const saved = await newUser.save();
+    await mailOtp(email.email);
     return saved;
   } catch (error) {
     throw new Error("Error at service/user/addUser\n" + error);

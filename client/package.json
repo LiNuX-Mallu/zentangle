@@ -43,6 +43,7 @@
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
     "sweetalert2": "^11.6.13",
+    "sweetalert2-react-content": "^5.0.7",
     "url": "^0.11.3",
     "util": "^0.12.5",
     "zlib": "^1.0.5"

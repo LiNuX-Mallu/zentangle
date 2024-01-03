@@ -1,14 +1,15 @@
-import './Signup.css';
+import styles from './Signup.module.scss';
 import closeIcon from '../../../assets/images/close-icon.png';
 import { FormEvent, useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
 
 interface Props {
-    cancel: React.Dispatch<React.SetStateAction<boolean>>;
+    signup: React.Dispatch<React.SetStateAction<boolean>>;
+    verify: React.Dispatch<React.SetStateAction<object | null>>;
     login: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Signup({cancel, login}: Props) {
+export default function Signup({signup, verify, login}: Props) {
     const [showPass, setShowPass] = useState(false);
     const [tooltip, setTooltip] = useState(false);
     const [loginSuccess, setLoginSuccess] = useState(false);
@@ -67,8 +68,8 @@ export default function Signup({cancel, login}: Props) {
             if (response.status === 200) {
                 setLoginSuccess(true);
                 setTimeout(() => {
-                    cancel(false);
-                    login(true);
+                    signup(false);
+                    verify({email: email});
                 }, 1000)
             }
         }).catch((error) => {
@@ -89,19 +90,19 @@ export default function Signup({cancel, login}: Props) {
     }
 
     return (
-        <div id="overlay" className="overlay container-fluid">
-            {loginSuccess && <div className="logged">Registration Successful</div>}
-            <form onSubmit={handleSubmit}>
-                <div className='close-btn'>
-                    <img src={closeIcon} alt="close" onClick={() => cancel(false)} />
+        <div className={`${styles.overlay}`}>
+            {loginSuccess && <div className={styles.logged}>Registration Successful</div>}
+            <form className={styles['reg-form']} onSubmit={handleSubmit}>
+                <div className={styles['close-btn']}>
+                    <img src={closeIcon} alt="close" onClick={() => signup(false)} />
                 </div>
-                <span className='heading'>Register here</span>
+                <span className={styles.heading}>Register here</span>
                 <div>
                     <label htmlFor="username">Username</label>
                     <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username" required />
-                    {usernameError && tooltip && <div className="tooltip-error">{usernameError}</div>}
+                    {usernameError && tooltip && <div className={styles["tooltip-error"]}>{usernameError}</div>}
                 </div>
-                <div className='names'>
+                <div className={styles.names}>
                     <div>
                         <label htmlFor='firstname'>Firstname</label>
                         <input value={firstname} onChange={(e) => setFirstname(e.target.value)} id='firstname' required />
@@ -110,9 +111,9 @@ export default function Signup({cancel, login}: Props) {
                         <label htmlFor='lastname'>Lastname</label>
                         <input value={lastname} onChange={(e) => setLastname(e.target.value)} id='lastname' required />
                     </div>
-                    {(tooltip && (firstnameError || lastnameError)) ? <div className='tooltip-error'>{firstnameError ? firstnameError : lastnameError}</div>: ""}
+                    {(tooltip && (firstnameError || lastnameError)) ? <div className={styles["tooltip-error"]}>{firstnameError ? firstnameError : lastnameError}</div>: ""}
                 </div>
-                <div className='dob-gender'>
+                <div className={styles['dob-gender']}>
                     <div>
                         <label htmlFor='gender'>Gender</label>
                         <select onChange={(e) => setGender(e.target.value)} id='gender'>
@@ -124,39 +125,39 @@ export default function Signup({cancel, login}: Props) {
                         <label htmlFor='dob'>Date for birth</label>
                         <input value={dob} type='date' onChange={(e) => setDob(e.target.value)} id='dob' required />
                     </div>
-                    {tooltip && dobError && <div style={{width: 'auto'}} className="tooltip-error">{dobError}</div>}
+                    {tooltip && dobError && <div style={{width: 'auto'}} className={styles["tooltip-error"]}>{dobError}</div>}
                 </div>
                 <div>
                     <label htmlFor="email">Email</label>
                     <input style={{textTransform: 'lowercase'}} value={email} onChange={(e) => setEmail(e.target.value)} id="email" required />
-                    {tooltip && emailError && <div className='tooltip-error'>{emailError}</div>}
+                    {tooltip && emailError && <div className={styles["tooltip-error"]}>{emailError}</div>}
                 </div>
-                <div className='row'>
+                <div>
                     <label htmlFor='phone'>Phone</label>
-                    <div className='d-flex flex-row gap-1'>
-                        <select onChange={(e) => setCountryCode(e.target.value)} className='col-3 col-lg-2'>
+                    <div className={styles['phone']}>
+                        <select onChange={(e) => setCountryCode(e.target.value)} className={styles.code}>
                             <option value='91'>+91</option>
                         </select>
-                        <input className='col-9 col-lg-10' value={phone} onChange={(e) => setPhone(e.target.value)} id='phone' required/>
-                        {tooltip && phoneError && <div className="tooltip-error">{phoneError}</div> }
+                        <input className={styles.number} value={phone} onChange={(e) => setPhone(e.target.value)} id='phone' required/>
+                        {tooltip && phoneError && <div className={styles["tooltip-error"]}>{phoneError}</div> }
                     </div>
                 </div>
                 
                 <div>
                     <label htmlFor="password">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password" required />
-                    {tooltip && passwordError && <div className="tooltip-error">{passwordError}</div> }
+                    {tooltip && passwordError && <div className={styles["tooltip-error"]}>{passwordError}</div> }
                 </div>
-                <div className='show-pass'>
+                <div className={styles['show-pass']}>
                     <label htmlFor='showPass'>
                         <input type='checkbox' id='showPass' onChange={() => setShowPass(!showPass)} />
                         Show password
                     </label>
                 </div>
-                <div className='submit'>
+                <div className={styles.submit}>
                     <button type='submit'>Signup</button>
                 </div>
-                <span style={{cursor: 'pointer'}} onClick={() => {cancel(false); login(true)}} className='login'>
+                <span style={{cursor: 'pointer'}} onClick={() => {signup(false); login(true)}} className={styles.login}>
                     Already have an account?
                 </span>
             </form>

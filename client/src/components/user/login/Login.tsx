@@ -1,4 +1,4 @@
-import './Login.css';
+import styles from './Login.module.css';
 import closeIcon from '../../../assets/images/close-icon.png';
 import { FormEvent, useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
@@ -64,14 +64,14 @@ export default function Login({cancel, signup}: Props) {
     }
 
     return (
-        <div id="overlay" className="overlay container-fluid">
-            {loginSuccess && <div className='logged'>Login Successful</div>}
-            <form onSubmit={handleSubmit}>
-                <div className='close-btn'>
+        <div id="overlay" className={`${styles.overlay} container-fluid`}>
+            {loginSuccess && <div className={styles['logged']}>Login Successful</div>}
+            <form className={styles['log-form']} onSubmit={handleSubmit}>
+                <div className={styles['close-btn']}>
                     <img src={closeIcon} alt="close" onClick={() => cancel(false)} />
                 </div>
-                <span className='heading'>Login here</span>
-                {tooltip && error && <div className="tooltip-error">{error}</div>}
+                <span className={styles['heading']}>Login here</span>
+                {tooltip && error && <div className={styles["tooltip-error"]}>{error}</div>}
                 <div>
                     <label htmlFor="username">Username</label>
                     <input style={{textTransform: 'lowercase'}} value={username} onChange={(e) => setUsername(e.target.value)} id="username" required />
@@ -81,16 +81,16 @@ export default function Login({cancel, signup}: Props) {
                     <label htmlFor="password">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password" required />
                 </div>
-                <div className='show-pass'>
+                <div className={styles['show-pass']}>
                     <label htmlFor='showPass'>
                         <input type='checkbox' id='showPass' onChange={() => setShowPass(!showPass)} />
                         Show password
                     </label>
                 </div>
-                <div className='submit'>
+                <div className={styles['submit']}>
                     <button type='submit'>Login</button>
                 </div>
-                <span style={{cursor: 'pointer'}} onClick={() => {cancel(false); signup(true)}} className='login'>
+                <span style={{cursor: 'pointer'}} onClick={() => {cancel(false); signup(true)}} className={styles['login']}>
                     Don't have an account?
                 </span>
             </form>

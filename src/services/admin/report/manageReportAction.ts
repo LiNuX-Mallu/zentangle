@@ -1,19 +1,10 @@
 import Report from "../../../models/report";
 import User from "../../../models/user";
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import { resolve } from "path";
+import transporter from "../../../instances/transporter";
 
 dotenv.config();
-let { EMAIL, EMAIL_PASSWORD } = process.env;
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: EMAIL,
-    pass: EMAIL_PASSWORD,
-  },
-});
+let { EMAIL } = process.env;
 
 export default async (reportId: string) => {
   try {
@@ -39,7 +30,7 @@ export default async (reportId: string) => {
       text: `Dear ${bannedUser.firstname} ${bannedUser.lastname},\n\nYour account has been banned for violating our community guidelines.\nIf you believe this is a mistake, you can appeal or contact us via zentangleapp@gmail.com\n\nThank you,\nZentangle Support Team`,
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
       transporter.sendMail(mailOption, (error, _) => {
         if (error) {
           reject(error);
