@@ -135,6 +135,12 @@
     border-radius: 0.2rem;
     font-weight: 600;
     background-color: white;
+    transition: transform .1s ease;
+    padding: 3px;
+}
+
+.reg-form .submit button:hover {
+    transform: scale(1.1);
 }
 
 .reg-form .login {

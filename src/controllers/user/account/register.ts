@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import addUser from "../../services/user/profiles/addUser";
+import addUser from "../../../services/user/account/addUser";
 
 export default async (req: Request, res: Response) => {
   try {

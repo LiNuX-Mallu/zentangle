@@ -309,7 +309,7 @@ export default function Settings({setPremium}: Props) {
                 <span onClick={() => setEditSpace(null)} className={styles['edit-done']}>done</span>
                 {editSpace === 'email' && user?.email?.email && <EditEmail email={user?.email?.email} />}
                 {editSpace === 'phone' && user?.phone?.phone && <EditPhone phone={user?.phone?.phone} /> }
-                {editSpace === 'password' && user?.password && <EditPassword password={user?.password} /> }
+                {editSpace === 'password' && user?.password && <EditPassword email={user?.email.email} password={user?.password} /> }
                 {editSpace === 'blockedUsers' && <BlockedUsers /> }
             </div>
             }

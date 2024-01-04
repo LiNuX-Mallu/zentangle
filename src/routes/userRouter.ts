@@ -7,9 +7,9 @@ import registerValidation from "../middlewares/validation/registerValidation";
 import checkBanned from "../middlewares/validation/checkBanned";
 
 //controllers
-import register from "../controllers/user/register";
-import login from "../controllers/user/login";
-import getUserDetails from "../controllers/user/getUserDetails";
+import register from "../controllers/user/account/register";
+import login from "../controllers/user/account/login";
+import getUserDetails from "../controllers/user/account/getUserDetails";
 import updatePassion from "../controllers/user/update/updatePassion";
 import updateLanguages from "../controllers/user/update/updateLanguages";
 import updateBasics from "../controllers/user/update/updateBasics";
@@ -39,6 +39,7 @@ import makeOrder from "../controllers/user/premium/makeOrder";
 import paymentStatus from "../controllers/user/premium/paymentStatus";
 import resendOtp from "../controllers/user/otp/resendOtp";
 import verifyOtp from "../controllers/user/otp/verifyOtp";
+import forgotPassword from "../controllers/user/account/forgotPassword";
 
 const router = Router();
 
@@ -49,6 +50,8 @@ router.get("/check-login", tokenValidation, checkBanned, (req, res) =>
 router.post("/register", registerValidation, register);
 router.post("/resend-otp", resendOtp);
 router.post("/verify-otp", verifyOtp);
+
+router.post('/forgot-password', forgotPassword);
 
 router.post("/login", login);
 router.post("/logout", (req, res) => {

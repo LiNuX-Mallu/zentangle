@@ -124,7 +124,10 @@ export default function EditProfile() {
             Swal.fire({
                 title: "Cannot remove media",
                 text: "Should keep atleast one image",
-                icon: "info",
+                icon: "warning",
+                backdrop: true,
+                background: 'black',
+                color: 'white',
             });
             return;
         }

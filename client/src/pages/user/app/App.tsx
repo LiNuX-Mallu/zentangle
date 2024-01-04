@@ -101,7 +101,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
         return () => {
             clearTimeout(timeout);
         };
-    }, [latitude, longitude, error, dispatch]);
+    }, [latitude, longitude, error, dispatch, space]);
 
     useEffect(() => {
         if (!socketConnected || !myUsername) return;
@@ -192,7 +192,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
 
             <div className="row">
                 <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification', 'matches', 'messages'].includes(space) ? 'edit-active' : ''}`}>
-                    {space === 'home' && <Profile setPremium={setShowPremium} setMatchKey={setMatchKey} />}
+                    {space === 'home' && <Profile allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}

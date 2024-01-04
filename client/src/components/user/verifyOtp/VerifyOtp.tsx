@@ -65,6 +65,8 @@ export default function VerifyOtp({ address, verify, login }: Props) {
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 2000,
+                    background: 'black',
+                    color: 'white',
                 }).then(() => {
                     verify(null);
                     login(true);

@@ -8,9 +8,7 @@ import VerifyOtp from "../../../components/user/verifyOtp/VerifyOtp";
 export default function Home() {
   const [isSignUp, setIsSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [isVerify, setIsVerify] = useState<object | null>({
-    email: "shaspachu457@gmail.com",
-  });
+  const [isVerify, setIsVerify] = useState<object | null>(null);
 
   return (
     <div className={`${styles.home} container-fluid`}>

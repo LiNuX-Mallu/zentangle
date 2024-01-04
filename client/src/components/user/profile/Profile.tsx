@@ -8,9 +8,10 @@ import Skeleton from '@mui/material/Skeleton';
 interface Props {
     setMatchKey: React.Dispatch<React.SetStateAction<string>>;
     setPremium: React.Dispatch<React.SetStateAction<boolean>>;
+    allowed: boolean;
 }
 
-export default function Profile({setMatchKey, setPremium}: Props) {
+export default function Profile({setMatchKey, setPremium, allowed}: Props) {
     const [startX, setStartX] = useState<number | null>(null);
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>();
     const [userIndex, setUserIndex] = useState<number>(0);
@@ -21,7 +22,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
     const [imageIndex, setImageIndex] = useState<number>(0);
 
     useEffect(() => {
-        if (profiles) return;
+        if (profiles || allowed === false) return;
         setUserIndex(0);
         setImageIndex(0);
         axios.get('/user/get-profiles')
@@ -32,7 +33,7 @@ export default function Profile({setMatchKey, setPremium}: Props) {
                 }, 3000);
             }
         });
-    }, [profiles]);
+    }, [profiles, allowed]);
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         setStartX(e.clientX);
@@ -175,6 +176,23 @@ export default function Profile({setMatchKey, setPremium}: Props) {
             }
         });
     };
+
+    if (allowed === false) {
+        return (
+            <div className={styles.profile}>
+                <div className={`${styles.empty} ${styles.notallowed}`}>
+                    <p>Complete basic profiles to start matching</p>
+                    <i className="fa-solid fa-circle-info"></i>
+                </div>
+                <div className={styles.belowbar}>
+                    <i className="fa-solid fa-rotate-right"></i>
+                    <i className="fa-solid fa-thumbs-down"></i>
+                    <i className="fa-solid fa-thumbs-up"></i>
+                    <i className="fa-solid fa-heart-circle-bolt"></i>
+                </div>
+            </div>
+        )
+    }
 
     if (profiles && (profiles.length === 0 || profiles[userIndex] === undefined)) {
         return (

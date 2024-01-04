@@ -22,6 +22,7 @@
     padding: 3rem;
     border-radius: 0.4rem;
     position: relative;
+    width: 30%;
 }
 
 .logged {
@@ -37,14 +38,17 @@
 }
 
 .log-form .tooltip-error {
+    left: 30px;
+    right: 30px;
     border-radius: 1rem;
-    padding: 0.5rem;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-
-    background-color: rgba(197, 20, 20, 0.719);
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+    background-color: rgba(197, 20, 20, 0.795);
     color: rgb(235, 235, 235);
-    font-size: 0.8rem;
+    font-size: 14px;
+    position: absolute;
 }
 
 .log-form span {
@@ -72,6 +76,8 @@
     border-radius: 0.2rem;
     border: 1px solid white;
     background-color: rgba(255, 255, 255, 0.966);
+    padding: 2px;
+    padding-left: 5px;
 }
 
 .log-form select {
@@ -109,6 +115,12 @@
     border-radius: 0.2rem;
     font-weight: 600;
     background-color: white;
+    padding: 1px;
+    transition: transform .1s ease;
+}
+
+.log-form .submit button:hover {
+   transform: scale(1.1);
 }
 
 .log-form .login {
@@ -118,9 +130,24 @@
     font-size: 1rem;
 }
 
+.log-form .show-pass {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .log-form .show-pass label {
     display: flex;
     gap: 0.3rem;
+    align-items: center;
+    font-size: 14px;
+}
+
+.log-form .show-pass span {
+    font-size: 14px;
+    color: rgb(58, 118, 230);
+    cursor: pointer;
 }
 
 
@@ -161,6 +188,7 @@
 
     .log-form .submit button {
         font-size: medium;
+        padding: 3px;
     }
 
     .log-form .login {

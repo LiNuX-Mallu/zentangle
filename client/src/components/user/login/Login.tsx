@@ -1,8 +1,9 @@
 import styles from './Login.module.css';
 import closeIcon from '../../../assets/images/close-icon.png';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface Props {
     cancel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,16 +24,8 @@ export default function Login({cancel, signup}: Props) {
 
     function containerCLick() {
         setTooltip(false);
-        setLoginSuccess(false)
+        setLoginSuccess(false);
     }
-
-    useEffect(() => {
-        document.body.addEventListener('click', containerCLick);
-
-        return () => {
-            document.body.removeEventListener('click', containerCLick);
-        }
-    }, [tooltip, loginSuccess])
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -62,9 +55,39 @@ export default function Login({cancel, signup}: Props) {
             }
         });
     }
+    
+    const handleForgotPass = () => {
+        setPassword("");
+        if (username.trim() === "") {
+            console.log(username)
+            setError("Please provide username or registered email");
+            setTooltip(true);
+            return;
+        }
+        axios.post('/user/forgot-password', {username: username.trim()}, {
+            headers: {'Content-Type': 'application/json'}
+        }).then((response) => {
+            if (response.status === 200) {
+                Swal.fire({
+                    text: response.data?.message,
+                    backdrop: true,
+                    background: 'black',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Got it',
+                    color: 'white',
+                    icon: 'info',
+                });
+            }
+        }).catch((error) => {
+            if (error.response.status === 400) {
+                setError(error.response.data.message);
+                setTooltip(true);
+            }
+        });
+    }
 
     return (
-        <div id="overlay" className={`${styles.overlay} container-fluid`}>
+        <div onClick={containerCLick} className={`${styles.overlay} container-fluid`}>
             {loginSuccess && <div className={styles['logged']}>Login Successful</div>}
             <form className={styles['log-form']} onSubmit={handleSubmit}>
                 <div className={styles['close-btn']}>
@@ -81,12 +104,15 @@ export default function Login({cancel, signup}: Props) {
                     <label htmlFor="password">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} id="password" required />
                 </div>
+
                 <div className={styles['show-pass']}>
                     <label htmlFor='showPass'>
                         <input type='checkbox' id='showPass' onChange={() => setShowPass(!showPass)} />
                         Show password
                     </label>
+                    <span onClick={(e) => {handleForgotPass(); e.stopPropagation()}}>Forgot password?</span>
                 </div>
+
                 <div className={styles['submit']}>
                     <button type='submit'>Login</button>
                 </div>

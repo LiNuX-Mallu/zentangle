@@ -19,7 +19,7 @@ export default async (email: string) => {
             text: `Your OTP for verification of email: ${email} is ${otp}.\nDo not share with anyone.`,
         };
     
-        new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             transporter.sendMail(mailOption, (error, _) => {
                 if (error) {
                     reject(error);

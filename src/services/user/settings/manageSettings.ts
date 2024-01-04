@@ -50,6 +50,9 @@ export default async (
       case "location":
         field = "location.coordinates";
         break;
+      case "password":
+        field = "password";
+        break;
       default:
         field = null;
     }
