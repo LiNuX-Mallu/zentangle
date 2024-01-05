@@ -105,6 +105,7 @@
 }
 .name {
     font-weight: 600;
+    text-transform: capitalize;
     text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.849);
 }
 .age {
@@ -112,6 +113,7 @@
 }
 .bio {
     white-space: pre-wrap;
+    text-transform: capitalize;
 }
 
 .other-details .items {

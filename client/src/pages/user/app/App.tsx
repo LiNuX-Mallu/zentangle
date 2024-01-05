@@ -28,6 +28,7 @@ import VideoCall from '../../../components/user/videoCall/VideoCall';
 import Preview from '../../../components/user/preview/Preview';
 import Verification from '../../../components/user/verification/Verification';
 import Premium from '../../../components/user/premium/Premium';
+import Explore from '../../../components/user/explore/Explore';
 
 interface Props {
     defaultSpace: string | null;
@@ -191,8 +192,8 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
             </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification', 'matches', 'messages'].includes(space) ? 'edit-active' : ''}`}>
-                    {space === 'home' && <Profile allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />}
+                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification', 'matches', 'messages', 'explore'].includes(space) ? 'edit-active' : ''}`}>
+                    {(space === 'home' || (space === 'explore' && window.innerWidth > 768)) && <Profile allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
@@ -204,12 +205,13 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {space === 'messages' && window.innerWidth <= 768 && <Messages /> }
                     {space === 'chat' && <Chat setMessageKey={setMessageKey} /> }
                     {space === 'verification' && <Verification setSpace={setSpace} /> }
+                    {space === 'explore' && window.innerWidth <= 768 && <Explore setSpace={setSpace} /> }
                 </div>
                 {['home', 'view-profile', 'chat'].includes(space) &&
                 <div className="sidebar col-md-3">
                     <div className='topbar'>
                         <div className='explore'>
-                            <i className="fa-brands fa-microsoft"></i>
+                            <i onClick={() => setSpace('explore')} className="fa-brands fa-microsoft"></i>
                         </div>
                         <div onClick={() => navigate('/app/account')} className='account'>
                             {myUsername ?? 'Account'}
@@ -225,7 +227,15 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {inMessage ? <MemoizedMessages key={messageKey} /> : <MemoizedMatches key={matchKey} />}
                 </div>
                 }
-                {(space === 'account' || space === 'edit-profile' || space === 'verification') && window.innerWidth > 768 && <div className="sidebar col-md-3"><Settings setPremium={setShowPremium} /></div>}
+
+                {(space === 'account' || space === 'edit-profile' || space === 'verification') && window.innerWidth > 768 && 
+                    <div className="sidebar col-md-3"><Settings setPremium={setShowPremium} /></div>
+                }
+
+                {space === 'explore' && window.innerWidth > 768 &&
+                    <div className="sidebar col-md-3"> <Explore setSpace={setSpace} /> </div>
+                }
+
                 {['home', 'explore', 'matches', 'messages', 'account'].includes(space) &&
                 <div className='belowbar'>
                     <img onClick={() => navigate('/app')} src={homeIcon} alt="home" />
