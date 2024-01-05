@@ -40,6 +40,7 @@
   background-color: white;
   padding: 2px;
   object-fit: cover;
+  background-color: rgb(29, 2, 29);
 }
 
 .account .completed {

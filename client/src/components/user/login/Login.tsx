@@ -8,9 +8,10 @@ import Swal from 'sweetalert2';
 interface Props {
     cancel: React.Dispatch<React.SetStateAction<boolean>>;
     signup: React.Dispatch<React.SetStateAction<boolean>>;
+    verify: React.Dispatch<React.SetStateAction<object | null>>;
 }
 
-export default function Login({cancel, signup}: Props) {
+export default function Login({cancel, signup, verify}: Props) {
     const navigate = useNavigate();
     const [showPass, setShowPass] = useState(false);
     const [tooltip, setTooltip] = useState(false);
@@ -34,7 +35,13 @@ export default function Login({cancel, signup}: Props) {
             username,
             password,
         }
-
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/login', formData, {
             headers: {
                 'Content-Type': 'application/json'
@@ -45,6 +52,9 @@ export default function Login({cancel, signup}: Props) {
                 setTimeout(() => {
                     navigate('/app');
                 }, 1000);
+            } else if (response.status === 202) {
+                cancel(false);
+                verify({email: response.data?.email, username, password});
             }
         }).catch((error) => {
             if (error.response.status === 400) {
@@ -53,7 +63,7 @@ export default function Login({cancel, signup}: Props) {
             } else {
                 alert("Internal server error");
             }
-        });
+        }).finally(() => Swal.close());
     }
     
     const handleForgotPass = () => {

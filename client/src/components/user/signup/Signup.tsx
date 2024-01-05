@@ -2,6 +2,7 @@ import styles from './Signup.module.scss';
 import closeIcon from '../../../assets/images/close-icon.png';
 import { FormEvent, useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
+import Swal from 'sweetalert2';
 
 interface Props {
     signup: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +13,7 @@ interface Props {
 export default function Signup({signup, verify, login}: Props) {
     const [showPass, setShowPass] = useState(false);
     const [tooltip, setTooltip] = useState(false);
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    //const [loginSuccess, setLoginSuccess] = useState(false);
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -34,7 +35,7 @@ export default function Signup({signup, verify, login}: Props) {
 
     function containerCLick() {
         setTooltip(false);
-        setLoginSuccess(false);
+        //setLoginSuccess(false);
     }
 
     useEffect(() => {
@@ -47,6 +48,14 @@ export default function Signup({signup, verify, login}: Props) {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
+
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
 
         const formData = {
             username,
@@ -66,10 +75,10 @@ export default function Signup({signup, verify, login}: Props) {
             }
         }).then((response) => {
             if (response.status === 200) {
-                setLoginSuccess(true);
+                //setLoginSuccess(true);
                 setTimeout(() => {
                     signup(false);
-                    verify({email: email});
+                    verify({email: email, username, password});
                 }, 1000)
             }
         }).catch((error) => {
@@ -86,12 +95,12 @@ export default function Signup({signup, verify, login}: Props) {
             } else {
                 alert("Internal server error");
             }
-        });
+        }).finally(() => Swal.close());
     }
 
     return (
         <div className={`${styles.overlay}`}>
-            {loginSuccess && <div className={styles.logged}>Registration Successful</div>}
+            {/* {loginSuccess && <div className={styles.logged}>Registration Successful</div>} */}
             <form className={styles['reg-form']} onSubmit={handleSubmit}>
                 <div className={styles['close-btn']}>
                     <img src={closeIcon} alt="close" onClick={() => signup(false)} />

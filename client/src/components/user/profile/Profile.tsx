@@ -243,7 +243,12 @@ export default function Profile({setMatchKey, setPremium, allowed}: Props) {
                 {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
                 
                 <div className={styles['other-details']}>
-                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name?.length ? profiles[userIndex]?.profile?.name : profiles[userIndex]?.firstname)}{profiles && profiles[userIndex]?.dob &&<span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>} <i style={{color: profiles[userIndex]?.accountVerified === 'verified' ? 'blueviolet' : 'gray'}} className="fa-solid fa-circle-check"></i> </h3>
+                    <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name?.length ? profiles[userIndex]?.profile?.name : profiles[userIndex]?.firstname)}{profiles && profiles[userIndex]?.dob &&
+                        <span className={styles.age}>, {getAge(profiles[userIndex]?.dob) ?? ''}</span>}
+                        &nbsp; 
+                        {profiles[userIndex] && profiles[userIndex]?.accountVerified === 'verified' && <i style={{color: 'blueviolet'}} className="fa-solid fa-circle-check"></i>}
+                    </h3>
+
                     {profiles && profiles[userIndex]?.profile?.livingIn && imageIndex === 0 &&
                         <>
                         <span className={styles.living}><i className="fa-solid fa-house"></i> Lives in {profiles[userIndex].profile.livingIn}</span>

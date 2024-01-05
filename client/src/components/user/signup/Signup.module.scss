@@ -25,6 +25,7 @@
     border-radius: 0.4rem;
     overflow-y: scroll;
     overflow-x: hidden;
+    position: relative;
 }
 
 .logged {
@@ -105,12 +106,14 @@
 .reg-form .tooltip-error {
     position: absolute;
     border-radius: 1rem;
-    margin-top: 1rem;
     margin-top: 3.1rem;
     padding: 0.3rem;
     background-color: rgba(177, 22, 22, 0.774);
     color: rgb(235, 235, 235);
     font-size: 0.8rem;
+    text-align: center;
+    right: 0;
+    left: 0;
 }
 
 .close-btn {

@@ -2,11 +2,13 @@ import { FormEvent, useState } from "react";
 import styles from "./VerifyOtp.module.scss";
 import axios from "../../../instances/axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 interface Props {
-    address: { email?: string };
+    address: { email: string, username: string, password: string };
     verify: React.Dispatch<React.SetStateAction<object | null>>;
     login: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
 
 export default function VerifyOtp({ address, verify, login }: Props) {
@@ -14,6 +16,7 @@ export default function VerifyOtp({ address, verify, login }: Props) {
     const [message, setMessage] = useState(`OTP send to ${address.email}`);
     const [otp, setOtp] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     function countDown() {
         let count = 15;
@@ -30,6 +33,13 @@ export default function VerifyOtp({ address, verify, login }: Props) {
     }
 
     const handleResend = () => {
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         setMessage("");
         setError(null);
         countDown();
@@ -40,16 +50,22 @@ export default function VerifyOtp({ address, verify, login }: Props) {
                 {
                     headers: { "Content-Type": "application/json" },
                 }
-            )
-            .then((response) => {
+            ).then((response) => {
                 if (response.status === 200) {
                     setMessage(response.data?.message);
                 }
-            });
+            }).catch(() => Swal.close());
     };
 
     const handleVerify = (event: FormEvent) => {
         event.preventDefault();
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         setError(null);
         setMessage("");
         if (otp.trim() === "") {
@@ -59,6 +75,7 @@ export default function VerifyOtp({ address, verify, login }: Props) {
         axios.post('/user/verify-otp', {otp, email: address.email}, {
             headers: {'Content-Type': 'application/json'},
         }).then((response) => {
+            Swal.close();
             if (response.status === 200) {
                 Swal.fire({
                     title: 'Verification success',
@@ -68,15 +85,39 @@ export default function VerifyOtp({ address, verify, login }: Props) {
                     background: 'black',
                     color: 'white',
                 }).then(() => {
-                    verify(null);
-                    login(true);
-                });
+                    Swal.fire({
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                        background: 'transparent',
+                        backdrop: true,
+                    });
+                    if (address.username && address.password) {
+                        axios.post('/user/login', {username: address.username, password: address.password}, {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then((response) => {
+                            if (response.status === 200) {
+                                setTimeout(() => {
+                                    navigate('/app');
+                                }, 1000);
+                            } else {
+                                verify(null);
+                                login(true);
+                            }
+                        })
+                    } else {
+                        verify(null);
+                        login(true);
+                    }
+                }).finally(() => Swal.close());
             }
         }).catch((error) => {
             if (error.response.status === 400) {
                 setError(error.response?.data?.message)
             }
-        })
+        }).finally(() => Swal.close());
     }
 
     return (

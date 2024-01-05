@@ -54,6 +54,7 @@ export default async (userId: string) => {
         "match.liked.likedBy": { $nin: [userId] },
         "match.disliked": { $nin: [userId] },
         "profile.medias.0": { $exists: true },
+        'email.verified': {$eq: true},
         $nor: [
           //user block
           { "blocked.users": { $in: [user?.username] } },

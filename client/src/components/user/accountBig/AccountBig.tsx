@@ -59,6 +59,7 @@ export default function AccountBig({setSpace}: Props) {
                     className={styles.medias}
                     style={{backgroundImage: `url(${profile ? profile?.profile?.medias[imageIndex]: ''})`}}
                 >
+                    {(profile && profile?.profile?.medias?.length === 0) && <p>added medias will appear here</p> }
                 </div>
 
                 {profile && profile.profile?.medias[imageIndex+1] && <i onClick={() => setImageIndex(imageIndex+1)} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}

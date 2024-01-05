@@ -19,7 +19,10 @@ export default async (req: Request, res: Response) => {
       password,
     });
     if (userExist) {
-      const token = jwt.sign({ userId: userExist }, JWT_SECRET!, {
+      if (userExist.code === 202) {
+        return res.status(202).json({email: userExist.email});
+      }
+      const token = jwt.sign({ userId: userExist.userId }, JWT_SECRET!, {
         expiresIn: "7d",
       });
       res.cookie("jwt", token, {

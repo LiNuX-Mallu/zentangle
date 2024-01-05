@@ -60,6 +60,9 @@
     box-sizing: border-box;
     border: 2px solid rgba(202, 202, 202, 0.116);
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .edit .media-item img {
@@ -68,15 +71,27 @@
     overflow: auto;
     user-select: none;
     object-fit: cover;
+    cursor: grab;
+    cursor: -moz-grab;
 }
 
-.edit .media-item i {
+.edit .media-item .delete {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    color: rgba(196, 0, 0, 0.911);
+    color: rgba(211, 32, 32, 0.911);
     font-size: 20px;
     z-index: 99;
+}
+
+.edit .media-item .add {
+    font-size: 40px;
+    color: rgba(255, 255, 255, 0.336);
+    z-index: 99;
+    position: absolute;
+    &:hover {
+        color: rgba(255, 255, 255, 0.699);
+    }
 }
 
 .edit .media-description {

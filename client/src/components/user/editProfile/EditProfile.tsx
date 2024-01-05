@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './EditProfile.module.css';
+import styles from './EditProfile.module.scss';
 import { ProfileInterface } from '../../../instances/interfaces';
 import {DragDropContext, Draggable, Droppable, DropResult} from '@hello-pangea/dnd';
 import axios from '../../../instances/axios';
-import addImageIcon from '../../../assets/images/add-image-icon.png';
 import arrowRightIcon from '../../../assets/images/arrow-right-icon.png';
 import Loading from '../loading/Loading';
 import Passion from './childComponents/passions/Passion';
@@ -34,6 +33,7 @@ export default function EditProfile() {
     const [height, setHeight] = useState<string | undefined>();
     const [gender, setGender] = useState<string | undefined>();
     const [medias, setMedias] = useState([]);
+    const [imgLoaded, setImgLoaded] = useState<number[]>([]);
 
     const navigate = useNavigate();
     const mediaInput = useRef<HTMLInputElement>(null);
@@ -110,13 +110,20 @@ export default function EditProfile() {
 
     const handleUpload = (selectedImage: File | undefined) => {
         if (!selectedImage) return;
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/upload-media', {file: selectedImage}, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
             setMedias(response.data);
-        });
+        }).finally(() => Swal.close());
     };
 
     const handleRemoveMedia = (media: string) => {
@@ -131,9 +138,17 @@ export default function EditProfile() {
             });
             return;
         }
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post(`/user/remove-media`, {media}, {
             headers: {'Content-Type': 'application/json'},
         }).then(response => setMedias(response.data))
+        .finally(() => Swal.close());
     }
 
     if (!enabled || loading) {
@@ -155,8 +170,10 @@ export default function EditProfile() {
                                     <Draggable key={media} draggableId={media} index={index}>
                                         {(provided) => (
                                             <div className={`col-4 ${styles['media-item']}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                <img src={media} alt="media" loading="lazy" />
-                                                <i onClick={() => handleRemoveMedia(media)} className="fa-solid fa-circle-minus"></i>
+                                                <img src={media} alt="media" loading="lazy" onLoad={() => setImgLoaded((pre) => [...pre, index])} />
+                                                {!imgLoaded.includes(index) && <i className={`fa-solid fa-circle-notch fa-spin ${styles.add}`}></i>}
+
+                                                <i onClick={() => handleRemoveMedia(media)} className={`fa-solid fa-circle-minus ${styles.delete}`}></i>
                                             </div>
                                         )}
                                     </Draggable>
@@ -164,7 +181,7 @@ export default function EditProfile() {
                                 {provided.placeholder}
                                 {medias && Array(9 - medias?.length).fill(null).map((_, index) => (
                                     <div onClick={() => mediaInput.current?.click()} key={`add-${index}`} className={`col-4 ${styles['media-item']}`}>
-                                        <img src={addImageIcon} alt="AddImage" loading="lazy" />
+                                        <i className={`fa-solid fa-file-circle-plus ${styles.add}`}></i>
                                     </div>
                                 ))}
                                 <input onChange={(e) => handleUpload(e?.target?.files ? e.target.files[0] : undefined)} ref={mediaInput} type="file" accept='image/*' hidden />

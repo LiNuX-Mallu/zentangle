@@ -22,8 +22,8 @@ export default function Home() {
       {isSignUp && (
         <Signup verify={setIsVerify} signup={setIsSignup} login={setIsLogin} />
       )}
-      {isLogin && <Login cancel={setIsLogin} signup={setIsSignup} />}
-      {isVerify && <VerifyOtp login={setIsLogin} verify={setIsVerify} address={isVerify} />}
+      {isLogin && <Login verify={setIsVerify} cancel={setIsLogin} signup={setIsSignup} />}
+      {isVerify !== null && <VerifyOtp login={setIsLogin} verify={setIsVerify} address={isVerify} />}
     </div>
   );
 }

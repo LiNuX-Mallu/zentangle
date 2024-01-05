@@ -87,7 +87,7 @@ export default function ViewUser({defaultProfile}: Props) {
             </>: ''}
 
             {/* basics */}
-            {(profile && Object.values(profile?.profile?.basics).length) ?
+            {(profile && profile?.profile?.basics && Object.values(profile?.profile?.basics).length) ?
             <>
                 <div className={styles['other-details']}>
                     <h4>Basics</h4>
@@ -115,7 +115,7 @@ export default function ViewUser({defaultProfile}: Props) {
             
 
             {/* lifestyle */}
-            {(profile && profile.profile.lifestyle && Object.values(profile.profile.lifestyle).length) ?
+            {(profile && profile?.profile?.lifestyle && Object.values(profile.profile.lifestyle).length) ?
             <>
                 <div className={styles['other-details']}>
                     <h4>Lifestyle</h4>
