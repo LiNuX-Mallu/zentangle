@@ -29,7 +29,10 @@ export default function Preview({setSpace}: Props) {
 
     return (
         <div className={styles.preview}>
-            <i onClick={() => setSpace('account')} className={`back-icon fa-solid fa-circle-chevron-left ${styles['back-icon']}`}></i>
+            <span className={styles['back-icon']} onClick={() => setSpace('account')}>
+                <i className={`fa-solid fa-chevron-left`}></i>
+                preview
+            </span> 
             <div
                 className={styles.details}
                 style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${profile ? profile?.profile?.medias[imageIndex]: ''})`}}

@@ -7,7 +7,8 @@ interface Profile extends UserInterface {
   distance: number | undefined;
 }
 
-export default async (userId: string) => {
+export default async (userId: string, explore: string) => {
+  console.error(explore)
   try {
     const user = await User.findById(userId);
     if (!user) throw new Error("Cannot find user");

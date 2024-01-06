@@ -230,7 +230,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             </>: ''}
 
             {/* basics */}
-            {(profile && profile.profile.lifestyle && Object.values(profile?.profile?.basics).length) ?
+            {(profile && profile.profile?.basics && Object.values(profile?.profile?.basics).length) ?
             <>
                 <div className={styles['other-details']}>
                     <h4>Basics</h4>

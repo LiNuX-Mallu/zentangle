@@ -41,9 +41,10 @@ video {
     cursor: pointer;
     background-color: white;
     border-radius: 10px;
-    color: rgb(19, 90, 19);
+    color: rgb(0, 0, 0);
     box-sizing: border-box;
     padding: 3px;
+    font-weight: 600;
 }
 
 .description {

@@ -151,11 +151,10 @@
 
 @media (max-width: 768px) {
     .profile {
-        margin-top: 20px;
         width: 90%;
-        height: 95%;
+        height: 80vh;
         border-radius: 0.4rem;
-        box-shadow: 0 0 3px rgba(255, 255, 255, 0.349);
+        box-shadow: 0 0 3px 2px rgba(255, 255, 255, 0.096);
         border-radius: 10px;
     }
     .belowbar i {

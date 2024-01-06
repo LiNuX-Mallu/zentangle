@@ -251,8 +251,11 @@
     }
     .edit .media-item {
         height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    .edit .media-item i {
+    .edit .media-item .delete {
         bottom: 5px;
         right: 5px;
         font-size: 20px;

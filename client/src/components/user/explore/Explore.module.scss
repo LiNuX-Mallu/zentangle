@@ -98,6 +98,7 @@
         width: 100%;
         overflow: hidden;
         position: relative;
+        cursor: pointer;
         &:hover img {
             transform: scale(1.2);
         }
@@ -132,6 +133,9 @@
     .explore {
         padding-left: 20px;
         padding-right: 20px;
+        height: 100%;
+        padding-bottom: 6vh;
+        scroll-behavior: auto;
         .topbar {
             padding-left: 10px;
             h4 {

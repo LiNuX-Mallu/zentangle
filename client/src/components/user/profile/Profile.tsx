@@ -9,9 +9,10 @@ interface Props {
     setMatchKey: React.Dispatch<React.SetStateAction<string>>;
     setPremium: React.Dispatch<React.SetStateAction<boolean>>;
     allowed: boolean;
+    explore?: string;
 }
 
-export default function Profile({setMatchKey, setPremium, allowed}: Props) {
+export default function Profile({setMatchKey, setPremium, allowed, explore}: Props) {
     const [startX, setStartX] = useState<number | null>(null);
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>();
     const [userIndex, setUserIndex] = useState<number>(0);
@@ -25,7 +26,7 @@ export default function Profile({setMatchKey, setPremium, allowed}: Props) {
         if (profiles || allowed === false) return;
         setUserIndex(0);
         setImageIndex(0);
-        axios.get('/user/get-profiles')
+        axios.get(`/user/get-profiles/${explore ?? 'none'}`)
         .then((response) => {
             if (response.status === 200) {
                 setTimeout(() => {
@@ -33,7 +34,7 @@ export default function Profile({setMatchKey, setPremium, allowed}: Props) {
                 }, 3000);
             }
         });
-    }, [profiles, allowed]);
+    }, [profiles, allowed, explore]);
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         setStartX(e.clientX);

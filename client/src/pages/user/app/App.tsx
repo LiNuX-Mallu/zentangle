@@ -192,7 +192,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
             </div>}
 
             <div className="row">
-                <div className={`space col-12 col-md-9 ${['edit-profile', 'settings', 'chat', 'view-profile', 'preview', 'verification', 'matches', 'messages', 'explore'].includes(space) ? 'edit-active' : ''}`}>
+                <div className={`space col-12 col-md-9 ${!['explore', 'home', 'matches', 'messages', 'account'].includes(space) ? 'others' : ''}`}>
                     {(space === 'home' || (space === 'explore' && window.innerWidth > 768)) && <Profile allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
@@ -211,7 +211,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                 <div className="sidebar col-md-3">
                     <div className='topbar'>
                         <div className='explore'>
-                            <i onClick={() => setSpace('explore')} className="fa-brands fa-microsoft"></i>
+                            <i onClick={() => navigate('/app/explore')} className="fa-brands fa-microsoft"></i>
                         </div>
                         <div onClick={() => navigate('/app/account')} className='account'>
                             {myUsername ?? 'Account'}

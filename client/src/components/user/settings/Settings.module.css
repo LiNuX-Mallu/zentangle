@@ -45,7 +45,8 @@
 
 .division {
     margin-top: 20px;
-    padding-right: 5px;
+    width: 100%;
+    padding: 0;
 }
 
 .division h5 {
@@ -65,12 +66,14 @@
     background-color: rgb(39, 38, 38);
     border-top: 1px solid rgba(255, 255, 255, 0.247);
     padding: 10px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 25px;
     color: rgba(255, 255, 255, 0.932);
     display: flex;
     justify-content: space-between;
     text-transform: capitalize;
     cursor: pointer;
+    width: 100%;
 }
 
 .division .option > :nth-child(2) {
@@ -96,6 +99,7 @@
     padding: 10px;
     padding-bottom: 30px;
     cursor: pointer;
+    padding-right: 25px;
 }
 
 .division .range span {
@@ -209,7 +213,6 @@ input[type=range]::-moz-range-thumb {
     .settings {
         background-color: rgb(27, 27, 27);
         padding-top: 1.7rem;
-        padding-right: 0;
     }
     .settings .topbar {
         padding: 8px;
@@ -238,7 +241,7 @@ input[type=range]::-moz-range-thumb {
 
     .division {
         margin-top: 17px;
-        padding-left: 10px;
+        padding: 0;
     }
     
     .division h5 {
@@ -252,6 +255,8 @@ input[type=range]::-moz-range-thumb {
     }
     .division .option {
         background-color: rgb(41, 41, 41);
+        padding-left: 15px;
+        padding-right: 15px;
     }
     .division .range, .division .option {
         font-size: 13px;

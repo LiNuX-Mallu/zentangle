@@ -136,6 +136,7 @@
         font-size: 27px;
         font-family: 'Lexend';
         color: rgba(255, 255, 255, 0.897);
+        max-height: 10vh;
     }
 
     /* .app .brand-app img {
@@ -147,17 +148,21 @@
     .space {
         width: 100%;
         padding: 0 !important;
-        padding-bottom: 10vh !important;
-        height: 90vh;
+        height: 94vh;
         background-color: transparent;
         display: flex;
         align-items: normal;
         position: relative;
-    }
-
-    .edit-active {
-        padding-bottom: 0 !important;
-        height: 100vh;
+        &.others {
+            position: absolute;
+            height: 100vh;
+            width: 100vw;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+        }
     }
 
     .sidebar {
@@ -173,7 +178,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 1000;
+        z-index: 998;
         border-top: 1px solid rgba(255, 255, 255, 0.185);
         padding: 11px;
         gap: 40px;

@@ -91,7 +91,7 @@ router.post(
   requestVerification
 );
 
-router.get("/get-profiles", tokenValidation, checkBanned, getProfiles);
+router.get("/get-profiles/:explore", tokenValidation, checkBanned, getProfiles);
 router.post("/like-profile", tokenValidation, checkBanned, likeProfile);
 router.post("/dislike-profile", tokenValidation, checkBanned, dislikeProfile);
 router.get(
