@@ -193,7 +193,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
 
             <div className="row">
                 <div className={`space col-12 col-md-9 ${!['explore', 'home', 'matches', 'messages', 'account'].includes(space) ? 'others' : ''}`}>
-                    {(space === 'home' || (space === 'explore' && window.innerWidth > 768)) && <Profile allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />}
+                    {(space === 'home' || (space === 'explore' && window.innerWidth > 768)) && <Profile setSpace={setSpace} allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />}
                     {space === 'account' && window.innerWidth <= 768 && <Account setSpace={setSpace} />}
                     {space === 'preview' && window.innerWidth <= 768 && <Preview setSpace={setSpace} /> }
                     {space === 'account' && window.innerWidth > 768 && <AccountBig setSpace={setSpace} />}
@@ -206,6 +206,11 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {space === 'chat' && <Chat setMessageKey={setMessageKey} /> }
                     {space === 'verification' && <Verification setSpace={setSpace} /> }
                     {space === 'explore' && window.innerWidth <= 768 && <Explore setSpace={setSpace} /> }
+
+                    {/* explore spaces */}
+                    {['forlove', 'befriends', 'freetonight', 'coffeedate'].includes(space) &&
+                        <Profile setSpace={setSpace} explore={space} allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />
+                    }
                 </div>
                 {['home', 'view-profile', 'chat'].includes(space) &&
                 <div className="sidebar col-md-3">
@@ -232,7 +237,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     <div className="sidebar col-md-3"><Settings setPremium={setShowPremium} /></div>
                 }
 
-                {space === 'explore' && window.innerWidth > 768 &&
+                {(space === 'explore' && window.innerWidth > 768 || ['forlove', 'befriends', 'freetonight', 'coffeedate'].includes(space)) &&
                     <div className="sidebar col-md-3"> <Explore setSpace={setSpace} /> </div>
                 }
 

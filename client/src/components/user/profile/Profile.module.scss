@@ -6,9 +6,38 @@
     border-radius: 1rem;
     color: white;
     font-size: medium;
-    cursor: pointer;
     overflow: hidden;
     position: relative;
+    .title {display: none}
+    &.explore {
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            position: absolute;
+            top: 0px;
+            background-color: rgb(211, 9, 211);
+            z-index: 99;
+            width: 100%;
+            text-align: center;
+            padding: 3px;
+            font-size: 15px;
+            cursor: pointer;
+            i {
+                justify-self: flex-start;
+                font-size: 16px;
+                color: rgba(255, 255, 255, 0.952);
+                transition: transform .1s ease;
+            }
+            &:hover i {
+                transform: scale(1.3);
+            }
+            &:hover {
+                background-color: #a81aa8;
+            }
+        }
+    }
     .empty {
         height: 88%;
         width: 100%;
@@ -156,6 +185,13 @@
         border-radius: 0.4rem;
         box-shadow: 0 0 3px 2px rgba(255, 255, 255, 0.096);
         border-radius: 10px;
+        margin-bottom: 10vh;
+        &.explore {
+            margin-top: 10vh;
+            .title {
+                padding: 3px;
+            }
+        }
     }
     .belowbar i {
         font-size: 20px;

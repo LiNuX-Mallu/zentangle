@@ -133,10 +133,10 @@
         display: block;
         padding: 10px;
         margin-left: 1%;
-        font-size: 27px;
+        font-size: 25px;
         font-family: 'Lexend';
         color: rgba(255, 255, 255, 0.897);
-        max-height: 10vh;
+        max-height: 8vh;
     }
 
     /* .app .brand-app img {
@@ -151,7 +151,6 @@
         height: 94vh;
         background-color: transparent;
         display: flex;
-        align-items: normal;
         position: relative;
         &.others {
             position: absolute;

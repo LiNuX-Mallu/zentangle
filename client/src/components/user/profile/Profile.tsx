@@ -10,9 +10,10 @@ interface Props {
     setPremium: React.Dispatch<React.SetStateAction<boolean>>;
     allowed: boolean;
     explore?: string;
+    setSpace: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Profile({setMatchKey, setPremium, allowed, explore}: Props) {
+export default function Profile({setMatchKey, setPremium, allowed, explore, setSpace}: Props) {
     const [startX, setStartX] = useState<number | null>(null);
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>();
     const [userIndex, setUserIndex] = useState<number>(0);
@@ -35,6 +36,21 @@ export default function Profile({setMatchKey, setPremium, allowed, explore}: Pro
             }
         });
     }, [profiles, allowed, explore]);
+
+    useEffect(() => {
+        if (allowed === false) return;
+        setProfiles(undefined);
+        setUserIndex(0);
+        setImageIndex(0);
+        axios.get(`/user/get-profiles/${explore ?? 'none'}`)
+        .then((response) => {
+            if (response.status === 200) {
+                setTimeout(() => {
+                    setProfiles(response?.data as ProfileInterface[] ?? []);
+                }, 3000);
+            }
+        });
+    }, [allowed, explore]);
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         setStartX(e.clientX);
@@ -230,7 +246,18 @@ export default function Profile({setMatchKey, setPremium, allowed, explore}: Pro
 
     if (profiles && profiles[userIndex]) {
     return (
-        <div id='profileContainer' className={styles.profile}>
+        <div id='profileContainer' className={`${styles.profile} ${(explore && explore !== 'none') ? styles.explore : ''}`}>
+            
+            <span onClick={() => setSpace('explore')} className={styles.title}>
+                <i className="fa-solid fa-xmark"></i>
+                {
+                    explore === 'befriends' ? "Let's be Friends":
+                    explore === 'forlove' ? "Looking for Love":
+                    explore === 'coffeedate' ? "Coffee Date":
+                    explore === 'freetonight' ? "Free Tonight?": ""
+                }
+            </span>
+            
             <div
                 className={styles.details}
                 ref={profileRef}

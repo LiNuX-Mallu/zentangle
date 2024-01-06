@@ -4,7 +4,6 @@ import friendsPic from '../../../assets/images/friends.jpg';
 import lovePic from '../../../assets/images/love.jpg';
 import partyPic from '../../../assets/images/party.jpg';
 import coffeePic from '../../../assets/images/coffee.jpg';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
 }
 
 export default function Explore({setSpace}: Props) {
-    const [explore, setExplore] = useState('none');
     const navigate = useNavigate();
 
     return (
@@ -33,19 +31,19 @@ export default function Explore({setSpace}: Props) {
 
             <h6 style={{color: 'white', paddingTop: '10%'}}>Others</h6>
             <div className={styles.others}>
-                <div onClick={() => setExplore('freetonight')}>
+                <div onClick={() => setSpace('freetonight')}>
                     <img src={partyPic} />
                     <span>Free Tonight?</span>
                 </div>
-                <div onClick={() => setExplore('befriends')}>
+                <div onClick={() => setSpace('befriends')}>
                     <img src={friendsPic} />
                     <span>Let's be Friends</span>
                 </div>
-                <div onClick={() => setExplore('forlove')}>
+                <div onClick={() => setSpace('forlove')}>
                     <img src={lovePic} />
                     <span>Looking for Love</span>
                 </div>
-                <div onClick={() => setExplore('coffeedate')}>
+                <div onClick={() => setSpace('coffeedate')}>
                     <img src={coffeePic} />
                     <span>Coffee Date</span>
                 </div>

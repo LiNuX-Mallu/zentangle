@@ -5,6 +5,10 @@ html {
   scroll-behavior: smooth;
 }
 
+* {
+  transition: color .2s ease;
+}
+
 body {
   /* min-width: 320px; */
   background-color: #111111;
