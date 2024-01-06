@@ -33,8 +33,5 @@ RUN npm run build
 # Set the working directory back to the root
 WORKDIR /
 
-# Expose the port your application listens on (replace with the correct port)
-EXPOSE 5000
-
 # Specify the command to run when the container starts
 CMD ["npm", "start"]
