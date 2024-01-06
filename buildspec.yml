@@ -1,0 +1,21 @@
+version: 1.0
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+      npm: latest
+
+  pre_build:
+    commands:
+      - echo "Installing dependencies for the server..."
+      - npm install
+
+      - echo "Installing dependencies for the client..."
+      - cd client
+      - npm install
+
+  build:
+    commands:
+      - echo "Building the application..."
+      - npm start
