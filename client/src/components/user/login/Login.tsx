@@ -4,11 +4,11 @@ import { FormEvent, useState } from 'react';
 import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
+import { Address } from '../../../pages/user/home/Home';
 interface Props {
     cancel: React.Dispatch<React.SetStateAction<boolean>>;
     signup: React.Dispatch<React.SetStateAction<boolean>>;
-    verify: React.Dispatch<React.SetStateAction<object | null>>;
+    verify: React.Dispatch<React.SetStateAction<Address | null>>;
 }
 
 export default function Login({cancel, signup, verify}: Props) {

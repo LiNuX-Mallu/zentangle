@@ -3,12 +3,11 @@ import styles from "./VerifyOtp.module.scss";
 import axios from "../../../instances/axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-
+import { Address } from "../../../pages/user/home/Home";
 interface Props {
-    address: { email: string, username: string, password: string };
-    verify: React.Dispatch<React.SetStateAction<object | null>>;
+    address: { email: string, username?: string, password?: string };
+    verify: React.Dispatch<React.SetStateAction<Address | null>>;
     login: React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 
 export default function VerifyOtp({ address, verify, login }: Props) {

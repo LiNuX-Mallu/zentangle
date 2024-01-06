@@ -3,10 +3,11 @@ import closeIcon from '../../../assets/images/close-icon.png';
 import { FormEvent, useEffect, useState } from 'react';
 import axios from '../../../instances/axios';
 import Swal from 'sweetalert2';
+import { Address } from '../../../pages/user/home/Home';
 
 interface Props {
     signup: React.Dispatch<React.SetStateAction<boolean>>;
-    verify: React.Dispatch<React.SetStateAction<object | null>>;
+    verify: React.Dispatch<React.SetStateAction<Address | null>>;
     login: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

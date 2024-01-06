@@ -5,10 +5,16 @@ import Login from "../../../components/user/login/Login";
 import styles from "./Home.module.css";
 import VerifyOtp from "../../../components/user/verifyOtp/VerifyOtp";
 
+export interface Address {
+  email: string,
+  username?: string,
+  password?: string,
+}
+
 export default function Home() {
   const [isSignUp, setIsSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [isVerify, setIsVerify] = useState<object | null>(null);
+  const [isVerify, setIsVerify] = useState<Address | null>(null);
 
   return (
     <div className={`${styles.home} container-fluid`}>
