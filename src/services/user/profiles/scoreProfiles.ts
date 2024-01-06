@@ -2,17 +2,23 @@ import User from "../../../models/user";
 import moment from "moment";
 import { calculateDistance } from "./calculateDistance";
 import { UserInterface } from "../../../interfaces/userInterface";
+import premium from "../../../models/premium";
 
 interface Profile extends UserInterface {
   distance: number | undefined;
 }
 
 export default async (userId: string, explore: string) => {
-  console.error(explore)
   try {
     const user = await User.findById(userId);
     if (!user) throw new Error("Cannot find user");
     const distancePreference = user.preferences?.distance ?? 12;
+
+    if (explore === 'verified') {
+      if ((user.premium?.expireDate && new Date(user.premium?.expireDate) < new Date()) || !user.premium?.expireDate) {
+        return 402;
+      }
+    }
 
     //age query
     const ageRangeQuery =
@@ -47,6 +53,15 @@ export default async (userId: string, explore: string) => {
           },
         };
 
+    const exploreQuery = explore === 'none'
+        ? {}
+        : explore === 'befriends' ? {'profile.relationship.lookingFor': 'New friends'}
+        : explore === 'forlove' ? {'profile.relationship.lookingFor': {$in: ['Long-term partner', 'Long-term, open to short', 'Short-term, open to long']}}
+        : explore === 'freetonight' ? {'profile.lifestyle.sleep': 'Night owl'}
+        : explore === 'coffeedate' ? {'profile.basics.communication' : 'Better in person'}
+        : explore === 'verified' ? {'accountVerified': 'verified'}
+        : {}
+
     let profiles = (await User.find(
       {
         _id: { $ne: userId },
@@ -69,6 +84,7 @@ export default async (userId: string, explore: string) => {
         "location.coordinates": { $exists: true, $ne: null },
         ...distanceQuery,
         "privacy.discoverable": true,
+        ...exploreQuery,
         banned: { $eq: false },
       },
       {

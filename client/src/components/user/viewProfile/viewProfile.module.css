@@ -62,6 +62,7 @@
 }
 
 .view-profile .name-age {
+    text-transform: capitalize;
     width: 100%;
     display: flex;
     justify-content: start;

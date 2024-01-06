@@ -138,9 +138,11 @@
     color: rgba(255, 255, 255, 0.863);
     padding: 0.5rem;
     border-radius: 0;
+    text-transform: capitalize;
 }
 
 .detail input {
+    text-transform: capitalize;
     width: 100%;
     border: none;
     outline: none;

@@ -208,7 +208,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     {space === 'explore' && window.innerWidth <= 768 && <Explore setSpace={setSpace} /> }
 
                     {/* explore spaces */}
-                    {['forlove', 'befriends', 'freetonight', 'coffeedate'].includes(space) &&
+                    {['forlove', 'befriends', 'freetonight', 'coffeedate', 'verified'].includes(space) &&
                         <Profile setSpace={setSpace} explore={space} allowed={myPic !== null} setPremium={setShowPremium} setMatchKey={setMatchKey} />
                     }
                 </div>
@@ -237,7 +237,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                     <div className="sidebar col-md-3"><Settings setPremium={setShowPremium} /></div>
                 }
 
-                {(space === 'explore' && window.innerWidth > 768 || ['forlove', 'befriends', 'freetonight', 'coffeedate'].includes(space)) &&
+                {(space === 'explore' && window.innerWidth > 768 || ['forlove', 'befriends', 'freetonight', 'coffeedate', 'verified'].includes(space)) &&
                     <div className="sidebar col-md-3"> <Explore setSpace={setSpace} /> </div>
                 }
 

@@ -25,7 +25,7 @@ export default function Explore({setSpace}: Props) {
                 <h3>Verified profiles <i className="fa-solid fa-circle-check"></i></h3>
                 <div>
                     <p>See only verified profiles</p>
-                    <span className='fa-beat'>Try now</span>
+                    <span onClick={() => setSpace('verified')} className='fa-beat'>Try now</span>
                 </div>
             </div>
 

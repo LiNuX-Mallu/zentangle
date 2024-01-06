@@ -32,7 +32,7 @@ export default function Matches() {
 
     if (!matches) {
         return (
-            <div style={{padding: 0}} className={styles.matches}>
+            <div className={styles.matches}>
                 {Array.from({length: len}, (_, index) => (
                     <div style={{padding: 0}} className={styles.box}>
                         <Skeleton key={index} variant='rectangular' animation='wave' sx={{width: '100%', height: '100%', bgcolor: 'grey.950'}} />

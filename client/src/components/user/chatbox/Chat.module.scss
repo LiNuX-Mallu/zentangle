@@ -41,6 +41,7 @@
     opacity: 0.9;
     padding-left: 1%;
     cursor: pointer;
+    margin-left: 20px;
 }
 
 .chat .typebox {
@@ -142,8 +143,8 @@
 .msg {
     color: white;
     display: flex;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
     overflow: visible;
     flex-direction: column;
     justify-content: start;
@@ -193,6 +194,14 @@
 @media (max-width: 768px) {
     .chat {
         padding-bottom: 8vh;
+        .topbar {
+            i {
+                margin-left: 30px;
+                &.back-click {
+                    margin-left: 10px;
+                }
+            }
+        }
     }
     .chat .typebox {
         height: 6vh;
@@ -224,6 +233,10 @@
         padding-top: 10px;
         color: rgba(255, 255, 255, 0.884);
         font-size: 20px;
+    }
+    .msg {
+        padding-left: 10px;
+        padding-right: 10px;
     }
     .msg p {
         max-width: 80%;

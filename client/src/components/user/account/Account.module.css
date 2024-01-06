@@ -63,6 +63,7 @@
   justify-content: center;
   gap: 8px;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .account .name-age .age {

@@ -34,7 +34,7 @@ export default function Messages() {
 
     if (!messages) {
         return (
-            <div style={{padding: 0}} className={styles.messages}>
+            <div className={styles.messages}>
                 {Array.from({length: len}, (_, index) => (
                     <div style={{padding: 0}} className={styles.msg}>
                         <Skeleton key={index} variant='rectangular' animation='wave' sx={{width: '100%', height: '100%', bgcolor: 'grey.950'}} />

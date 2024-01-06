@@ -4,6 +4,7 @@ import axios from '../../../instances/axios';
 import { ProfileInterface } from '../../../instances/interfaces';
 import Swal from 'sweetalert2';
 import Skeleton from '@mui/material/Skeleton';
+import { useNavigate } from 'react-router';
 
 interface Props {
     setMatchKey: React.Dispatch<React.SetStateAction<string>>;
@@ -18,6 +19,7 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>();
     const [userIndex, setUserIndex] = useState<number>(0);
 
+    const navigate = useNavigate();
     const likeRef = useRef<HTMLElement>(null);
     const dislikeRef = useRef<HTMLElement>(null);
     const profileRef = useRef<HTMLDivElement>(null);
@@ -32,10 +34,14 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
             if (response.status === 200) {
                 setTimeout(() => {
                     setProfiles(response?.data as ProfileInterface[] ?? []);
-                }, 3000);
+                }, 1500);
             }
-        });
-    }, [profiles, allowed, explore]);
+        }).catch((error) => {
+            if (error.response.status === 402) {
+                setPremium(true);
+            }
+        })
+    }, [profiles, allowed, explore, setPremium]);
 
     useEffect(() => {
         if (allowed === false) return;
@@ -47,10 +53,14 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
             if (response.status === 200) {
                 setTimeout(() => {
                     setProfiles(response?.data as ProfileInterface[] ?? []);
-                }, 3000);
+                }, 1500);
             }
-        });
-    }, [allowed, explore]);
+        }).catch((error) => {
+            if (error.response.status === 402) {
+                setPremium(true);
+            }
+        })
+    }, [allowed, explore, setPremium]);
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         setStartX(e.clientX);
@@ -196,10 +206,11 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
 
     if (allowed === false) {
         return (
-            <div className={styles.profile}>
+            <div className={`${styles.profile} ${(explore && explore !== 'none') ? styles.explore : ''}`}>
                 <div className={`${styles.empty} ${styles.notallowed}`}>
+                    <h5 onClick={() => navigate('/app/account/edit-profile')}>Go to Profile <i className="fa fa-angle-right"></i> </h5>
                     <p>Complete basic profiles to start matching</p>
-                    <i className="fa-solid fa-circle-info"></i>
+                    <i className="fa-solid fa-circle-info fa-fade"></i>
                 </div>
                 <div className={styles.belowbar}>
                     <i className="fa-solid fa-rotate-right"></i>
@@ -213,7 +224,19 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
 
     if (profiles && (profiles.length === 0 || profiles[userIndex] === undefined)) {
         return (
-            <div className={styles.profile}>
+            <div className={`${styles.profile} ${(explore && explore !== 'none') ? styles.explore : ''}`}>
+
+                <span onClick={() => setSpace('explore')} className={styles.title}>
+                    <i className="fa-solid fa-xmark"></i>
+                    {
+                        explore === 'befriends' ? "Let's be Friends":
+                        explore === 'forlove' ? "Looking for Love":
+                        explore === 'coffeedate' ? "Coffee Date":
+                        explore === 'freetonight' ? "Free Tonight?":
+                        explore === 'verified' ? "Verified Profiles": ""
+                    }
+                </span>
+
                 <div className={styles.empty}>
                     <p>Sorry we are out of profiles nearby</p>
                     <i onClick={() => setProfiles(undefined)} className="fa-solid fa-rotate-right fa-beat fa-lg"></i>
@@ -230,7 +253,7 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
 
     if (profiles === undefined) {
         return (
-            <div className={styles.profile}>
+            <div className={`${styles.profile} ${(explore && explore !== 'none') ? styles.explore : ''}`}>
                 <div className={styles.details}>
                     <Skeleton variant='rectangular' animation='wave' sx={{bgcolor: 'grey.900', height: '100%', width: '100%'}}/>
                 </div>
@@ -247,14 +270,15 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
     if (profiles && profiles[userIndex]) {
     return (
         <div id='profileContainer' className={`${styles.profile} ${(explore && explore !== 'none') ? styles.explore : ''}`}>
-            
+
             <span onClick={() => setSpace('explore')} className={styles.title}>
                 <i className="fa-solid fa-xmark"></i>
                 {
                     explore === 'befriends' ? "Let's be Friends":
                     explore === 'forlove' ? "Looking for Love":
                     explore === 'coffeedate' ? "Coffee Date":
-                    explore === 'freetonight' ? "Free Tonight?": ""
+                    explore === 'freetonight' ? "Free Tonight?":
+                    explore === 'verified' ? "Verified Profiles": ""
                 }
             </span>
             

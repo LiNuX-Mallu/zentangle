@@ -1,9 +1,10 @@
 .messages {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     background-color: transparent;
     color: white;
     overflow-y: scroll;
+    padding-right: 25px;
 }
 
 .messages .msg {
@@ -62,6 +63,13 @@
 }
 
 @media (max-width: 768px) {
+    .messages {
+        padding-left: 3px;
+        padding-top: 3px;
+        padding-right: 27px;
+        padding-bottom: 6vh;
+        overflow-y: scroll;
+    }
     .messages .msg {
         margin: 12px;
         margin-top: 3px;

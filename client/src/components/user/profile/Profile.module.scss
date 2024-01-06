@@ -53,6 +53,18 @@
                 width: 90%;
                 text-align: center;
                 font-weight: 500;
+                font-size: 15px;
+                width: 75%;
+            }
+            h5 {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+                i {
+                    font-size: 25px;
+                }
             }
         }
         p {

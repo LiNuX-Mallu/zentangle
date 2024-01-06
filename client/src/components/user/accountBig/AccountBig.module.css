@@ -66,6 +66,7 @@
     padding-top: 1rem;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
+    text-transform: capitalize;
 }
 
 .account-big .name-age .age {
