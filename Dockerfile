@@ -1,4 +1,3 @@
-# Use the official Node.js image as the base image
 FROM node:18
 
 # Set the working directory in the container
@@ -33,6 +32,9 @@ RUN npm run build
 
 # Set the working directory back to the root
 WORKDIR /
+
+# Expose the port your application listens on (replace with the correct port)
+EXPOSE 8080
 
 # Specify the command to run when the container starts
 CMD ["npm", "start"]
