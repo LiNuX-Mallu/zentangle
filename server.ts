@@ -21,12 +21,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use("/api", router);
+
+app.use(express.static(path.join(__dirname, '../client/dist'), {index: false}));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+})
+
 app.use(
 	cors({
-		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+		origin: "*",
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 		credentials: true,
 		optionsSuccessStatus: 200,
+		allowedHeaders: "Content-Type, Access-Control-Allow-Origin",
 	})
 );
 
@@ -40,20 +54,11 @@ declare namespace NodeJS {
 
 const server = http.createServer(app);
 
-app.use("/api", router);
-
-app.use(express.static(path.join(__dirname, '../client/dist'), {index: false}));
-
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-});
-
-
 //socket io
 const io = new Server(server, {
 	cors: {
-		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-		methods: ["GET", "POST", "OPTIONS"],
+		origin: "*",
+		methods: "GET, POST",
 		credentials: true,
 		optionsSuccessStatus: 200,
 	},

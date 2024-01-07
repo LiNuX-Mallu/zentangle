@@ -6,7 +6,4 @@ const url = server;
 export const socket = io(url, {
     autoConnect: true,
     withCredentials: true,
-    extraHeaders: {
-        'Access-Control-Allow-Origin': server,
-    }
 });
