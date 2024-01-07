@@ -21,30 +21,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app.use((req, res, next) => {
-// 	res.header("Access-Control-Allow-Origin", "https://zentangle-tdo2clfghq-de.a.run.app");
-// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-// 	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-// 	res.header("Access-Control-Allow-Credentials", "true");
-// 	next();
-// });
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "https://zentangle-tdo2clfghq-de.a.run.app");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+	res.header("Access-Control-Allow-Credentials", "true");
+	next();
+});
   
 
-// app.options("*", cors({ 
-// 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-// 	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
-// 	optionsSuccessStatus: 200, 
-// 	credentials: true ,
-// }));
+app.options("*", cors({ 
+	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
+	optionsSuccessStatus: 200, 
+	credentials: true ,
+}));
 
-// app.use(cors({
-// 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-// 	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
-// 	optionsSuccessStatus: 200,
-// 	credentials: true,
-// }));
-
-app.use(cors());
+app.use(cors({
+	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
+	optionsSuccessStatus: 200,
+	credentials: true,
+}));
 
 app.use("/api", router);
 
@@ -58,12 +56,12 @@ const server = http.createServer(app);
 
 //socket io
 const io = new Server(server, {
-	// cors: {
-	// 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-	// 	methods: ["GET", "POST"],
-	// 	credentials: true,
-	// 	optionsSuccessStatus: 200,
-	// },
+	cors: {
+		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+		methods: ["GET", "POST"],
+		credentials: true,
+		optionsSuccessStatus: 200,
+	},
 	transports: ["websocket", "polling"],
 	allowEIO3: true,
 });

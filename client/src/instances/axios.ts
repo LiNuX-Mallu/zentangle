@@ -1,10 +1,18 @@
 import axiosApi from "axios";
-import { ApiUrl } from "./urls";
+import { ApiUrl, server } from "./urls";
 import Swal from "sweetalert2";
 
 const axios = axiosApi.create({
     baseURL: ApiUrl,
-    //withCredentials: true,
+    withCredentials: true,
+});
+
+axios.interceptors.request.use((config) => {
+  config.headers["Access-Control-Allow-Origin"] = server;
+  config.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE";
+  config.headers["Access-Control-Allow-Headers"] = "Origin, X-Requested-With, Content-Type, Accept";
+  config.headers["Access-Control-Allow-Credentials"] = "true";
+  return config;
 });
 
 axios.interceptors.response.use(
