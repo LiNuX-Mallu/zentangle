@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
 import nocache from "nocache";
 import dotenv from "dotenv";
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const corsOptions = {
+const corsOptions: CorsOptions = {
 	origin: [
 		`http://${HOST}:${PORT}`,
 		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
@@ -33,6 +33,7 @@ const corsOptions = {
 	optionsSuccessStatus: 200, 
 	credentials: true,
 	preflightContinue: true,
+	allowedHeaders: ["Content-Type"],
 }
 
 app.options("*", cors(corsOptions));
