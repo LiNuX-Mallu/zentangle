@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin: ["https://zentangle-2-tdo2clfghq-de.a.run.app/"],
+		origin: ["*"],
 		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
 		credentials: true,
 	})
@@ -51,7 +51,7 @@ app.get('*', (req, res) => {
 //socket io
 const io = new Server(server, {
 	cors: {
-		origin: ["https://zentangle-2-tdo2clfghq-de.a.run.app/"],
+		origin: ["*"],
 		methods: ["GET", "POST"],
 		credentials: true,
 	},
