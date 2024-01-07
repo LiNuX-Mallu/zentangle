@@ -11,7 +11,7 @@ export default async (email: string) => {
 
         const expirationTime = new Date();
         expirationTime.setMinutes(expirationTime.getMinutes() + 5);
-
+        
         const mailOption = {
             from: EMAIL,
             to: email,
