@@ -16,19 +16,22 @@ let { MONGO_URI, PORT, HOST, CLIENT_PORT, CLIENT_HOST } = process.env;
 
 const app = express();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "*"); // Set to allow all methods
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.use(nocache());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // const corsOptions: CorsOptions = {
-// 	origin: [
-// 		`http://${HOST}:${PORT}`,
-// 		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
-// 		'https://zentangle-tdo2clfghq-de.a.run.app',
-// 		'https://zentangle-tdo2clfghq-de.a.run.app/',
-// 		'https://zentangle-2-tdo2clfghq-de.a.run.app/api'	
-// 	],
+// 	origin: 'https://zentangle-tdo2clfghq-de.a.run.app',
+// 	// `http://${HOST}:${PORT}`,
+// 	// `http://${CLIENT_HOST}:${CLIENT_PORT}`,
 // 	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
 // 	optionsSuccessStatus: 200, 
 // 	credentials: true,
@@ -51,7 +54,7 @@ const server = http.createServer(app);
 
 //socket io
 const io = new Server(server, {
-	//cors: corsOptions,
+	cors: {origin: '*', methods: "*"},
 	transports: ["websocket", "polling"],
 	allowEIO3: true,
 });
