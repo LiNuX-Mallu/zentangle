@@ -21,15 +21,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app.use(
-// 	cors({
-// 		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-// 		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
-// 		credentials: true,
-// 	})
-// );
-
-app.use(cors({origin: true, credentials: true}));
+app.use(
+	cors({
+		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+		credentials: true,
+		optionsSuccessStatus: 200,
+	})
+);
 
 declare namespace NodeJS {
 	interface ProcessEnv {
@@ -56,6 +55,7 @@ const io = new Server(server, {
 		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
 		methods: ["GET", "POST", "OPTIONS"],
 		credentials: true,
+		optionsSuccessStatus: 200,
 	},
 	transports: ["websocket", "polling"],
 	allowEIO3: true,

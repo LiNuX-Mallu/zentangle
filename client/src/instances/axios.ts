@@ -1,11 +1,13 @@
 import axiosApi from "axios";
-import { ApiUrl } from "./urls";
+import { ApiUrl, server } from "./urls";
 import Swal from "sweetalert2";
 
 const axios = axiosApi.create({
     baseURL: ApiUrl,
     withCredentials: true,
-
+    headers: {
+      'Access-Control-Allow-Origin': server,
+  },
 });
 
 axios.interceptors.response.use(
