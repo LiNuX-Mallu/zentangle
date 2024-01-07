@@ -5,5 +5,5 @@ const url = server;
 
 export const socket = io(url, {
     autoConnect: true,
-    withCredentials: true,
+    withCredentials: false,
 });

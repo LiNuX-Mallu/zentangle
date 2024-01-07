@@ -21,6 +21,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// app.use(
+// 	cors({
+// 		origin: "*",
+// 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+// 		credentials: true,
+// 		optionsSuccessStatus: 200,
+// 		allowedHeaders: "Content-Type, Access-Control-Allow-Origin",
+// 	})
+// );
+
+app.options("*", cors({ 
+	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+	optionsSuccessStatus: 200, 
+	credentials: false ,
+}));
+
+app.use(cors({
+	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+	optionsSuccessStatus: 200,
+	credentials: false,
+}));
+
 app.use("/api", router);
 
 app.use(express.static(path.join(__dirname, '../client/dist'), {index: false}));
@@ -29,37 +51,14 @@ app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
-})
-
-app.use(
-	cors({
-		origin: "*",
-		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-		credentials: true,
-		optionsSuccessStatus: 200,
-		allowedHeaders: "Content-Type, Access-Control-Allow-Origin",
-	})
-);
-
-declare namespace NodeJS {
-	interface ProcessEnv {
-		PORT: number;
-		HOSTNAME: string;
-		MONGO_URI: string;
-	}
-}
-
 const server = http.createServer(app);
 
 //socket io
 const io = new Server(server, {
 	cors: {
-		origin: "*",
-		methods: "GET, POST",
-		credentials: true,
+		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+		methods: ["GET", "POST"],
+		credentials: false,
 		optionsSuccessStatus: 200,
 	},
 	transports: ["websocket", "polling"],
