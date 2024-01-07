@@ -12,7 +12,7 @@ import saveMessage from "./src/services/user/chat/saveMessage";
 import path from "path";
 
 dotenv.config();
-let { MONGO_URI, PORT, HOST, CLIENT_HOST, CLIENT_PORT } = process.env;
+let { MONGO_URI, PORT, HOST } = process.env;
 
 const app = express();
 
@@ -25,6 +25,7 @@ app.options('*', (req, res) => {
 	res.header('Access-Control-Allow-Origin', 'https://zentangle-tdo2clfghq-de.a.run.app');
 	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	res.header('Access-Control-Request-Headers', '*');
 	res.sendStatus(200);
 });
 
