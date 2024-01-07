@@ -21,26 +21,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app.use(
-// 	cors({
-// 		origin: "*",
-// 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-// 		credentials: true,
-// 		optionsSuccessStatus: 200,
-// 		allowedHeaders: "Content-Type, Access-Control-Allow-Origin",
-// 	})
-// );
+app.options('*', (req, res) => {
+	res.header('Access-Control-Allow-Origin', 'https://zentangle-tdo2clfghq-de.a.run.app');
+	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	res.sendStatus(200);
+});
 
 app.options("*", cors({ 
 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-	methods: ["POST", "PUT", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+	methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
 	optionsSuccessStatus: 200, 
 	credentials: true ,
 }));
 
 app.use(cors({
 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-	methods: ["POST", "PUT", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+	methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
 	optionsSuccessStatus: 200,
 	credentials: true,
 }));
