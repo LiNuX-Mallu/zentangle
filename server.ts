@@ -29,6 +29,8 @@ app.use(cookieParser());
 // 	})
 // );
 
+app.use(cors({origin: true, credentials: true}));
+
 declare namespace NodeJS {
 	interface ProcessEnv {
 		PORT: number;
