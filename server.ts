@@ -16,51 +16,26 @@ let { MONGO_URI, PORT, HOST, CLIENT_PORT, CLIENT_HOST } = process.env;
 
 const app = express();
 
-app.use(function(req, res, next) {
-    let oneof = false;
-    if(req.headers.origin) {
-        res.header('Access-Control-Allow-Origin', req.headers.origin);
-        oneof = true;
-    }
-    if(req.headers['access-control-request-method']) {
-        res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method']);
-        oneof = true;
-    }
-    if(req.headers['access-control-request-headers']) {
-        res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
-        oneof = true;
-    }
-    if(oneof) {
-        res.header('Access-Control-Max-Age', '1y');
-    }
+const corsOptions: CorsOptions = {
+	origin: [
+		'https://zentangle-tdo2clfghq-de.a.run.app',
+		`http://${HOST}:${PORT}`,
+		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
+	],
+	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+	optionsSuccessStatus: 200, 
+	credentials: true,
+	preflightContinue: false,
+	allowedHeaders: ["Content-Type", "Authorization"],
+}
 
-    // intercept OPTIONS method
-    if (oneof && req.method == 'OPTIONS') {
-        res.send(200);
-    }
-    else {
-        next();
-    }
-});
+app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(nocache());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// const corsOptions: CorsOptions = {
-// 	origin: 'https://zentangle-tdo2clfghq-de.a.run.app',
-// 	// `http://${HOST}:${PORT}`,
-// 	// `http://${CLIENT_HOST}:${CLIENT_PORT}`,
-// 	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
-// 	optionsSuccessStatus: 200, 
-// 	credentials: true,
-// 	preflightContinue: true,
-// 	allowedHeaders: ["Content-Type", "Authorization"],
-// }
-
-// app.options("*", cors(corsOptions));
-// app.use(cors(corsOptions));
 
 app.use("/api", router);
 
@@ -74,7 +49,7 @@ const server = http.createServer(app);
 
 //socket io
 const io = new Server(server, {
-	cors: {origin: '*', methods: "*"},
+	cors: corsOptions,
 	transports: ["websocket", "polling"],
 	allowEIO3: true,
 });
