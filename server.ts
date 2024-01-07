@@ -12,7 +12,7 @@ import saveMessage from "./src/services/user/chat/saveMessage";
 import path from "path";
 
 dotenv.config();
-let { MONGO_URI, PORT, HOST } = process.env;
+let { MONGO_URI, PORT, HOST, CLIENT_PORT, CLIENT_HOST } = process.env;
 
 const app = express();
 
@@ -21,28 +21,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "https://zentangle-tdo2clfghq-de.a.run.app");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-	res.header("Access-Control-Allow-Credentials", "true");
-	next();
-});
-  
-
-app.options("*", cors({ 
-	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
+const corsOptions = {
+	origin: [
+		`http://${HOST}:${PORT}`,
+		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
+		'https://zentangle-tdo2clfghq-de.a.run.app',
+		'https://zentangle-tdo2clfghq-de.a.run.app/',
+		'https://zentangle-2-tdo2clfghq-de.a.run.app/api'	
+	],
+	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
 	optionsSuccessStatus: 200, 
-	credentials: true ,
-}));
-
-app.use(cors({
-	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
-	optionsSuccessStatus: 200,
 	credentials: true,
-}));
+	preflightContinue: true,
+}
+
+app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use("/api", router);
 
@@ -56,12 +50,7 @@ const server = http.createServer(app);
 
 //socket io
 const io = new Server(server, {
-	cors: {
-		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-		methods: ["GET", "POST"],
-		credentials: true,
-		optionsSuccessStatus: 200,
-	},
+	cors: corsOptions,
 	transports: ["websocket", "polling"],
 	allowEIO3: true,
 });
