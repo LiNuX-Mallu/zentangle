@@ -31,7 +31,7 @@ RUN npm install
 RUN npm run build
 
 # Set the working directory back to the root
-WORKDIR /dist
+WORKDIR /
 
 # Specify the command to run when the container starts
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

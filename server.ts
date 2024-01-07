@@ -51,7 +51,7 @@ app.get('*', (req, res) => {
 //socket io
 const io = new Server(server, {
 	cors: {
-		origin: [`http://${CLIENT_HOST}:${CLIENT_PORT}`, 'https://main.d1dcml0ytirq8d.amplifyapp.com'],
+		origin: [`http://${CLIENT_HOST}:${CLIENT_PORT}`],
 		methods: ["GET", "POST"],
 		credentials: true,
 	},
@@ -149,7 +149,7 @@ io.on("connection", async (socket: Socket) => {
 mongoConnect(MONGO_URI!)
 	.then(() => {
 		console.log("connected to database");
-		server.listen(typeof PORT === "number" ? PORT : 3000, HOST!, () => {
+		server.listen(typeof PORT === "number" ? PORT : 8080, HOST ?? '0.0.0.0', () => {
 			console.log(`Server listening at http://${HOST}:${PORT}`);
 		});
 	})
