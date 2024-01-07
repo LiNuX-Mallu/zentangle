@@ -21,23 +21,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const corsOptions: CorsOptions = {
-	origin: [
-		`http://${HOST}:${PORT}`,
-		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
-		'https://zentangle-tdo2clfghq-de.a.run.app',
-		'https://zentangle-tdo2clfghq-de.a.run.app/',
-		'https://zentangle-2-tdo2clfghq-de.a.run.app/api'	
-	],
-	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
-	optionsSuccessStatus: 200, 
-	credentials: true,
-	preflightContinue: true,
-	allowedHeaders: ["Content-Type", "Authorization"],
-}
+// const corsOptions: CorsOptions = {
+// 	origin: [
+// 		`http://${HOST}:${PORT}`,
+// 		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
+// 		'https://zentangle-tdo2clfghq-de.a.run.app',
+// 		'https://zentangle-tdo2clfghq-de.a.run.app/',
+// 		'https://zentangle-2-tdo2clfghq-de.a.run.app/api'	
+// 	],
+// 	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+// 	optionsSuccessStatus: 200, 
+// 	credentials: true,
+// 	preflightContinue: true,
+// 	allowedHeaders: ["Content-Type", "Authorization"],
+// }
 
-app.options("*", cors(corsOptions));
-app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.use("/api", router);
 
@@ -51,7 +51,7 @@ const server = http.createServer(app);
 
 //socket io
 const io = new Server(server, {
-	cors: corsOptions,
+	//cors: corsOptions,
 	transports: ["websocket", "polling"],
 	allowEIO3: true,
 });

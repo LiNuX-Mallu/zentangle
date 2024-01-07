@@ -21,7 +21,7 @@ export default async (req: Request, res: Response) => {
             res.cookie('jwt-admin', token, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict",
+                sameSite: "none",
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             });
             res.status(200).json({message: "Login successfull"});

@@ -44,7 +44,7 @@ export default function Login({cancel, signup, verify}: Props) {
         });
         axios.post('/user/login', formData, {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             }
         }).then((response) => {
             if (response?.status === 200) {
