@@ -21,21 +21,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "X-Requested-With");
-	res.header("Access-Control-Allow-Headers", "Content-Type");
-	res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-	next();
-});
-
-app.use(
-	cors({
-		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
-		credentials: true,
-	})
-);
+// app.use(
+// 	cors({
+// 		origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+// 		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+// 		credentials: true,
+// 	})
+// );
 
 declare namespace NodeJS {
 	interface ProcessEnv {
