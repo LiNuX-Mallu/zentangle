@@ -21,27 +21,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app.options('*', (req, res) => {
-// 	res.header('Access-Control-Allow-Origin', 'https://zentangle-tdo2clfghq-de.a.run.app');
-// 	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-// 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-// 	res.header('Access-Control-Request-Headers', '*');
-// 	res.sendStatus(200);
+// app.use((req, res, next) => {
+// 	res.header("Access-Control-Allow-Origin", "https://zentangle-tdo2clfghq-de.a.run.app");
+// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// 	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+// 	res.header("Access-Control-Allow-Credentials", "true");
+// 	next();
 // });
+  
 
 // app.options("*", cors({ 
 // 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-// 	methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+// 	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
 // 	optionsSuccessStatus: 200, 
 // 	credentials: true ,
 // }));
 
 // app.use(cors({
 // 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
-// 	methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "PATCH", "DELETE"],
+// 	methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE"],
 // 	optionsSuccessStatus: 200,
 // 	credentials: true,
 // }));
+
+app.use(cors());
 
 app.use("/api", router);
 
@@ -58,7 +61,7 @@ const io = new Server(server, {
 	// cors: {
 	// 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
 	// 	methods: ["GET", "POST"],
-	// 	credentials: false,
+	// 	credentials: true,
 	// 	optionsSuccessStatus: 200,
 	// },
 	transports: ["websocket", "polling"],
