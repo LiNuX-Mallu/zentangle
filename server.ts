@@ -33,14 +33,16 @@ app.use(cookieParser());
 
 app.options("*", cors({ 
 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+	methods: ["POST", "PUT", "OPTIONS", "HEAD", "PATCH", "DELETE"],
 	optionsSuccessStatus: 200, 
-	credentials: false ,
+	credentials: true ,
 }));
 
 app.use(cors({
 	origin: "https://zentangle-tdo2clfghq-de.a.run.app",
+	methods: ["POST", "PUT", "OPTIONS", "HEAD", "PATCH", "DELETE"],
 	optionsSuccessStatus: 200,
-	credentials: false,
+	credentials: true,
 }));
 
 app.use("/api", router);

@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 const axios = axiosApi.create({
     baseURL: ApiUrl,
-    withCredentials: false,
+    withCredentials: true,
 });
 
 axios.interceptors.response.use(
