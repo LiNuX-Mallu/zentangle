@@ -47,7 +47,7 @@ export default function Login({cancel, signup, verify}: Props) {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 setLoginSuccess(true);
                 setTimeout(() => {
                     navigate('/app');
