@@ -33,5 +33,8 @@ RUN npm run build
 # Set the working directory back to the root
 WORKDIR /
 
+ENV HOST 0.0.0.0
+EXPOSE 8080
+
 # Specify the command to run when the container starts
 CMD ["npm", "start"]
