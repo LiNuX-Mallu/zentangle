@@ -16,17 +16,32 @@ let { MONGO_URI, PORT, HOST, CLIENT_PORT, CLIENT_HOST } = process.env;
 
 const app = express();
 
+const allowedOrigins = [
+	`http://${HOST}:${PORT}`,
+	`http://${CLIENT_HOST}:${CLIENT_PORT}`,
+	'https://zentangle-tdo2clfghq-de.a.run.app',
+];
+
 const corsOptions: CorsOptions = {
-	origin: [
-		'https://zentangle-tdo2clfghq-de.a.run.app',
-		`http://${HOST}:${PORT}`,
-		`http://${CLIENT_HOST}:${CLIENT_PORT}`,
-	],
+	origin(requestOrigin, callback) {
+		if (!requestOrigin || allowedOrigins.includes(requestOrigin)) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
 	methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
 	optionsSuccessStatus: 200, 
 	credentials: true,
-	preflightContinue: false,
-	allowedHeaders: ["Content-Type", "Authorization"],
+	preflightContinue: true,
+	allowedHeaders: [
+		"Accept",
+		"Accept-Language",
+		"Content-Language",
+		"Content-Type",
+		"Authorization",
+		"Access-Control-Allow-Origin",
+	],
 }
 
 app.options("*", cors(corsOptions));
