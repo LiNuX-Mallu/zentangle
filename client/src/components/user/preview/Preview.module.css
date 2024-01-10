@@ -12,6 +12,7 @@
     position: relative;
     user-select: none;
     margin-bottom: 10vh;
+    overflow: hidden;
 }
 
 .preview .back-icon {
