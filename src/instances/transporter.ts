@@ -11,7 +11,7 @@ export default nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: ""+EMAIL?.toString(),
-    pass: ""+EMAIL_PASSWORD?.toString(),
+    user: 'zentangleapp@gmail.com',
+    pass: 'ckwd lrvb wosk mcjc',
   },
 });
