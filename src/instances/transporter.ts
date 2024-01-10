@@ -1,4 +1,4 @@
-import nodemailer, {TransportOptions} from "nodemailer";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,4 +12,4 @@ export default nodemailer.createTransport({
     user: EMAIL,
     pass: EMAIL_PASSWORD,
   },
-}) as TransportOptions;
+});
