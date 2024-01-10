@@ -18,6 +18,7 @@ const app = express();
 
 const allowedOrigins = [
 	`http://${HOST}:${PORT}`,
+	`http://127.0.0.1:${PORT}`,
 	`http://${CLIENT_HOST}:${CLIENT_PORT}`,
 	'https://zentangle-tdo2clfghq-de.a.run.app',
 ];
