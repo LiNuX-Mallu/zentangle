@@ -22,6 +22,7 @@ export default function Chat({setMessageKey}: Props) {
     const chatRef = useRef<HTMLDivElement>(null);
     const myUsername = useSelector(getUsername);
     const [inReport, setInReport] = useState(false);
+    const inputRef = useRef<HTMLTextAreaElement>(null)
 
     const [profile, setProfile] = useState<ProfileInterface>();
     const [chat, setChat] = useState<Message[]>([]);
@@ -123,6 +124,9 @@ export default function Chat({setMessageKey}: Props) {
     }
 
     const handleSendMessage = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
         if (!myUsername || !profile) return;
         if (inputMessage.trim() === '' || !socketConnected) return;
         const message = {
@@ -217,7 +221,7 @@ export default function Chat({setMessageKey}: Props) {
             </div>
             <div className={styles.typebox}>
                 <i className="fa-solid fa-image"></i>
-                <textarea value={inputMessage} onChange={e => setInputMessage(e.target.value)} placeholder='Type here...' rows={1}></textarea>
+                <textarea ref={inputRef} value={inputMessage} onChange={e => setInputMessage(e.target.value)} placeholder='Type here...' rows={1}></textarea>
                 <span onClick={handleSendMessage}>Send</span>
             </div>
         </div>

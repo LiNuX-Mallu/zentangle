@@ -161,6 +161,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                 cancelButtonText: 'Reject',
                 cancelButtonColor: 'orangered',
                 confirmButtonColor: 'green',
+                allowOutsideClick: false,
             }).then(res => {
                 if (!res.isConfirmed) {
                     socket.emit('rejectVideoCall', {from: myUsername, to: incommingCall});
