@@ -322,8 +322,8 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
                 <i onClick={() => handleLike(false)} style={{color: 'cornflowerblue'}} className="fa-solid fa-thumbs-up"></i>
                 <i onClick={() => handleLike(true)} style={{color: 'violet'}} className="fa-solid fa-heart-circle-bolt"></i>
             </div>}
-            {(profile && profile.matched) ? <div onClick={() => navigate(`/app/chat/${profile.username}`)} className={styles['belowbar']}>
-                <span className={styles['send-message']}>Send message</span>
+            {(profile && profile.matched) ? <div className={styles['belowbar']}>
+                <span onClick={() => navigate(`/app/chat/${profile.username}`)} className={styles['send-message']}>Send message</span>
             </div>: ''}
             
         </div>
