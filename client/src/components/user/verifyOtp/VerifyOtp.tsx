@@ -106,7 +106,7 @@ export default function VerifyOtp({ address, verify, login }: Props) {
                                 verify(null);
                                 login(true);
                             }
-                        })
+                        }).finally(() => Swal.close());
                     } else {
                         verify(null);
                         login(true);
