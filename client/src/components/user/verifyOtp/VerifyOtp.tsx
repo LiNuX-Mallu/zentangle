@@ -70,6 +70,7 @@ export default function VerifyOtp({ address, verify, login }: Props) {
         setMessage("");
         if (otp.trim() === "") {
             setError("OTP required!");
+            Swal.close();
             return;
         }
         axios.post('/user/verify-otp', {otp, email: address.email}, {

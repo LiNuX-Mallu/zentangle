@@ -193,7 +193,7 @@
 
 @media (max-width: 768px) {
     .chat {
-        height: 100%;
+        height: 100vh;
         padding-bottom: 10vh;
         .topbar {
             i {
@@ -205,9 +205,14 @@
         }
     }
     .chat .typebox {
+        position: fixed;
         height: 6vh;
         padding-left: 20px;
         padding-right: 20px;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        right: 0;
     }
     .typebox i {
         font-size: 20px;
