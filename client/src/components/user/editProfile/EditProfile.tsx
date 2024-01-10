@@ -127,7 +127,7 @@ export default function EditProfile() {
     };
 
     const handleRemoveMedia = (media: string) => {
-        if (medias.length !== 1) {
+        if (medias.length === 1) {
             Swal.fire({
                 title: "Cannot remove media",
                 text: "Should keep atleast one image",
