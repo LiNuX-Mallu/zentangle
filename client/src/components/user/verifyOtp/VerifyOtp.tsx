@@ -53,7 +53,8 @@ export default function VerifyOtp({ address, verify, login }: Props) {
                 if (response.status === 200) {
                     setMessage(response.data?.message);
                 }
-            }).catch(() => Swal.close());
+            }).catch(() => Swal.close())
+            .finally(() => Swal.close());
     };
 
     const handleVerify = (event: FormEvent) => {
