@@ -11,10 +11,7 @@ export default nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: EMAIL,
-    pass: EMAIL_PASSWORD,
+    user: 'zentangleapp@gmail.com',
+    pass: 'ckwd lrvb wosk mcjc',
   },
-  tls: {
-    rejectUnauthorized: false,
-  }
 });
