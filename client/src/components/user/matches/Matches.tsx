@@ -58,8 +58,8 @@ export default function Matches() {
                         <div style={{border: match.type === 'superLike' ? '2px solid purple' : '1px solid gray'}} className={styles['pro-pic']}>
                             <img
                                 src={(match.type === 'like' || match.type === 'superLike') ? 
-                                match.likedBy?.profile.medias[0] ?? accountIcon :
-                                match.with?.profile.medias[0] ?? accountIcon }
+                                match.likedBy?.profile?.medias[0] ?? accountIcon :
+                                match.with?.profile?.medias[0] ?? accountIcon }
                                 alt="profile pic"
                             />
                         </div>
@@ -70,21 +70,21 @@ export default function Matches() {
                                     match.type === 'superLike' &&
                                     <>
                                         <i style={{color: 'rgb(194, 39, 194)'}} className="fa-solid fa-heart-circle-bolt"></i>
-                                        <span>You got a super like from {match.likedBy.profile.name}</span>
+                                        <span>You got a super like from {match.likedBy?.profile?.name ?? match.likedBy?.username}</span>
                                     </>
                                 }
                                 {
                                     match.type === 'like' &&
                                     <>
                                         <i style={{color: 'rgb(212, 66, 66)'}} className="fa-solid fa-heart"></i>
-                                        <span>Your profile liked by {match.likedBy.profile.name}</span>
+                                        <span>Your profile liked by {match.likedBy?.profile?.name ?? match.likedBy?.username}</span>
                                     </>
                                 }
                                 {
                                     match.type === 'match' &&
                                     <>
                                         <i style={{color: 'white'}} className="fa-solid fa-people-pulling"></i>
-                                        <span>You are matched with {match.with.profile.name}</span>
+                                        <span>You are matched with {match.with?.profile?.name ?? match.with?.username}</span>
                                     </>
                                 }
                             </span>

@@ -1,7 +1,8 @@
-import { NextFunction, Router, static as expressStatic } from "express";
+import { NextFunction, Router } from "express";
 import userRouter from './src/routes/userRouter';
 import adminRouter from "./src/routes/adminRouter";
 import user from "./src/models/user";
+import adminTokenValidation from "./src/middlewares/validation/adminTokenValidation";
 
 const router = Router();
 
@@ -18,6 +19,15 @@ router.use('/admin', (req, _, next: NextFunction) => {
 }, adminRouter);
 
 //test only
-router.get('/clear-matches', async (_, res) => {await user.updateMany({}, {$unset: {match: null}}); res.send('did')});
+router.get('/admin/clear', adminTokenValidation, async (_, res) => {
+    res.send(await user.updateMany({}, {
+        $unset: {match: null},
+        $set: {chatHistory: [],
+            reports: [], 
+            blocked: {users: [], contacts: []},
+            premium: {likes: [], superLikes: []},
+        },
+    }));
+});
 
 export default router;
