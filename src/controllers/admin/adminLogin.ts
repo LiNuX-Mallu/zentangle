@@ -10,7 +10,7 @@ interface Body {
     password: string;
 }
 
-const {JWT_SECRET} = process.env;
+const {JWT_SECRET, DOMAIN} = process.env;
 
 export default async (req: Request, res: Response) => {
     const {username, password}: Body = req.body;
@@ -19,10 +19,11 @@ export default async (req: Request, res: Response) => {
         if (adminExist) {
             const token = jwt.sign({adminId: adminExist}, JWT_SECRET!, {expiresIn: '7d'});
             res.cookie('jwt-admin', token, {
+                domain: DOMAIN,
                 httpOnly: true,
                 secure: true,
-                sameSite: "none",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: "lax",
+                maxAge: 2 * 24 * 60 * 60 * 1000,
             });
             res.status(200).json({message: "Login successfull"});
         } else {

@@ -1,34 +1,31 @@
 import './App.scss';
-import exploreIcon from '../../../assets/images/explore-icon.png';
 import accountIcon from '../../../assets/images/account-icon.png';
-import chatIcon from '../../../assets/images/chat-icon.png';
-import homeIcon from '../../../assets/images/home-icon.png';
-import startsIcon from '../../../assets/images/stars-icon.png';
-import Profile from '../../../components/user/profile/Profile';
-import Account from '../../../components/user/account/Account';
-import AccountBig from '../../../components/user/accountBig/AccountBig';
-import Settings from '../../../components/user/settings/Settings';
-import Edit from '../../../components/user/editProfile/EditProfile';
-import { memo, useEffect, useState } from 'react';
+import { lazy, memo, useEffect, useState } from 'react';
 import Loading from '../../../components/user/loading/Loading';
 import useGeoLocation from '../../../hooks/useGeoLocation';
 import { useDispatch } from 'react-redux';
 import { setLocation } from '../../../redux/actions/locationActions';
 import axios from '../../../instances/axios';
-import Matches from '../../../components/user/matches/Matches';
-import ViewProfile from '../../../components/user/viewProfile/viewProfile';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import Messages from '../../../components/user/messages/Messages';
-import Chat from '../../../components/user/chatbox/Chat';
 import { setUsername } from '../../../redux/actions/usernameActions';
 import { socket } from '../../../instances/socket';
 import Swal from 'sweetalert2';
-import VideoCall from '../../../components/user/videoCall/VideoCall';
-import Preview from '../../../components/user/preview/Preview';
-import Verification from '../../../components/user/verification/Verification';
-import Premium from '../../../components/user/premium/Premium';
-import Explore from '../../../components/user/explore/Explore';
+
+const AccountBig = lazy(() => import('../../../components/user/accountBig/AccountBig'));
+const Profile = lazy(() => import('../../../components/user/profile/Profile'));
+const Edit = lazy(() => import('../../../components/user/editProfile/EditProfile'));
+const Settings = lazy(() => import('../../../components/user/settings/Settings'));
+const Account = lazy(() => import('../../../components/user/account/Account'));
+const Matches = lazy(() => import('../../../components/user/matches/Matches'));
+const ViewProfile = lazy(() => import('../../../components/user/viewProfile/viewProfile'));
+const Messages = lazy(() => import('../../../components/user/messages/Messages'));
+const Chat = lazy(() => import('../../../components/user/chatbox/Chat'));
+const VideoCall = lazy(() => import('../../../components/user/videoCall/VideoCall'));
+const Preview = lazy(() => import('../../../components/user/preview/Preview'));
+const Verification = lazy(() => import('../../../components/user/verification/Verification'));
+const Premium = lazy(() => import('../../../components/user/premium/Premium'));
+const Explore = lazy(() => import('../../../components/user/explore/Explore'));
 
 interface Props {
     defaultSpace: string | null;
@@ -244,12 +241,12 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
 
                 {['home', 'explore', 'matches', 'messages', 'account'].includes(space) &&
                 <div className='belowbar'>
-                    <img onClick={() => navigate('/app')} src={homeIcon} alt="home" />
-                    <img onClick={() => navigate('/app/explore')} src={exploreIcon} alt="explore" />
-                    <img onClick={() => navigate('/app/matches')} src={startsIcon} alt="matches" />
-                    <img onClick={() => navigate('/app/messages')} src={chatIcon} alt="chats" />
-                    <img onClick={() => navigate('/app/account')} src={accountIcon} alt="account" />
-                </div>
+                    <i className={`fa-solid fa-cat ${space === 'home' ? 'active':''}`} onClick={() => navigate('/app')}></i>
+                    <i className={`fa-solid fa-paw ${space === 'explore' ? 'active':''}`} onClick={() => navigate('/app/explore')}></i>
+                    <i className={`fa-solid fa-heart ${space === 'matches' ? 'active':''}`} onClick={() => navigate('/app/matches')}></i>
+                    <i className={`fa-solid fa-message ${space === 'messages' ? 'active':''}`} onClick={() => navigate('/app/messages')}></i>
+                    <i className={`fa-solid fa-user ${space === 'account' ? 'active':''}`} onClick={() => navigate('/app/account')}></i>
+                </div>  
                 }
             </div>
         </div>

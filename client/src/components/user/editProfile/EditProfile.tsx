@@ -386,7 +386,7 @@ export default function EditProfile() {
                 <input value={livingIn ? livingIn : ''} onChange={(e) => setLivingIn(e.target.value)} placeholder='Where you live?' />
             </div>
             
-            <div className={styles.detail}>
+            <div style={{marginBottom: '10vh'}} className={styles.detail}>
                 <h6>Gender</h6>
                 <select onChange={(e) => setGender(e.target.value)}>
                     <option selected={(gender && gender === 'male') ? true : false} value="male">Male</option>

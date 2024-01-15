@@ -47,10 +47,11 @@
 .chat .typebox {
     box-shadow: 1px 0 2px 2px rgba(255, 255, 255, 0.26);
     background-color: rgb(43, 43, 43);
-    height: 9vh;
+    min-height: 9vh;
     display: flex;
     flex-direction: row;
     justify-content: start;
+    height: auto;
     padding-left: 40px;
     padding-right: 20px;
     align-items: center;
@@ -164,7 +165,6 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    line-break: anywhere;
     font-size: 16px;
 }
 
@@ -206,7 +206,8 @@
     }
     .chat .typebox {
         position: fixed;
-        height: 6vh;
+        min-height: 6vh;
+        height: auto;
         padding-left: 20px;
         padding-right: 20px;
         bottom: 0;
