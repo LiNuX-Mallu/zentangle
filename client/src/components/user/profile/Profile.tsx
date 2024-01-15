@@ -304,7 +304,7 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
                     {profiles && profiles[userIndex]?.profile?.livingIn && imageIndex === 0 &&
                         <>
                         <span className={styles.living}><i className="fa-solid fa-house"></i> Lives in {profiles[userIndex].profile.livingIn}</span>
-                        {profiles && profiles[userIndex] && (profiles[userIndex]?.distance !== null && profiles[userIndex]?.distance !== undefined) && <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profiles[userIndex]?.distance ? profiles[userIndex]?.distance : 1} kilometers away</span>}
+                        {profiles && profiles[userIndex] && (profiles[userIndex]?.distance !== null && profiles[userIndex]?.distance !== undefined) && <span className={styles.distance}><i className="fa-solid fa-location-dot"></i> {profiles[userIndex]?.distance !== 0 ? profiles[userIndex]?.distance : 1} kilometers away</span>}
                         </>
                     }
                     {imageIndex === 1 &&

@@ -21,13 +21,20 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
 
     useEffect(() => {
         if (!username || profile) return;
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.get(`/user/get-profile/${username}`).then(response => {
             if (response.status === 200) {
                 setProfile(response?.data);
             }
         }).catch(() => {
             alert("Internal server error");
-        })
+        }).finally(() => Swal.close());
     }, [username, profile]);
 
     const getAge = (dob: string) => {
@@ -38,6 +45,13 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
 
     const handleLike = (isSuper: boolean) => {
         if (!profile) return;
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/like-profile', {profileId: profile._id, isSuper}, {
             headers: {
                 'Content-Type': 'application/json',
@@ -78,11 +92,18 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
                     });
                 }
             }
-        })
+        }).finally(() => Swal.close());
     };
 
     const handleDislike = () => {
         if (!profile) return;
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/dislike-profile', {profileId: profile._id}, {
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +116,8 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
                 window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app');
             }
         })
-        .catch(() => alert("Internal server error"));
+        .catch(() => alert("Internal server error"))
+        .finally(() => Swal.close());
     };
 
     const handleBlock = async () => {
@@ -114,6 +136,13 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             focusCancel: true,
         });
         if (!swal.isConfirmed) return;
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/block-user', {username}, {
             headers: {
                 'Content-Type': 'application/json',
@@ -122,7 +151,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             if (response.status === 200) {
                 navigate('/app');
             }
-        });
+        }).finally(() => Swal.close());
     }
 
     const handleUnmatch = async () => {
@@ -141,6 +170,13 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             focusCancel: true,
         });
         if (!swal.isConfirmed) return;
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/unmatch-user', {username}, {
             headers: {
                 'Content-Type': 'application/json',
@@ -149,7 +185,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             if (response.status === 200) {
                 navigate('/app');
             }
-        });
+        }).finally(() => Swal.close());
     }
 
     if (inReport) {

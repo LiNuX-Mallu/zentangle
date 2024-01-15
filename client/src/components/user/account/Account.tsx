@@ -4,8 +4,8 @@ import styles from './Account.module.css';
 import axios from '../../../instances/axios';
 import { useNavigate } from 'react-router-dom';
 import { ProfileInterface } from '../../../instances/interfaces';
-import Loading from '../loading/Loading';
 import Swal from 'sweetalert2';
+import PreLoad from '../loading/preLoad/Preload';
 
 interface Props {
     setSpace: React.Dispatch<React.SetStateAction<string>>;
@@ -20,6 +20,7 @@ export default function Account({setSpace}: Props) {
     const conicStyle = {
         background: `conic-gradient(rgb(179, 30, 179) 0% ${percentage}%, white ${percentage}% 100%)`,
     }
+    
     useEffect(() => {
         const timeout = setTimeout(() => setPercentage(75), 1000)
         return () => clearTimeout(timeout); 
@@ -57,7 +58,7 @@ export default function Account({setSpace}: Props) {
     };
 
     if (loading) {
-        return <Loading />
+        return <PreLoad />
     }
 
     return (

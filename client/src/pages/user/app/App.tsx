@@ -1,6 +1,6 @@
 import './App.scss';
 import accountIcon from '../../../assets/images/account-icon.png';
-import { lazy, memo, useEffect, useState } from 'react';
+import { lazy, memo, useEffect, useState, Suspense } from 'react';
 import Loading from '../../../components/user/loading/Loading';
 import useGeoLocation from '../../../hooks/useGeoLocation';
 import { useDispatch } from 'react-redux';
@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { setUsername } from '../../../redux/actions/usernameActions';
 import { socket } from '../../../instances/socket';
 import Swal from 'sweetalert2';
+import PreLoad from '../../../components/user/loading/preLoad/Preload';
 
 const AccountBig = lazy(() => import('../../../components/user/accountBig/AccountBig'));
 const Profile = lazy(() => import('../../../components/user/profile/Profile'));
@@ -180,6 +181,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
 
     return(
         <>
+        <Suspense fallback={<PreLoad />}>
         {inVideoCall !== null && <VideoCall myUsername={myUsername} username={inVideoCall} setInVideoCall={setInVideoCall} /> }
         {showPremium && <Premium isVisible={showPremium} close={setShowPremium} /> }
         <div onClick={() => showPremium ? setShowPremium(false) : false} key={username} className={`app container-fluid ${showPremium ? 'premium' : ''}`}>
@@ -250,6 +252,7 @@ export default function App({defaultSpace, defaultMessage = false}: Props) {
                 }
             </div>
         </div>
+        </Suspense>
         </>
     )
 }

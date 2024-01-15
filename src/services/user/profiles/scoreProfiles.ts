@@ -2,7 +2,6 @@ import User from "../../../models/user";
 import moment from "moment";
 import { calculateDistance } from "./calculateDistance";
 import { UserInterface } from "../../../interfaces/userInterface";
-import premium from "../../../models/premium";
 
 interface Profile extends UserInterface {
   distance: number | undefined;
@@ -95,6 +94,7 @@ export default async (userId: string, explore: string) => {
         email: 0,
         phone: 0,
         password: 0,
+        premium: 0,
       }
     )
       .limit(10)
@@ -109,7 +109,7 @@ export default async (userId: string, explore: string) => {
           user.location?.coordinates,
           profile.location?.coordinates
         );
-        profile.distance = distance ? Math.round(distance) : undefined;
+        profile.distance = distance !== undefined ? Math.round(distance) : undefined;
       }
       profile.location = null!;
       profile.privacy = null!;

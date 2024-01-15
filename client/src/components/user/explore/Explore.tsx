@@ -22,7 +22,7 @@ export default function Explore({setSpace}: Props) {
             </div>
             <div className={styles.verified}>
                 <img src={verifyMan} />
-                <h3>Verified profiles <i className="fa-solid fa-circle-check"></i></h3>
+                <h3>Verified profiles</h3>
                 <div>
                     <p>See only verified profiles</p>
                     <span onClick={() => setSpace('verified')} className='fa-beat'>Try now</span>

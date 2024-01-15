@@ -42,6 +42,13 @@ export default function Verification({setSpace}: Props) {
                         if (result.isConfirmed) {
                             const formData = new FormData();
                             formData.append('file', event.data, 'verification.webm');
+                            Swal.fire({
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                },
+                                background: 'transparent',
+                                backdrop: true,
+                            });
                             axios.post('/user/request-verification', formData, {
                                 headers: {'Content-Type': 'multipart/form-data'},
                             }).then((response) => {
@@ -54,7 +61,7 @@ export default function Verification({setSpace}: Props) {
                                         background: 'black',
                                     }).then(() => setSpace('account'));
                                 }
-                            });
+                            }).finally(() => Swal.close());
                         }
                     });
                 }
