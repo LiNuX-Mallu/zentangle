@@ -4,5 +4,5 @@
 // export const server = "http://localhost:8080";
 // export const ApiUrl = server+'/api';
 
-export const server = "https://zentangle-tdo2clfghq-de.a.run.app";
-export const ApiUrl = "https://zentangle-tdo2clfghq-de.a.run.app/api";
+export const server = "https://zentangle.online";
+export const ApiUrl = "https://zentangle.online/api";
