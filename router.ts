@@ -19,15 +19,15 @@ router.use('/admin', (req, _, next: NextFunction) => {
 }, adminRouter);
 
 //test only
-router.get('/admin/clear', adminTokenValidation, async (_, res) => {
-    res.send(await user.updateMany({}, {
-        $unset: {match: null},
-        $set: {chatHistory: [],
-            reports: [], 
-            blocked: {users: [], contacts: []},
-            premium: {likes: [], superLikes: []},
-        },
-    }));
-});
+// router.get('/admin/clear', adminTokenValidation, async (_, res) => {
+//     res.send(await user.updateMany({}, {
+//         $unset: {match: null},
+//         $set: {chatHistory: [],
+//             reports: [], 
+//             blocked: {users: [], contacts: []},
+//             premium: {likes: [], superLikes: []},
+//         },
+//     }));
+// });
 
 export default router;

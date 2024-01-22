@@ -153,7 +153,6 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
                         timer: 1500,
                     }).then(() => {
                         setImageIndex(0);
-                        //setProfiles(undefined);
                         setMatchKey(Date.now().toString());
                     })
                 }
@@ -283,16 +282,17 @@ export default function Profile({setMatchKey, setPremium, allowed, explore, setS
             </span>
             
             <div
+                onClick={() => profiles[userIndex]?.username && navigate('/app/view-profile/'+profiles[userIndex]?.username)}
                 className={styles.details}
                 ref={profileRef}
                 draggable={true}
                 onDragStart={handleDragStart}
                 onDrag={handleDrag}
                 onDragEnd={handleDragEnd}
-                style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${profiles ? profiles[userIndex]?.profile?.medias[imageIndex]: ''})`}}
+                style={{cursor: 'pointer', backgroundImage: `linear-gradient(to bottom, transparent 70%, black 100%), url(${profiles ? profiles[userIndex]?.profile?.medias[imageIndex]: ''})`}}
             >
-                {profiles && profiles[userIndex]?.profile?.medias[imageIndex+1] && <i onClick={() => setImageIndex(imageIndex+1)} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}
-                {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
+                {profiles && profiles[userIndex]?.profile?.medias[imageIndex+1] && <i onClick={(e) => {e.stopPropagation(); setImageIndex(imageIndex+1)}} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}
+                {profiles && profiles[userIndex]?.profile?.medias[imageIndex-1] && <i onClick={(e) => {e.stopPropagation(); setImageIndex(imageIndex-1)}} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
                 
                 <div className={styles['other-details']}>
                     <h3 className={styles.name}>{profiles && (profiles[userIndex]?.profile?.name?.length ? profiles[userIndex]?.profile?.name : profiles[userIndex]?.firstname)}{profiles && profiles[userIndex]?.dob &&

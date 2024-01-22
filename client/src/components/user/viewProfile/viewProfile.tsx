@@ -70,9 +70,9 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
                         timer: 1500,
                     }).then(() => {
                         setProfile(null);
-                        window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app');
+                        navigate(-1);
                     })
-                }
+                } else navigate(-1);
             }
         }).catch((error) => {
             if (error.response.status === 400) {
@@ -112,8 +112,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
         .then(response => {
             if (response.status === 200) {
                 setProfile(null);
-                navigate('/app')
-                window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app');
+                navigate(-1);
             }
         })
         .catch(() => alert("Internal server error"))
@@ -149,7 +148,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             }
         }).then((response) => {
             if (response.status === 200) {
-                navigate('/app');
+                navigate(-1);
             }
         }).finally(() => Swal.close());
     }
@@ -183,7 +182,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             }
         }).then((response) => {
             if (response.status === 200) {
-                navigate('/app');
+                navigate(-1);
             }
         }).finally(() => Swal.close());
     }

@@ -14,6 +14,7 @@ import LookingFor from './childComponents/lookingFor/LookingFor';
 import OpenTo from './childComponents/openTo/OpenTo';
 import Swal from 'sweetalert2';
 import ogAxios from 'axios';
+import Compressor from 'compressorjs';
 
 export default function EditProfile() {
     const [loading, setLoading] = useState(true);
@@ -108,7 +109,7 @@ export default function EditProfile() {
     }, [bio, name, job, school, height, livingIn, gender, company, navigate]);
 
 
-    const handleUpload = (selectedImage: File | undefined) => {
+    const handleUpload = async (selectedImage: File | undefined) => {
         if (!selectedImage) return;
         Swal.fire({
             didOpen: () => {
@@ -117,7 +118,17 @@ export default function EditProfile() {
             background: 'transparent',
             backdrop: true,
         });
-        axios.post('/user/upload-media', {file: selectedImage}, {
+        const compressedImage = await new Promise<File | Blob>((resolve) => {
+            new Compressor(selectedImage, {
+                quality: 0.5,
+                success: (file) => resolve(file),
+                resize: 'cover',
+                strict: false,
+                convertSize: 2000000,
+            });
+        });
+
+        axios.post('/user/upload-media', {file: compressedImage}, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -154,6 +165,7 @@ export default function EditProfile() {
     if (!enabled || loading) {
         return <Loading />;
     }
+    
     return (
         <div className={`${styles.edit}`}>
             <div className={styles.heading}>
