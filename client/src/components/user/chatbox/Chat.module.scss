@@ -27,6 +27,33 @@
     justify-content: space-between;
     padding-right: 20px;
     width: 100%;
+    div {
+        display: flex;
+        align-items: center;
+        span {
+            margin-left: 20px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.904);
+            gap: 5px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            .pic {
+                height: 25px;
+                width: 25px;
+                border-radius: 50%;
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.281);
+                img {
+                    object-fit: cover;
+                    height: 100%;
+                    width: 100%;
+                    image-rendering: optimizeQuality;
+                    image-resolution: from-image;
+                }
+            }
+        }
+    }
 }
 
 .chat .topbar i {
@@ -153,6 +180,7 @@
 }
 
 .msg p {
+    cursor: pointer;
     align-self: flex-start;
     max-width: 40%;
     padding: 3px;

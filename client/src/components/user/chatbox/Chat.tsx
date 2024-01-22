@@ -38,6 +38,11 @@ export default function Chat({setMessageKey}: Props) {
             setChat((prev) => [...prev, message]);
             setMessageKey(Date.now().toString()+'msg');
         }
+        function onReceiveUnsend(timestamp: Date) {
+            console.log(timestamp)
+            const newChat = [...chat].filter((msg) => msg.timestamp !== timestamp);
+            setChat(newChat);
+        }
         function onReceiveChatId(id: string) {
             setChatId(id);
         }
@@ -47,16 +52,18 @@ export default function Chat({setMessageKey}: Props) {
 
         socket.emit('joinChat', myUsername+username);
         socket.on('receiveMessage', onReceiveMessage);
+        socket.on('receiveUnsend', onReceiveUnsend);
         socket.on('receiveChatId', onReceiveChatId);
         socket.on('isTyping', onTyping);
 
         return () => {
             socket.off('receiveMessage', onReceiveMessage);
+            socket.off('receiveUnsend', onReceiveUnsend);
             socket.off('receiveChatId', onReceiveChatId);
             socket.off('onTyping', onTyping);
             socket.emit('leaveChat', myUsername+username);
         }
-    }, [myUsername, username, socketConnected, setMessageKey]);
+    }, [myUsername, username, socketConnected, setMessageKey, chat]);
 
     useEffect(() => {
         function callEnd(from: string) {
@@ -142,6 +149,26 @@ export default function Chat({setMessageKey}: Props) {
         setMessageKey(Date.now().toString()+'msg');
     }
 
+    const handleUnsend = (msg: Message, index: number) => {
+        if (msg.sender === username || !chatId) return;
+        Swal.fire({
+            text: `Unsend message?`,
+            footer: msg.message.slice(0, 30)+'...' ?? msg.message.slice(0),
+            backdrop: true,
+            background: 'black',
+            showCancelButton: true,
+            focusCancel: true,
+            width: innerWidth <= 768 ? '85%' : '30%',
+        }).then((res) => {
+            if (res.isConfirmed) {
+                const newChat = [...chat]
+                newChat.splice(index, 1);
+                setChat(newChat);
+                socket.emit('unsend', {to: username, message: msg, chatId});
+            }
+        })
+    }
+
     useEffect(() => {
         if (inputMessage.length !== 0) {
             socket.emit('typing', {username, me: myUsername, flag: true});
@@ -199,9 +226,9 @@ export default function Chat({setMessageKey}: Props) {
                 }
                 {chat &&
                 <div className={styles.msg}>
-                    {chat.map((msg) => {
+                    {chat.map((msg, ind) => {
                         return (
-                            <p className={`${msg.sender !== username ? styles.send : ''}`} key={msg.timestamp.toString()}>
+                            <p onClick={() => handleUnsend(msg, ind)} className={`${msg.sender !== username ? styles.send : ''}`} key={msg.timestamp.toString()}>
                                 {msg.message}
                                 <span className={styles.time}>{formatTime(msg.timestamp)}</span>
                             </p>
@@ -212,15 +239,24 @@ export default function Chat({setMessageKey}: Props) {
                 }
             </div>
             <div className={styles.topbar}>
-                <i onClick={() => window.innerWidth <= 768 ? navigate('/app/messages') : navigate('/app')} className={`fa-solid fa-angle-left ${styles['back-click']}`}>
-                </i>
+                <div>
+                    <i onClick={() => window.innerWidth <= 768 ? navigate('/app/messages') : navigate('/app')} className={`fa-solid fa-angle-left ${styles['back-click']}`}>
+                    </i>
+                    <span onClick={() => navigate('/app/view-profile/'+username)}>
+                        <div className={styles['pic']}>
+                            <img src={profile.profile?.medias[0] ?? accountIcon} />
+                        </div>
+                        {profile.firstname}
+                    </span>
+                </div>
+                
                 <div>
                     <i onClick={() => doVideoCall()} className="fa-solid fa-video"></i>
                     <i onClick={() => setInReport(true)} className="fa-solid fa-shield-halved"></i>
                 </div>
             </div>
             <div className={styles.typebox}>
-                <i className="fa-solid fa-image"></i>
+                <i onClick={() => Swal.fire({text:'Coming soon...', showConfirmButton: false, backdrop: true, background: 'black'})} className="fa-solid fa-image"></i>
                 <textarea ref={inputRef} value={inputMessage} onChange={e => setInputMessage(e.target.value)} placeholder='Type here...' rows={1}></textarea>
                 <span onClick={handleSendMessage}>Send</span>
             </div>

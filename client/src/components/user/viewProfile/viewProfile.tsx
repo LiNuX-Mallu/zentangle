@@ -206,7 +206,8 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
                 >
                 </div>
 
-                <i onClick={() => window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app')} className={`fa-solid fa-circle-arrow-left ${styles['back-click']}`}></i>
+                <i onClick={() => navigate(-1)} className={`fa-solid fa-circle-arrow-left ${styles['back-click']}`}></i>
+                {/* <i onClick={() => window.innerWidth <= 768 ? navigate('/app/matches') : navigate('/app')} className={`fa-solid fa-circle-arrow-left ${styles['back-click']}`}></i> */}
                 {profile && profile.profile?.medias[imageIndex+1] && <i onClick={() => setImageIndex(imageIndex+1)} className={`fa-solid fa-angle-right ${styles['right-click']}`}></i>}
                 {profile && profile.profile?.medias[imageIndex-1] && <i onClick={() => setImageIndex(imageIndex-1)} className={`fa-solid fa-angle-left ${styles['left-click']}`}></i>}
             </div>

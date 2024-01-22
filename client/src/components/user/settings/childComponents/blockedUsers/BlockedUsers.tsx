@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './style.module.css';
 import axios from '../../../../../instances/axios';
-import { ApiUrl } from '../../../../../instances/urls';
 
 interface Item {
     username: string,
@@ -41,7 +40,7 @@ export default function BlockedUsers() {
                 return (
                     <div key={user.username} className={styles.item}>
                         <div className={styles['picture-container']}>
-                            <img src={`${ApiUrl}/media/${user.picture}`} alt="profile" />
+                            <img src={user.picture} alt="profile" />
                         </div>
                         <span className={styles.name}>{user.username}</span>
                         <div className={styles.btn}>

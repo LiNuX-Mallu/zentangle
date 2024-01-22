@@ -10,6 +10,7 @@ import http from "http";
 import { MessageInterface } from "./src/interfaces/messageInterface";
 import saveMessage from "./src/services/user/chat/saveMessage";
 import path from "path";
+import deleteMessage from "./src/services/user/chat/deleteMessage";
 
 dotenv.config();
 let { MONGO_URI, PORT, HOST, CLIENT_PORT, CLIENT_HOST, WWW_DOMAIN, DOMAIN } = process.env;
@@ -156,6 +157,11 @@ io.on("connection", async (socket: Socket) => {
 			io.to(data?.username + data?.me).emit("isTyping", data.flag);
 		}
 	);
+	socket.on('unsend', (data: {message: MessageInterface, to: string, chatId: string}) => {
+		deleteMessage(data?.chatId, data?.message, data?.to, data?.message?.sender).then(() => {
+			io.to(data?.to+data?.message?.sender).emit('receiveUnsend', data.message.timestamp);	
+		});
+	})
 });
 
 mongoConnect(MONGO_URI!)

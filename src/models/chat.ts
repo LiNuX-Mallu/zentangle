@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { MessageInterface } from "../interfaces/messageInterface";
 
 const chatSchema = new Schema({
     messages:  [
