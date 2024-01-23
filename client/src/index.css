@@ -2,7 +2,7 @@ html {
   overflow: hidden;
   /* overscroll-behavior-y: none; */
   /* touch-action: none; */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
 }
 
 * {

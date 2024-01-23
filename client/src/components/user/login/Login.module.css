@@ -117,6 +117,7 @@
     background-color: white;
     padding: 1px;
     transition: transform .1s ease;
+    color: rgb(15, 0, 15);
 }
 
 .log-form .submit button:hover {
