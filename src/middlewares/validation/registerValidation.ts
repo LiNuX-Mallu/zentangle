@@ -69,17 +69,17 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         errors.lastname = "Name should not contain special characters or white spaces";
     }
 
-    if (await User.findOne({"email.email": email})) {
-        errors.email = "Email already exists";
-    } else if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email)) {
         errors.email = "Please provide a valid email";
+    } else if (await User.findOne({"email.email": email})) {
+        errors.email = "Email already exists";
     }
 
-    if (await User.findOne({"phone.phone": phone})) {
-        errors.phone = "Phone number already exists";
-    } else if (!phoneRegex.test(phone)) {
+    if (!phoneRegex.test(phone)) {
         errors.phone = "Please provide a valid phone number";
-    }
+    } else if (await User.findOne({"phone.phone": phone})) {
+        errors.phone = "Phone number already exists";
+    } 
 
     if (!passwordRegex.test(password)) {
         errors.password = "Password must atleast have 8 characters";
