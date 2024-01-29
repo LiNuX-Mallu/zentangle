@@ -59,10 +59,10 @@ export default function Signup({signup, verify, login}: Props) {
         });
 
         const formData = {
-            username,
-            firstname,
-            lastname,
-            email,
+            username: username.trim(),
+            firstname: firstname.trim(),
+            lastname: lastname.trim(),
+            email: email.trim(),
             phone,
             password,
             countryCode,

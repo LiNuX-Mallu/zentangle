@@ -62,6 +62,13 @@ export default function Report({isVisible, close, username}: Props) {
         formData.append('against', username);
         formData.append('reason', reason);
 
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            background: 'transparent',
+            backdrop: true,
+        });
         axios.post('/user/report', formData, {
             headers: {'Content-Type': 'multipart/form-data'}
         })
@@ -76,9 +83,9 @@ export default function Report({isVisible, close, username}: Props) {
                     timer: 1500,
                     backdrop: true,
                     background: 'black',
-                  }).then(() => close(false));
+                }).then(() => close(false)).finally(() => Swal.close());
             }
-        });
+        }).finally(() => Swal.close());
     }
 
     if (!username) return null;

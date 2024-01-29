@@ -47,8 +47,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const usernameRegex = /^[a-z0-9_.]{3,}$/;
     const nameRegex = /^\p{L}{3,}$/u;
     const emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-    const phoneRegex = /^\d+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const phoneRegex = /^\d{10}$/;
+    const passwordRegex = /^.{8,}$/;
     const countryCodeRegex = /^\d{1,4}$/;
 
     if (!countryCodeRegex.test(countryCode) || (gender !=='male' && gender !== 'female')) {
@@ -82,7 +82,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (!passwordRegex.test(password)) {
-        errors.password = "Password must be atleast 8 characters long with one lowercase, uppercase, special character and number";
+        errors.password = "Password must atleast have 8 characters";
     }
 
     if (isNaN(dob.getTime())) {

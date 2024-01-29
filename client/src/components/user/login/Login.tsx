@@ -32,7 +32,7 @@ export default function Login({cancel, signup, verify}: Props) {
         event.preventDefault();
 
         const formData = {
-            username,
+            username: username.trim(),
             password,
         }
         Swal.fire({

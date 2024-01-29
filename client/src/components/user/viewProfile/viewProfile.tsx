@@ -59,6 +59,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
         }).then(response => {
             if (response.status === 200) {
                 if (response.data.matched) {
+                    Swal.close();
                     Swal.fire({
                         position: 'center',
                         icon: "success",
@@ -148,7 +149,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             }
         }).then((response) => {
             if (response.status === 200) {
-                navigate(-1);
+                navigate('/app');
             }
         }).finally(() => Swal.close());
     }
@@ -182,7 +183,7 @@ export default function ViewProfile({defaultProfile, blocked = false, setPremium
             }
         }).then((response) => {
             if (response.status === 200) {
-                navigate(-1);
+                navigate('/app');
             }
         }).finally(() => Swal.close());
     }
