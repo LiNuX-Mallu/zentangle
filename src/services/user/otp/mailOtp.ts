@@ -19,26 +19,17 @@ export default async (email: string) => {
             text: `Your OTP for verification of email: ${email} is ${otp}.\nDo not share with anyone.`,
         };
     
-        await new Promise((resolve, reject) => {
+        return await new Promise((resolve, reject) => {
             transporter.sendMail(mailOption, (error, _) => {
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(true);
+                    User.findOneAndUpdate({'email.email': email}, {
+                        $set: {otp: {code: otp, expireAt: expirationTime}}
+                    }).then(() => resolve(true));
                 }
             });
         })
-        .then(async () => {
-            await User.findOneAndUpdate({'email.email': email}, {
-                $set: {otp: {code: otp, expireAt: expirationTime}}
-            });
-        })
-        .catch((error) => {
-            throw error;
-        })
-        
-        return true;
-        
     } catch (error) {
         throw new Error("Error mailing OTP\n"+error);
     }

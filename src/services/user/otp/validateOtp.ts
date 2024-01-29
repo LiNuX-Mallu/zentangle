@@ -2,7 +2,7 @@ import User from "../../../models/user";
 
 export default async (otp: string, email: string) => {
     try {
-        const user = await User.findOne({'email.email': email});
+        const user = await User.findOne({'email.email': email.toLowerCase()});
         if (!user) throw new Error("Cannot find user");
 
         if (user.otp?.code && user.otp?.expireAt) {

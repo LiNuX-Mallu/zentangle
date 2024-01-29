@@ -62,7 +62,7 @@ export default function Signup({signup, verify, login}: Props) {
             username: username.trim(),
             firstname: firstname.trim(),
             lastname: lastname.trim(),
-            email: email.trim(),
+            email: email.trim().toLowerCase(),
             phone: +phone,
             password,
             countryCode,
@@ -79,7 +79,7 @@ export default function Signup({signup, verify, login}: Props) {
                 //setLoginSuccess(true);
                 setTimeout(() => {
                     signup(false);
-                    verify({email: email.trim(), username: username.trim(), password});
+                    verify({email: email.trim().toLowerCase(), username: username.trim(), password});
                 }, 1000)
             }
         }).catch((error) => {
